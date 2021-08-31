@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_rent"
+            android:icon="@drawable/ic_categories"
+            android:title="Rent a Car" />
+
+        <item
+            android:id="@+id/nav_sale"
+            android:icon="@drawable/ic_categories"
+            android:title="Sell a Car" />
+
+        <item
+            android:id="@+id/nav_account"
+            android:title="My Account">
+            <menu>
+                <group
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_profile"
+                        android:icon="@drawable/ic_person_outline"
+                        android:title="Profile" />
+                    <item
+                        android:id="@+id/nav_cards"
+                        android:icon="@drawable/credit_card"
+                        android:title="Payment" />
+                    <item
+                        android:id="@+id/nav_withdraw"
+                        android:icon="@drawable/ic_price_tag"
+                        android:title="Withdraw" />
+
+                    <item
+                        android:id="@+id/nav_message"
+                        android:visible="false"
+                        android:icon="@drawable/ic_mail_outline_large"
+                        android:title="Message" />
+                </group>
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/nav_myCars"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="My Listings" />
+
+        <item
+            android:id="@+id/nav_favCars"
+            android:icon="@drawable/ic_favorite_border"
+            android:visible="false"
+            android:title="Fav Cars" />
+
+        <item
+            android:id="@+id/nav_myOrders"
+            android:icon="@drawable/ic_calendar"
+            android:title="My Bookings" />
+
+
+    </group>
+
+    <item
+        android:id="@+id/other"
+        android:title="OTHERS">
+        <menu>
+            <group
+                android:id="@+id/group2"
+                android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:checkableBehavior="single"
+                    android:icon="@drawable/ic_settings"
+                    android:visible="false"
+                    android:title="Setting" />
+
+                <item
+                    android:id="@+id/nav_support"
+                    android:checkableBehavior="single"
+                    android:icon="@drawable/support_icon"
+                    android:title="Support" />
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:checkableBehavior="single"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
+                    android:title="Logout" />
+                <item
+                    android:id="@+id/nav_log_in"
+                    android:checkableBehavior="single"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
+                    android:visible="false"
+                    android:title="Login" />
+            </group>
+        </menu>
+    </item>
+
+
+</menu>

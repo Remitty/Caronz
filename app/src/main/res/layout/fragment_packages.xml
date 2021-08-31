@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/noPackagesfound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvmessgae"
+        android:scrollbars="none" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edamount"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        android:textDirection="ltr"
+        android:background="@drawable/fieldradius"
+        />
+    <TextView
+        android:id="@+id/tvmessgae"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/recycler_view"
+        android:text="Momo Make payment"
+        android:layout_below="@+id/edamount"
+        android:paddingBottom="12dp"
+        android:textSize="18sp"
+        />
+</RelativeLayout>
