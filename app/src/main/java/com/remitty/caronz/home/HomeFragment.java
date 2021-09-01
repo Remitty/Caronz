@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.remitty.caronz.R;
 import com.remitty.caronz.Search.FragmentSearch;
+import com.remitty.caronz.Search.HireSearchMapFragment;
 
 
 public class HomeFragment extends Fragment {
@@ -73,12 +74,11 @@ public class HomeFragment extends Fragment {
         hireLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentSearch fragment_cat = new FragmentSearch();
+                HireSearchMapFragment fragment_cat = new HireSearchMapFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("method", "hire");
                 bundle.putString("catId", "0");
                 fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentSearch");
+                replaceFragment(fragment_cat, "HireSearchMapFragment");
             }
         });
 

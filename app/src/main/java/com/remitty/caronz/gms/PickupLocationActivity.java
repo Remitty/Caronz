@@ -531,5 +531,14 @@ public class PickupLocationActivity extends AppCompatActivity implements OnMapRe
             buildGoogleApiClient();
 //            mMap.setMyLocationEnabled(true);
         }
+
+        mMap.setOnMapClickListener(latLng -> {
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            source_lat = String.format("%s", latLng.longitude);
+            source_lng = String.format("%s", latLng.latitude);
+        });
     }
 }

@@ -193,8 +193,8 @@ public interface RestService {
     );
 
     //Get load more ADs or search in Search Activity
-    @POST("ad_post/search/")
-    Call<ResponseBody> postGetSearchNdLoadMore(
+    @POST("driver/search/")
+    Call<ResponseBody> postDriverSearch(
             @Body JsonObject searchNdMore,
             @HeaderMap Map<String, String> headers
     );

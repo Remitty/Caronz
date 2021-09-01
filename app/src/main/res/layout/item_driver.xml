@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="130dp"
+    android:layout_height="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true">
@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:id="@+id/layoutCategories"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="10dp"
+        android:padding="6dp"
         >
 
         <LinearLayout
@@ -24,10 +24,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:id="@+id/car_image"
+                    android:id="@+id/driver_image"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="70dp"
                     android:src="@drawable/profileimg"
                     android:contentDescription="@null"
                     android:adjustViewBounds="true"
@@ -35,14 +35,14 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_car_title"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="23432432423"
+                android:text="Name"
                 android:textStyle="bold"
                 android:textColor="#242424"
                 android:textSize="14sp" />
@@ -65,20 +65,19 @@
                         android:layout_height="wrap_content"
                         android:text="$0"
                         android:textColor="@color/green"
-                        android:textSize="22dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tv_car_price_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" / day"/>
+                        android:text=" / hr"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:layout_marginTop="3dp"
                     android:orientation="vertical">
                     <RatingBar
                         android:id="@+id/car_rating"
@@ -88,19 +87,28 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/sale_layout"
-                android:layout_marginTop="3dp"
                 android:layout_width="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_car_sale_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$0"
-                    android:textStyle="bold"
-                    android:textColor="@color/green"
-                    android:textSize="22dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_hire"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/colorRedCrayon"
+                    android:text="Hire"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"/>
+                <ImageButton
+                    android:id="@+id/btn_view"
+                    android:layout_width="35dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_person_outline"
+                    android:background="@color/bg_gray"
+                    android:text="Hire"
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </LinearLayout>
 

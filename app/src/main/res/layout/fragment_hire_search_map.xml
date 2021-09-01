@@ -55,6 +55,44 @@
             android:layout_gravity="end"
             android:src="@drawable/current_focus"
             android:visibility="invisible" />
+        <TextView
+            android:id="@+id/txt_destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="5dp"
+            android:maxLines="1"
+            android:drawableEnd="@drawable/ic_menu_send"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:text="Where are you going to?"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bg_cardview"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginBottom="3dp"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:isScrollContainer="false"
+                    android:padding="5dp"
+                    android:scrollbars="none" />
+                <Button
+                    android:id="@+id/btn_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/bg_gray"
+                    android:text="Search Drivers More..."/>
+            </LinearLayout>
+
     </FrameLayout>
 
 </LinearLayout>

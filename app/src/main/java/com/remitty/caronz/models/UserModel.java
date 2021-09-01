@@ -38,6 +38,10 @@ public class UserModel {
         }
     }
 
+    public String getUserName() {
+        return data.optString("first_name") + " " + data.optString("last_name");
+    }
+
     public String getEmail(){
         try {
             return data.getString("email");

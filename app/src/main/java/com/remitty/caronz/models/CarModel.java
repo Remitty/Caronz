@@ -174,4 +174,16 @@ public class CarModel {
             return null;
         }
     }
+
+    public String getLat() {return data.optString("latitude");}
+    public String getLng() {return data.optString("longitude");}
+    public UserModel getOwner() {
+        try {
+            UserModel owner = new UserModel(data.getJSONObject("owner"));
+            return owner;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

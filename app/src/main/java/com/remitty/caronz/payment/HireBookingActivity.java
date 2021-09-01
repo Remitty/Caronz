@@ -34,7 +34,7 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
     Button btnPay;
 
     private String carId, bookingId, pickupLocation="", dropoffLocation="", strSelected;
-    private Double s_lati, s_long, d_lati, d_long;
+    private String s_lati, s_long, d_lati, d_long;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +44,37 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        txtDestination = findViewById(R.id.txtDestination);
+        txtaddressSource = findViewById(R.id.txtaddressSource);
+        editArriveTime = findViewById(R.id.edit_arrive_time);
+        editArriveDate = findViewById(R.id.edit_arrive_date);
+        btnPay = findViewById(R.id.btn_pay);
+
         if(getIntent() != null) {
             if(getIntent().hasExtra("car_id"))
                 carId = getIntent().getStringExtra("car_id");
             if(getIntent().hasExtra("book_id"))
                 bookingId = getIntent().getStringExtra("book_id");
 
-        }
+            if(getIntent().hasExtra("s_latitude"))
+                s_lati = getIntent().getStringExtra("s_latitude");
+            if(getIntent().hasExtra("s_longitude"))
+                s_long = getIntent().getStringExtra("s_longitude");
+            if(getIntent().hasExtra("d_latitude"))
+                d_lati = getIntent().getStringExtra("d_latitude");
+            if(getIntent().hasExtra("d_longitude"))
+                d_long = getIntent().getStringExtra("d_longitude");
 
-        txtDestination = findViewById(R.id.txtDestination);
-        txtaddressSource = findViewById(R.id.txtaddressSource);
-        editArriveTime = findViewById(R.id.edit_arrive_time);
-        editArriveDate = findViewById(R.id.edit_arrive_date);
-        btnPay = findViewById(R.id.btn_pay);
+            if(getIntent().hasExtra("s_address")) {
+                pickupLocation = getIntent().getStringExtra("s_address");
+                txtaddressSource.setText(pickupLocation);
+            }
+            if(getIntent().hasExtra("d_address")) {
+                dropoffLocation = getIntent().getStringExtra("d_address");
+                txtDestination.setText(dropoffLocation);
+            }
+
+        }
 
         initListeners();
     }
@@ -129,10 +147,10 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
                     intent.putExtra("start_time", editArriveDate.getText().toString() + " " + editArriveTime.getText().toString());
                     intent.putExtra("s_address", txtaddressSource.getText().toString());
                     intent.putExtra("d_address", txtDestination.getText().toString());
-                    intent.putExtra("s_latitude", s_lati+"");
-                    intent.putExtra("s_longitude", s_long+"");
-                    intent.putExtra("d_latitude", d_lati+"");
-                    intent.putExtra("d_longitude", d_long+"");
+                    intent.putExtra("s_latitude", s_lati);
+                    intent.putExtra("s_longitude", s_long);
+                    intent.putExtra("d_latitude", d_lati);
+                    intent.putExtra("d_longitude", d_long);
                     intent.putExtra("service", "hire");
                     if(bookingId != null) {
                         intent.putExtra("booking_id", bookingId);
@@ -182,9 +200,9 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
 
                         if (strSelected.equals("source")) {
                             try {
-                                s_lati = Double.parseDouble(placePredictions.strSourceLatitude);
-                                s_long =  Double.parseDouble(placePredictions.strSourceLongitude);
-                                pickupLocation = GMSHelper.getCompleteAddressString(this, s_lati, s_long);
+                                s_lati = placePredictions.strSourceLatitude;
+                                s_long = placePredictions.strSourceLongitude;
+                                pickupLocation = GMSHelper.getCompleteAddressString(this, Double.parseDouble(s_lati), Double.parseDouble(s_long));
                                 txtaddressSource.setText(pickupLocation);
 
                             } catch (Exception e) {
@@ -192,9 +210,9 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
                             }
                         }
                         else {
-                            d_lati = Double.parseDouble(placePredictions.strSourceLatitude);
-                            d_long = Double.parseDouble(placePredictions.strSourceLongitude);
-                            dropoffLocation = GMSHelper.getCompleteAddressString(this, d_lati, d_long);
+                            d_lati = placePredictions.strSourceLatitude;
+                            d_long = placePredictions.strSourceLongitude;
+                            dropoffLocation = GMSHelper.getCompleteAddressString(this, Double.parseDouble(d_lati), Double.parseDouble(d_long));
                             txtDestination.setText(dropoffLocation);
 
                         }

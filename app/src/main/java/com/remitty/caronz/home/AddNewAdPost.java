@@ -258,7 +258,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
 
         categories = settingsMain.getCategories();
-        if(categories.size() == 0) {
+        if(categories == null) {
+            categories = new ArrayList<String>();
             getCategories();
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
@@ -616,8 +617,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 //                                mLocationAutoTextView.setText(data.getString("location"));
 //                                placesContainer.setText(data.getString("address"));
 ////                                mLocationAutoTextView.setText(data.getString("location"));
-//                                editTextUserLat.setText(data.getString("latitude"));
-//                                editTextuserLong.setText(data.getString("longitude"));
+                                editTextUserLat.setText(car.getLat());
+                                editTextuserLong.setText(car.getLng());
                                 catSpinner.setSelection(car.getCatId());
 //                                switch (data.getInt("isFeatured")){
 //                                    case 1:
@@ -700,6 +701,16 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         if (editPostTitle.getText().toString().isEmpty()) {
             editPostTitle.setError("!");
+            validate = false;
+        }
+
+        if (editTextuserLong.getText().toString().isEmpty()) {
+            editTextuserLong.setError("!");
+            validate = false;
+        }
+
+        if (editTextUserLat.getText().toString().isEmpty()) {
+            editTextUserLat.setError("!");
             validate = false;
         }
 
@@ -865,8 +876,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 //            params.addProperty("address", placesContainer.getText().toString());
 //        }
 
-//        params.addProperty("location_lat", editTextUserLat.getText().toString());
-//        params.addProperty("location_lng", editTextuserLong.getText().toString());
+        params.addProperty("location_lat", editTextUserLat.getText().toString());
+        params.addProperty("location_lng", editTextuserLong.getText().toString());
 //            if (jsonObj.getBoolean("ad_country_show")) {
 //                subcatDiloglist subDiloglist = (subcatDiloglist) spinnerLocation.getSelectedView().getTag();
 //                params.addProperty("ad_country", subDiloglist.getId());
@@ -1234,9 +1245,9 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         if (!gpsTracker.canGetLocation())
             gpsTracker.showSettingsAlert();
         else if (gpsTracker.canGetLocation() && gpsTracker.isCheckPermission()) {
-        mMap.setMyLocationEnabled(true);
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(this);
+            mMap.setOnMyLocationClickListener(this);
         }
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
