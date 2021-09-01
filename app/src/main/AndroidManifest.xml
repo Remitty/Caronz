@@ -35,12 +35,34 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".payment.HireBookingActivity"></activity>
-        <activity android:name=".car_detail.FeedbackActivity" />
-        <activity android:name=".auth.WelcomeActivity" />
-        <activity android:name=".home.ActivityHelp" />
-        <activity android:name=".auth.ProfileCompleteActivity" />
-        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".gms.PickupLocationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".payment.HireBookingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gms.AddHomeWorkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".gms.CustomGooglePlacesSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".car_detail.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth.WelcomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.ActivityHelp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth.ProfileCompleteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".home.ChooseLocationActivity"
             android:screenOrientation="portrait"
@@ -148,10 +170,18 @@
             android:name=".messages.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" /> <!-- Full screen image Viewer -->
+        <activity
+            android:name="com.paypal.android.sdk.payments.PaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.paypal.android.sdk.payments.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.paypal.android.sdk.payments.PaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity"
+            android:screenOrientation="portrait" /> <!-- Full screen image Viewer -->
         <meta-data
             android:name="com.plaid.link.public_key"
             android:value="9631b048a502739144d719f9e69973" />

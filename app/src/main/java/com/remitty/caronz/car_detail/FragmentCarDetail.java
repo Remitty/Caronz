@@ -35,16 +35,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aminography.primecalendar.PrimeCalendar;
-import com.aminography.primecalendar.common.CalendarFactory;
-import com.aminography.primecalendar.common.CalendarType;
-import com.aminography.primedatepicker.PickType;
-import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet;
 import com.remitty.caronz.adapters.FeedbackAdapter;
 import com.remitty.caronz.messages.ChatActivity;
 import com.remitty.caronz.models.CarFeedback;
 import com.remitty.caronz.models.CarModel;
 import com.remitty.caronz.models.ReceivedMessageModel;
+import com.remitty.caronz.gms.CustomGooglePlacesSearchActivity;
+import com.remitty.caronz.payment.HireBookingActivity;
 import com.remitty.caronz.payment.RentalBookingActivity;
 import com.remitty.caronz.payment.StripePayment;
 import com.remitty.caronz.profile.ProfileActivity;
@@ -112,13 +109,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
 
     CarModel item;
 
-    private Double rentPrice = 0.0;
     private String phoneNumber, maskedPhoneNumber;
-    private String to, from;
-    private String method;
-
-    PrimeCalendar mstartDay = CalendarFactory.newInstance(CalendarType.CIVIL);
-    PrimeCalendar mendDay = CalendarFactory.newInstance(CalendarType.CIVIL);
 
     public FragmentCarDetail() {
         // Required empty public constructor
@@ -134,7 +125,6 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         if (bundle != null) {
             myId = bundle.getString("id", "0");
             myBookId = bundle.getString("book_id");
-            method = bundle.getString("method");
         }
 
         settingsMain = new SettingsMain(getActivity());
@@ -201,7 +191,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         });
 
         btnHire.setOnClickListener(view18 -> {
-            Intent intent = new Intent(getActivity(), RentalBookingActivity.class);
+            Intent intent = new Intent(getActivity(), HireBookingActivity.class);
             intent.putExtra("car_id", item.getId());
             startActivity(intent);
         });
@@ -256,7 +246,6 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             @Override
             public void onClick(View v) {
                 Utility.hideKeyBoardFromView(getActivity());
-                showRangeCalendarDialog();
             }
         });
 
@@ -277,6 +266,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         bannerSlider = mView.findViewById(R.id.banner_slider1);
 
         btnMsg = getActivity().findViewById(R.id.message);
+        contactLayout = getActivity().findViewById(R.id.contact_layout);
 
         textViewAdName = mView.findViewById(R.id.tv_car_name);
         tvCatName = mView.findViewById(R.id.tv_car_cat);
@@ -311,59 +301,6 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         LayerDrawable stars = (LayerDrawable) this.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
 
-    }
-
-    private void showRangeCalendarDialog() {
-        PrimeCalendar today = CalendarFactory.newInstance(CalendarType.CIVIL);
-
-        PrimeDatePickerBottomSheet datePicker = PrimeDatePickerBottomSheet.newInstance(
-                today,
-                PickType.RANGE_START
-        );
-
-        datePicker.setOnDateSetListener(new PrimeDatePickerBottomSheet.OnDayPickedListener() {
-
-            @Override
-            public void onSingleDayPicked(PrimeCalendar singleDay) {
-                // TODO
-            }
-
-            @Override
-            public void onRangeDaysPicked(PrimeCalendar startDay, PrimeCalendar endDay) {
-                // TODO
-                Log.d(startDay.getLongDateString(),"date");
-
-                mstartDay = startDay;
-                mendDay = endDay;
-
-                int month = startDay.getMonth()+1;
-                int day = startDay.getDayOfMonth();
-                String strmonth = month < 10?"0"+month:month+"";
-                String strday = day < 10?"0"+day:day+"";
-                from = strmonth+"/"+strday+"/"+startDay.getYear();
-
-                month = endDay.getMonth()+1;
-                day = endDay.getDayOfMonth();
-                strmonth = month < 10?"0"+month:month+"";
-                strday = day < 10?"0"+day:day+"";
-                to = strmonth+"/"+strday+"/"+endDay.getYear();
-
-                editPickup.setText(from + " - " + to);
-
-                int duration = endDay.compareTo(startDay);
-
-                long start = startDay.getTimeInMillis();
-                long end = endDay.getTimeInMillis();
-
-                int secondsDiff = (int)((end - start) / 1000);
-                int dayDiff = (secondsDiff / (3600 * 24));
-
-                Double total = Double.parseDouble(item.getPrice()) * dayDiff;
-                tvRentTotalPrice.setText("$ " + total);
-            }
-        });
-
-        datePicker.show(getFragmentManager(), "SOME_TAG");
     }
 
     private void getAllData(final String myId) {
@@ -440,7 +377,6 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             tvSeat.setText(item.getSeats());
             tvSpeed.setText(item.getDistance());
             tvCarLocation.setText(item.getLocation());
-            rentPrice = Double.parseDouble(item.getPrice());
             tvRentPrice.setText("$ " + item.getPrice());
             tvHirePrice.setText("$ " + item.getPrice());
             tvRentTotalPrice.setText("$ 0");
@@ -449,11 +385,10 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             tvCarRate.setText(String.valueOf(item.getRate()));
             tvCarTransmission.setText(item.getTransmission());
 
-
-
             banners.clear();
             imageUrls.clear();
             relatedList.clear();
+            if(bannerSlider != null)
             bannerSlider.removeAllBanners();
 
             for (int i = 0; i < item.getImages().length(); i++) {
@@ -465,7 +400,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                 banners.get(i).setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
 
-            if (banners.size() > 0)
+            if (banners.size() > 0 && bannerSlider != null)
                 bannerSlider.setBanners(banners);
 
             if(!item.isRental()) cardRent.setVisibility(View.GONE);

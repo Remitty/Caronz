@@ -16,11 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aminography.primecalendar.PrimeCalendar;
-import com.aminography.primecalendar.common.CalendarFactory;
-import com.aminography.primecalendar.common.CalendarType;
-import com.aminography.primedatepicker.PickType;
-import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet;
 import com.remitty.caronz.R;
 import com.remitty.caronz.utills.SettingsMain;
 import com.jarklee.materialdatetimepicker.date.DatePickerDialog;
@@ -37,8 +32,6 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
     FrameLayout loadingLayout;
     EditText editFrom, editTo, editGuestName, editFromTime, editToTime;
     Button btnPay;
-    PrimeCalendar mstartDay = CalendarFactory.newInstance(CalendarType.CIVIL);
-    PrimeCalendar mendDay = CalendarFactory.newInstance(CalendarType.CIVIL);
     SettingsMain settingsMain;
     String carId, totalPrice="0", detailType, bookingId, bookFrom, bookTo, bookCustomer;
     boolean isFrom = true;
@@ -103,7 +96,7 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
             public void onClick(View v) {
                 isFrom = true;
                 hideSoftKeyboard(v);
-                showRangeCalendarDialog();
+                showDatePickerDialog();
 
             }
         });
@@ -131,7 +124,7 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
             public void onClick(View v) {
                 isFrom = false;
                 hideSoftKeyboard(v);
-                showRangeCalendarDialog();
+                showDatePickerDialog();
             }
         });
 
@@ -183,88 +176,12 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
         dpd.show(this.getSupportFragmentManager(), "Timepickerdialog");
     }
 
-    private void showRangeCalendarDialog() {
-        PrimeCalendar today = CalendarFactory.newInstance(CalendarType.CIVIL);
-
-        PrimeDatePickerBottomSheet datePicker = PrimeDatePickerBottomSheet.newInstance(
-                today,
-                PickType.RANGE_START
+    private void showDatePickerDialog() {
+        Date currentTime = Calendar.getInstance().getTime();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                RentalBookingActivity.this, currentTime.getYear()+1900, currentTime.getMonth(), currentTime.getDate()
         );
-
-//        datePicker.onDayPicked(PickType.RANGE_START,null, mstartDay, mendDay);
-
-        datePicker.setOnDateSetListener(new PrimeDatePickerBottomSheet.OnDayPickedListener() {
-
-            @Override
-            public void onSingleDayPicked(PrimeCalendar singleDay) {
-                // TODO
-            }
-
-            @Override
-            public void onRangeDaysPicked(PrimeCalendar startDay, PrimeCalendar endDay) {
-                // TODO
-                Log.d(startDay.getLongDateString(),"date");
-
-                mstartDay = startDay;
-                mendDay = endDay;
-
-                int month = startDay.getMonth()+1;
-                int day = startDay.getDayOfMonth();
-                String strmonth = month < 10?"0"+month:month+"";
-                String strday = day < 10?"0"+day:day+"";
-                String from = strmonth+"/"+strday+"/"+startDay.getYear();
-
-                editFrom.setText(from);
-
-                month = endDay.getMonth()+1;
-                day = endDay.getDayOfMonth();
-                strmonth = month < 10?"0"+month:month+"";
-                strday = day < 10?"0"+day:day+"";
-                String to = strmonth+"/"+strday+"/"+endDay.getYear();
-
-                editTo.setText(to);
-//                tvDuration.setText(endDay.compareTo(startDay)+"");
-            }
-        });
-
-        datePicker.show(getSupportFragmentManager(), "SOME_TAG");
-    }
-
-    private void showSingleCalendarDialog() {
-        PrimeCalendar today = CalendarFactory.newInstance(CalendarType.CIVIL);
-
-        PrimeDatePickerBottomSheet datePicker = PrimeDatePickerBottomSheet.newInstance(
-                today,
-                PickType.SINGLE
-        );
-
-//        datePicker.onDayPicked();
-
-        datePicker.setOnDateSetListener(new PrimeDatePickerBottomSheet.OnDayPickedListener() {
-
-            @Override
-            public void onSingleDayPicked(PrimeCalendar singleDay) {
-                // TODO
-                Log.d(singleDay.getLongDateString(),"date");
-                int month = singleDay.getMonth()+1;
-                int day = singleDay.getDayOfMonth();
-                String strmonth = month < 10?"0"+month:month+"";
-                String strday = day < 10?"0"+day:day+"";
-                String from = strmonth+"/"+strday+"/"+singleDay.getYear();
-
-                editTo.setText(from);
-            }
-
-            @Override
-            public void onRangeDaysPicked(PrimeCalendar startDay, PrimeCalendar endDay) {
-                // TODO
-                Log.d(startDay.getLongDateString(),"date");
-
-
-            }
-        });
-
-        datePicker.show(getSupportFragmentManager(), "SOME_TAG");
+        dpd.show(this.getSupportFragmentManager(), "Datepickerdialog");
     }
 
     private void showLoading(){
@@ -300,7 +217,8 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
+        if(isFrom) editFrom.setText((monthOfYear+1) + "/" + dayOfMonth + "/" + year);
+        else editTo.setText((monthOfYear+1) + "/" + dayOfMonth + "/" + year);
     }
 
     @Override

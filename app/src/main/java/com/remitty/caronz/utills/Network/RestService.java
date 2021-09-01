@@ -469,6 +469,12 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
+    @POST("hire/")
+    Call<ResponseBody> postHiring(
+            @Body JsonObject updateStatus,
+            @HeaderMap Map<String, String> headers
+    );
+
     //Get Data When Payment is Completed Successfully
     @GET("payment/complete")
     Call<ResponseBody> getPaymentCompleteData(

@@ -241,7 +241,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/blueGray200"/>
+                android:background="@color/blue"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -264,16 +264,18 @@
                     android:text="$ 50"/>
             </LinearLayout>
         </LinearLayout>
+
         <Button
             android:id="@+id/book_pay"
-            android:layout_height="50dp"
             android:layout_width="200dp"
-            android:background="@color/accent"
-            android:textColor="@color/white"
-            android:layout_marginTop="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:textSize="20sp"
-            android:text="Pay"/>
+            android:layout_marginTop="40dp"
+            android:background="@color/accent"
+            android:text="Pay"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
         <FrameLayout
             android:id="@+id/loadingLayout"
             android:layout_width="wrap_content"

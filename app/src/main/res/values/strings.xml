@@ -52,6 +52,9 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="password_confirm">Confirm Password</string>
+    <string name="source_location">Your location</string>
+    <string name="where_to_go">Where are you going to?</string>
+    <string name="pin_location">Set pin location</string>
     <string-array name="year_array">
         <item>21</item>
         <item>22</item>

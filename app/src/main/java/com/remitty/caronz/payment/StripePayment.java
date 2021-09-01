@@ -57,7 +57,7 @@ public class StripePayment extends AppCompatActivity {
     SettingsMain settingsMain;
 
     FrameLayout loadingLayout;
-    LinearLayout invoiceLayout, cardFormLayout, cardViewLayout;
+    LinearLayout bookInvoiceLayout, hireInvoiceLayout, cardFormLayout, cardViewLayout;
 
     EditText editCardNumber, editCvc;
     Spinner monthSpinner, yearSpinner;
@@ -65,18 +65,20 @@ public class StripePayment extends AppCompatActivity {
     Button btnChkOut;
 
     TextView tvCardNo, tvCardDate;
-    TextView tvUnitPrice, tvDuration, tvTax, tvCommission, tvTotal, tvFrom, tvTo;
+    TextView tvUnitPrice, tvDuration, tvTax, tvCommission, tvTotal, tvFrom, tvTo, tvArriveTime, tvPickupLocation, tvDropoffLocation, tvEstTime, tvEstDistance;
     TextView tvAddCard, tvChangeCard;
     ImageView imgCardBrand;
     CheckBox checkStoreCard;
 
+    private Intent mIntent;
 
     List < CreditCard > creditCards = new ArrayList<>();
-    String from, to;
     String stringCardError, stringExpiryError, stringCVCError, stringInvalidCard;
-    String totalcost, duration;
+    String totalcost;
     String packageType, stringTotalPrice;
-    private String id = null, cardId = null;
+    private String id = null, cardId = null, service;
+    String from, to;
+    String duration, estTime, estDistance;
     private  String detailType, bookingId;
     String cvcNo, cardNo;
     int month, year;
@@ -102,20 +104,38 @@ public class StripePayment extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(settingsMain.getMainColor())));
         getSupportActionBar().setTitle("Check Out");
 
-        if(getIntent().hasExtra("id"))
-            id = getIntent().getStringExtra("id");
-        if(getIntent().hasExtra("from"))
-            from = getIntent().getStringExtra("from");
-        if(getIntent().hasExtra("to"))
-            to = getIntent().getStringExtra("to");
-        if(getIntent().hasExtra("booking_id"))
-            bookingId = getIntent().getStringExtra("booking_id");
+        mIntent = getIntent();
+        if(mIntent != null) {
+
+            if(getIntent().hasExtra("id"))
+                id = getIntent().getStringExtra("id");
+            if(getIntent().hasExtra("from"))
+                from = getIntent().getStringExtra("from");
+            if(getIntent().hasExtra("to"))
+                to = getIntent().getStringExtra("to");
+            if(getIntent().hasExtra("booking_id"))
+                bookingId = getIntent().getStringExtra("booking_id");
+            if(getIntent().hasExtra("service"))
+                service = getIntent().getStringExtra("service");
+        }
 
         initComponents();
 
         initListeners();
 
         getInvoiceData();
+
+        if(getIntent().hasExtra("from"))
+        tvFrom.setText(from);
+        if(getIntent().hasExtra("to"))
+        tvTo.setText(to);
+
+        if(getIntent().hasExtra("start_time"))
+            tvArriveTime.setText(mIntent.getStringExtra("start_time"));
+        if(getIntent().hasExtra("s_address"))
+            tvPickupLocation.setText(mIntent.getStringExtra("s_address"));
+        if(getIntent().hasExtra("d_address"))
+            tvDropoffLocation.setText(mIntent.getStringExtra("d_address"));
 
         loadingLayout = (FrameLayout) findViewById(R.id.loadingLayout);
 
@@ -252,10 +272,17 @@ public class StripePayment extends AppCompatActivity {
         tvTax = findViewById(R.id.invoice_tax);
         tvCommission = findViewById(R.id.invoice_commission);
         tvTotal = findViewById(R.id.invoice_total);
+
         tvTo = findViewById(R.id.invoice_to);
         tvFrom = findViewById(R.id.invoice_from);
-        tvFrom.setText(from);
-        tvTo.setText(to);
+
+        tvArriveTime = findViewById(R.id.invoice_start_time);
+        tvPickupLocation = findViewById(R.id.invoice_from_location);
+        tvDropoffLocation = findViewById(R.id.invoice_to_location);
+        tvEstTime = findViewById(R.id.invoice_est_time);
+        tvEstDistance = findViewById(R.id.invoice_est_distance);
+
+
         tvCardDate = findViewById(R.id.tv_card_date);
         tvCardNo = findViewById(R.id.tv_card_no);
 
@@ -265,9 +292,22 @@ public class StripePayment extends AppCompatActivity {
         tvChangeCard = findViewById(R.id.tv_change_card);
         checkStoreCard = findViewById(R.id.check_add_card);
 
-        invoiceLayout = findViewById(R.id.book_invoice);
+        bookInvoiceLayout = findViewById(R.id.book_invoice);
+        hireInvoiceLayout = findViewById(R.id.hire_invoice);
+
         cardFormLayout = findViewById(R.id.card_layout);
         cardViewLayout = findViewById(R.id.card_view);
+
+        if(service.equals("buy")) {
+            bookInvoiceLayout.setVisibility(View.GONE);
+            hireInvoiceLayout.setVisibility(View.GONE);
+        } else if (service.equals("rent")) {
+            hireInvoiceLayout.setVisibility(View.GONE);
+        } else {
+            bookInvoiceLayout.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void getInvoiceData() {
@@ -277,8 +317,23 @@ public class StripePayment extends AppCompatActivity {
 
             JsonObject params = new JsonObject();
             params.addProperty("car_id", id);
-            params.addProperty("from", from);
-            params.addProperty("to", to);
+            params.addProperty("service", service);
+            if(service.equals("rent")) {
+                params.addProperty("from", from);
+                params.addProperty("to", to);
+            }
+            if(service.equals("hire")) {
+                if(mIntent != null) {
+                    if(mIntent.hasExtra("s_latitude"))
+                        params.addProperty("s_latitude", mIntent.getStringExtra("s_latitude"));
+                    if(mIntent.hasExtra("d_latitude"))
+                        params.addProperty("d_latitude", mIntent.getStringExtra("d_latitude"));
+                    if(mIntent.hasExtra("s_longitude"))
+                        params.addProperty("s_longitude", mIntent.getStringExtra("s_longitude"));
+                    if(mIntent.hasExtra("d_longitude"))
+                        params.addProperty("d_longitude", mIntent.getStringExtra("d_longitude"));
+                }
+            }
             Log.d("info Send invoice", params.toString());
 
             Call<ResponseBody> myCall = restService.postInvoice(params, UrlController.AddHeaders(this));
@@ -297,38 +352,20 @@ public class StripePayment extends AppCompatActivity {
 
                                 tvUnitPrice.setText("$ " + data.getString("unit_price"));
                                 duration = data.getString("duration");
-                                if(Integer.parseInt(duration) == 0) {
-                                    invoiceLayout.setVisibility(View.GONE);
-                                }
+
                                 tvDuration.setText(duration);
                                 tvTax.setText("$ " + data.getString("tax"));
                                 tvCommission.setText("$ " + data.getString("commission"));
                                 totalcost = data.getString("total");
                                 tvTotal.setText("$ " + totalcost);
 
-                                JSONArray cards = response.getJSONArray("cards");
+                                initCards(response.getJSONArray("cards"));
 
-                                CreditCard creditCard = new CreditCard();
-                                for(int i = 0; i < cards.length(); i ++){
-                                    JSONObject card = cards.getJSONObject(i);
-                                    creditCard.setData(card);
-
-                                    creditCards.add(creditCard);
-                                    if(creditCard.isDefault()) {
-                                        tvCardNo.setText(creditCard.getCardNo());
-                                        tvCardDate.setText(creditCard.getExpDate());
-                                        if(creditCard.getBrand().equals("Visa"))
-                                            imgCardBrand.setImageResource(R.drawable.ic_visa);
-                                        else imgCardBrand.setImageResource(R.drawable.ic_mastercard);
-                                    }
-                                }
-
-                                if(cards.length() == 0) {
-                                    cardViewLayout.setVisibility(View.GONE);
-                                    cardFormLayout.setVisibility(View.VISIBLE);
-                                } else {
-                                    cardViewLayout.setVisibility(View.VISIBLE);
-                                    cardFormLayout.setVisibility(View.GONE);
+                                if(service.equals("hire")) {
+                                    estDistance = data.optString("distance");
+                                    estTime = data.optString("time");
+                                    tvEstDistance.setText(estDistance);
+                                    tvEstTime.setText(estTime);
                                 }
 
                             } else {
@@ -361,6 +398,37 @@ public class StripePayment extends AppCompatActivity {
         }
     }
 
+    private void initCards(JSONArray cards) {
+        CreditCard creditCard = new CreditCard();
+        for(int i = 0; i < cards.length(); i ++){
+            JSONObject card = null;
+            try {
+                card = cards.getJSONObject(i);
+                creditCard.setData(card);
+
+                creditCards.add(creditCard);
+                if(creditCard.isDefault()) {
+                    tvCardNo.setText(creditCard.getCardNo());
+                    tvCardDate.setText(creditCard.getExpDate());
+                    if(creditCard.getBrand().equals("Visa"))
+                        imgCardBrand.setImageResource(R.drawable.ic_visa);
+                    else imgCardBrand.setImageResource(R.drawable.ic_mastercard);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(cards.length() == 0) {
+            cardViewLayout.setVisibility(View.GONE);
+            cardFormLayout.setVisibility(View.VISIBLE);
+        } else {
+            cardViewLayout.setVisibility(View.VISIBLE);
+            cardFormLayout.setVisibility(View.GONE);
+        }
+    }
+
     private void checkout() {
 
         if (SettingsMain.isConnectingToInternet(StripePayment.this)) {
@@ -369,19 +437,54 @@ public class StripePayment extends AppCompatActivity {
             params.addProperty("car_id", id);
             if(cardId != null && !cardId.isEmpty())
                 params.addProperty("card_id", cardId);
-            params.addProperty("from", from);
-            params.addProperty("to", to);
 
             if(bookingId != null){
                 params.addProperty("booking_id", bookingId);
             }
 
-            Log.d("info Checkout params", "" + params.toString());
             Call<ResponseBody> myCall = null;
-            if(from == null)
-                myCall = restService.postBuy(params, UrlController.AddHeaders(this));
-            else
-                myCall = restService.postBooking(params, UrlController.AddHeaders(this));
+            switch (service) {
+                case "buy":
+                    myCall = restService.postBuy(params, UrlController.AddHeaders(this));
+                    break;
+                case "rent":
+                    params.addProperty("from", from);
+                    params.addProperty("to", to);
+                    if(mIntent != null) {
+                        if(mIntent.hasExtra("from_time"))
+                            params.addProperty("from_time", mIntent.getStringExtra("from_time"));
+                        if(mIntent.hasExtra("to_time"))
+                            params.addProperty("to_time", mIntent.getStringExtra("to_time"));
+                    }
+                    myCall = restService.postBooking(params, UrlController.AddHeaders(this));
+                    break;
+                case "hire":
+                    if(mIntent != null) {
+                        if(mIntent.hasExtra("s_latitude"))
+                            params.addProperty("s_latitude", mIntent.getStringExtra("s_latitude"));
+                        if(mIntent.hasExtra("d_latitude"))
+                            params.addProperty("d_latitude", mIntent.getStringExtra("d_latitude"));
+                        if(mIntent.hasExtra("s_longitude"))
+                            params.addProperty("s_longitude", mIntent.getStringExtra("s_longitude"));
+                        if(mIntent.hasExtra("d_longitude"))
+                            params.addProperty("d_longitude", mIntent.getStringExtra("d_longitude"));
+                        if(mIntent.hasExtra("s_address"))
+                            params.addProperty("s_address", mIntent.getStringExtra("s_address"));
+                        if(mIntent.hasExtra("d_address"))
+                            params.addProperty("d_address", mIntent.getStringExtra("d_address"));
+                        if(mIntent.hasExtra("start_time"))
+                            params.addProperty("start_time", mIntent.getStringExtra("start_time"));
+                        params.addProperty("est_time", estTime);
+                        params.addProperty("est_distance", estDistance);
+                        params.addProperty("duration", duration);
+                    }
+                    myCall = restService.postHiring(params, UrlController.AddHeaders(this));
+                    break;
+
+            }
+
+            Log.d("info Checkout params", "" + params.toString());
+
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {

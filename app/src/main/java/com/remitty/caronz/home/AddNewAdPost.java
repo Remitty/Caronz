@@ -611,8 +611,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
                                 editPostTitle.setText(car.getName());
                                 editPostDescription.setText(car.getDescription());
-                                editPostRentPrice.setText(car.getRentPrice());
-                                editPostSalePrice.setText(car.getSalePrice());
+                                editPostRentPrice.setText(car.getPrice());
+                                editPostSalePrice.setText(car.getPrice());
 //                                mLocationAutoTextView.setText(data.getString("location"));
 //                                placesContainer.setText(data.getString("address"));
 ////                                mLocationAutoTextView.setText(data.getString("location"));

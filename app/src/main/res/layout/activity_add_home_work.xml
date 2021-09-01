@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:cardElevation="5sp">
+        <RelativeLayout
+            android:id="@+id/rytAddressSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="15sp"
+                android:layout_height="15sp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/back_icon" />
+
+            <!-- City and Country Selector -->
+            <EditText
+                android:id="@+id/txtLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/bg_gray"
+                android:layout_toRightOf="@+id/backArrow"
+                android:layout_marginStart="10sp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="6sp"
+                android:text=""
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ListView
+        android:id="@+id/searchResultLV"
+        android:layout_width="match_parent"
+        android:divider="@null"
+        android:background="@color/white"
+        android:visibility="visible"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecentResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

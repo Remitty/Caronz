@@ -409,7 +409,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             }
             JsonObject object = new JsonObject();
             object.addProperty("cat_id", catId);
-            object.addProperty("method", method);
+            object.addProperty("service", method);
             if(location != null)
             object.addProperty("location", location);
             object.addProperty("page_number", pageNumber);

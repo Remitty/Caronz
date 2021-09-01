@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".gms.CustomGooglePlacesSearchActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/back_icon" />
+            <!--source & dest layout-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/edit_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#D3D3D3"
+                            android:hint="Type location"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingBottom="10dp"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="10dp"
+                            android:text=""
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/imgClose"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/close"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--source & dest layout  end-->
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ListView
+                    android:id="@+id/searchResultLV"
+                    android:layout_width="match_parent"
+                    android:divider="@null"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content" />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/lnrFavorite"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:paddingTop="5sp">
+
+                            <LinearLayout
+                                android:id="@+id/lnrHome"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/imgHome"
+                                    android:layout_width="12sp"
+                                    android:layout_height="12sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10sp"
+                                    android:src="@drawable/home_search" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:paddingTop="5sp"
+                                    android:layout_marginStart="10sp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myBoldTextView3"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Home"
+                                        android:textAlignment="viewStart"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        android:visibility="visible" />
+
+
+                                    <TextView
+                                        android:id="@+id/txtHomeLocation"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3sp"
+                                        android:text="Add Home"
+                                        android:textAlignment="viewStart"
+                                        android:textColor="@color/white_greyish"
+                                        android:textSize="10sp"
+                                        android:visibility="visible" />
+
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1sp"
+                                        android:layout_marginTop="5sp"
+                                        android:background="@color/white_greyish"
+                                        android:gravity="bottom" />
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lnrWork"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/imgWork"
+                                    android:layout_width="12sp"
+                                    android:layout_height="12sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10sp"
+                                    android:src="@drawable/work_search" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10sp"
+                                    android:paddingTop="5sp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Work"
+                                        android:textAlignment="viewStart"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        android:visibility="visible" />
+
+
+                                    <TextView
+                                        android:id="@+id/txtWorkLocation"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3sp"
+                                        android:text="Add Work"
+                                        android:textAlignment="viewStart"
+                                        android:textColor="@color/white_greyish"
+                                        android:textSize="10sp"
+                                        android:visibility="visible" />
+
+
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lnrSavedPlaces"
+                                android:layout_width="match_parent"
+                                android:layout_height="40sp"
+                                android:visibility="gone"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/imgRecent"
+                                    android:layout_width="12sp"
+                                    android:layout_height="12sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10sp"
+                                    android:src="@drawable/other_search" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10sp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Saved places"
+                                        android:textAlignment="viewStart"
+                                        android:textColor="@color/black"
+                                        android:textSize="13sp"
+                                        android:visibility="visible" />
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5sp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="3sp"
+                                android:layout_marginTop="10sp"
+                                android:background="@color/white_greyish" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="vertical">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rvRecentResults"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/txtPickLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_marginStart="13sp"
+                            android:layout_marginBottom="10sp"
+                            android:background="@color/white"
+                            android:drawablePadding="8sp"
+                            android:drawableStart="@drawable/set_location"
+                            android:gravity="center|start"
+                            android:text="Set pin location"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/black"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+            </LinearLayout>
+
+        </FrameLayout>
+        
+    </LinearLayout>
+</LinearLayout>
