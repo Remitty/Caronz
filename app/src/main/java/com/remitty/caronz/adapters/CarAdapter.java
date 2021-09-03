@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.remitty.caronz.R;
 import com.remitty.caronz.models.CarModel;
+import com.remitty.caronz.models.UserModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,14 +69,21 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void populateItemRows(CarAdapter.CarViewHolder holder, int position) {
 
         final CarModel item = carList.get(position);
-        if(!item.getFirstImage().isEmpty())
-            Picasso.with(mContext).load(item.getFirstImage()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ItemClickListener.onItemClick(position);
-            }
-        });
+        if(item.isHire()) {
+            UserModel owner = item.getOwner();
+            Picasso.with(mContext).load(owner.getPicture()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
+        }
+        else {
+            if(!item.getFirstImage().isEmpty())
+                Picasso.with(mContext).load(item.getFirstImage()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ItemClickListener.onItemClick(position);
+                }
+            });
+
+        }
 
         holder.ratingBar.setRating(item.getRate());
         LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();

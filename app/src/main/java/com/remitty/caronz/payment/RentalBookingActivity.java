@@ -1,14 +1,19 @@
 package com.remitty.caronz.payment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +33,8 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 public class RentalBookingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     FrameLayout loadingLayout;
     EditText editFrom, editTo, editGuestName, editFromTime, editToTime;
@@ -43,9 +50,16 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
 
         settingsMain = new SettingsMain(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
         setSupportActionBar(toolbar);
+
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -145,27 +159,44 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
 //                    validate = false;
 //                }
                 if(validate) {
-                    Intent intent = new Intent(RentalBookingActivity.this, StripePayment.class);
-                    intent.putExtra("id", carId);
-                    intent.putExtra("from", editFrom.getText().toString());
-                    intent.putExtra("from_time", editFromTime.getText().toString());
-                    intent.putExtra("to", editTo.getText().toString());
-                    intent.putExtra("to_time", editToTime.getText().toString());
-                    intent.putExtra("service", "rent");
-//                    intent.putExtra("guest", editGuestName.getText().toString());
-//                    if(detailType != null) {
-//                        intent.putExtra("detail_type", detailType);
-//                    }
-                    if(bookingId != null) {
-                        intent.putExtra("booking_id", bookingId);
-                    }
-                    startActivity(intent);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RentalBookingActivity.this);
+                    builder.setTitle("Confirm Info")
+                            .setMessage("Are you sure you want to continue the checkout?")
+                            .setIcon(R.mipmap.ic_launcher_round)
+                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    continueCheckout();
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+
                 }
                 else{
                     Toast.makeText(getBaseContext(), "please fill in", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void continueCheckout() {
+        Intent intent = new Intent(RentalBookingActivity.this, StripePayment.class);
+        intent.putExtra("id", carId);
+        intent.putExtra("from", editFrom.getText().toString());
+        intent.putExtra("from_time", editFromTime.getText().toString());
+        intent.putExtra("to", editTo.getText().toString());
+        intent.putExtra("to_time", editToTime.getText().toString());
+        intent.putExtra("service", "rent");
+        if(bookingId != null) {
+            intent.putExtra("booking_id", bookingId);
+        }
+        startActivity(intent);
     }
 
     private void showTimePickerDialog() {

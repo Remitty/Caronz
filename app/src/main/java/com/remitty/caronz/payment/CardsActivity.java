@@ -58,7 +58,6 @@ public class CardsActivity extends AppCompatActivity {
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor(getMainColor()));
         toolbar.setTitle("Cards");
         setSupportActionBar(toolbar);
 

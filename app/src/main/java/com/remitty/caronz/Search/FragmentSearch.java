@@ -153,6 +153,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             catId = bundle.getString("catId");
+            if(catId == null) catId = "0";
             method = bundle.getString("method");
 
         }

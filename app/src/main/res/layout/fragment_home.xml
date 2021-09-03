@@ -127,7 +127,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="30dp"
-                    android:text="Hire A Driver"/>
+                    android:text="Hire A Ride"/>
 
             </LinearLayout>
         </LinearLayout>

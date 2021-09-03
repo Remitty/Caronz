@@ -123,6 +123,15 @@ public class CarModel {
         return data.optString("distance") + " Mile";
     }
 
+    public Double getDoubleDistance() {
+        try {
+            return data.getDouble("distance");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
     public String getTransmission() { return data.optString("transmission");}
 
     public JSONArray getImages() {
@@ -151,7 +160,7 @@ public class CarModel {
             return img;
         } catch (JSONException e) {
             e.printStackTrace();
-            return "";
+            return getCatImage();
         }
     }
 

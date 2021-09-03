@@ -162,18 +162,18 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
 
         restService = UrlController.createService(RestService.class);
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            catId = bundle.getString("catId");
-        }
-
         lnrLoadMap = view.findViewById(R.id.lnrLoadMap);
         mapfocus = view.findViewById(R.id.mapfocus);
         txtDestination = view.findViewById(R.id.txt_destination);
         btnSearch = view.findViewById(R.id.btn_search);
 
         recyclerView = view.findViewById(R.id.recycler_view);
-
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(layoutManager);
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
 
 
         txtDestination.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +217,7 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
         if (SettingsMain.isConnectingToInternet(getActivity())) {
             SettingsMain.showDilog(getActivity());
             JsonObject object = new JsonObject();
-            object.addProperty("cat_id", catId);
+//            object.addProperty("cat_id", catId);
             object.addProperty("s_latitude", source_lat);
             object.addProperty("s_longitude", source_lng);
             Log.e("search param: ", object.toString());
@@ -245,18 +245,13 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
 //                                HomeActivity.checkLoading = false;
                                 mAdapter = new DriverAdapter(getActivity(), carsList);
                                 recyclerView.setAdapter(mAdapter);
-                                GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
-                                layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                                recyclerView.setHasFixedSize(true);
-//        recyclerView.setNestedScrollingEnabled(false);
-                                recyclerView.setLayoutManager(layoutManager);
-//        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
+
                                 mAdapter.setOnItemClickListener(new DriverAdapter.Listener() {
                                     @Override
                                     public void onHire(int position) {
                                         CarModel car = carsList.get(position);
                                         Intent intent = new Intent(getActivity(), HireBookingActivity.class);
-                                        intent.putExtra("carId", car.getId());
+                                        intent.putExtra("car_id", car.getId());
                                         intent.putExtra("s_latitude", source_lat);
                                         intent.putExtra("s_longitude", source_lng);
                                         intent.putExtra("s_address", source_address);

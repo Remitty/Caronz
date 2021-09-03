@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.remitty.caronz.R;
 import com.remitty.caronz.car_detail.CarDetailActivity;
 import com.remitty.caronz.cars.adapters.MyCarAdapter;
+import com.remitty.caronz.home.AddNewAdPost;
 import com.remitty.caronz.models.CarModel;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
@@ -146,8 +147,8 @@ public class MyActiveCarPage extends Fragment implements RuntimePermissionHelper
     @Override
     public void onSuccessPermission(int code) {
         CarModel item = carList.get(selected);
-        Intent intent = new Intent(getActivity(), CarDetailActivity.class);
-        intent.putExtra("carId", item.getId());
+        Intent intent = new Intent(getActivity(), AddNewAdPost.class);
+        intent.putExtra("post_id", item.getId());
         startActivity(intent);
     }
 }

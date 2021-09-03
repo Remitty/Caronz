@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.badge.BadgeDrawable;
 import com.remitty.caronz.Notification.Config;
 import com.remitty.caronz.Search.FragmentSearch;
+import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.hire.MyHireActivity;
 import com.remitty.caronz.messages.ChatActivity;
 import com.remitty.caronz.messages.Inbox;
 import com.google.android.gms.common.ConnectionResult;
@@ -193,6 +195,7 @@ HomeActivity extends AppCompatActivity
             menu.findItem(R.id.nav_profile).setVisible(false);
             menu.findItem(R.id.nav_withdraw).setVisible(false);
             menu.findItem(R.id.nav_myOrders).setVisible(false);
+            menu.findItem(R.id.nav_myHire).setVisible(false);
             menu.findItem(R.id.nav_myCars).setVisible(false);
             menu.findItem(R.id.nav_cards).setVisible(false);
 
@@ -203,9 +206,10 @@ HomeActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
 
         if (header != null) {
-            TextView textViewUserEmail = header.findViewById(R.id.textView);
+            TextView textViewUserEmail = header.findViewById(R.id.useremail);
             textViewUserName = header.findViewById(R.id.username);
             imageViewProfile = header.findViewById(R.id.imageView);
+            TextView tvEditProfile = header.findViewById(R.id.tv_edit);
 
 
             int[] colors = {Color.parseColor(getMainColor()), Color.parseColor(getMainColor())};
@@ -225,6 +229,7 @@ HomeActivity extends AppCompatActivity
                             .placeholder(R.drawable.placeholder)
                             .into(imageViewProfile);
                 }
+                tvEditProfile.setVisibility(View.GONE);
             } else {
                 if (!TextUtils.isEmpty(settingsMain.getUser())) {
                     textViewUserEmail.setText(settingsMain.getUserEmail());
@@ -240,6 +245,15 @@ HomeActivity extends AppCompatActivity
                             .into(imageViewProfile);
                 }
             }
+
+            tvEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    replaceFragment(new FragmentProfile(), "FragmentProfile");
+                }
+            });
         }
     }
 
@@ -597,20 +611,25 @@ HomeActivity extends AppCompatActivity
 //                }
 //                break;
             case R.id.nav_rent:
-                fragment = new FragmentAllCategories();
-                tag = "FragmentAllCategories";
+                fragment = new FragmentSearch();
+                tag = "FragmentSearch";
                 bundle.putString("method", "rent");
                 fragment.setArguments(bundle);
                 break;
             case R.id.nav_sale:
-                FragmentAllCategories fm1 = new FragmentAllCategories();
+                fragment = new FragmentSearch();
+                tag = "FragmentBuySearch";
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("method", "buy");
-                fm1.setArguments(bundle1);
-                replaceFragment(fm1, "FragmentAllCategories");
+                fragment.setArguments(bundle1);
+                break;
+            case R.id.nav_hire:
+                fragment = new HireSearchMapFragment();
+                tag = "HireSearchMapFragment";
                 break;
             case R.id.nav_profile:
-                replaceFragment(new FragmentProfile(), "FragmentProfile");
+                fragment = new FragmentProfile();
+                tag = "FragmentProfile";
                 break;
             case R.id.nav_message:
                 Intent intent1 = new Intent(getApplicationContext(), ChatActivity.class);
@@ -623,6 +642,10 @@ HomeActivity extends AppCompatActivity
                 break;
             case R.id.nav_myOrders:
                 startActivity(new Intent(getApplicationContext(), MyBookingActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_myHire:
+                startActivity(new Intent(getApplicationContext(), MyHireActivity.class));
                 overridePendingTransition(R.anim.right_enter, R.anim.left_out);
                 break;
             case R.id.nav_withdraw:

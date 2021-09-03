@@ -97,7 +97,6 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.ratingBar.setRating(item.getRate());
         LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
-        holder.tvSalePrice.setText("$ " + item.getPrice());
         holder.tvRentPrice.setText("$ " + item.getPrice());
         holder.tvCat.setText(item.getCatName());
         holder.tvName.setText(item.getName());
@@ -109,15 +108,13 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.activeBtnGroupLayout.setVisibility(View.VISIBLE);
         }
 
-        if(item.getStatus().equals("Rental")) {
-            holder.llSale.setVisibility(View.GONE);
-            holder.llRent.setVisibility(View.VISIBLE);
-        }
+        if(item.isHire())
+            holder.tvPriceUnit.setText("/hr");
+        if(item.isRental())
+            holder.tvPriceUnit.setText("/day");
+        if(item.isBuy())
+            holder.tvPriceUnit.setText("");
 
-        if(item.getStatus().equals("Sold")) {
-            holder.llSale.setVisibility(View.VISIBLE);
-            holder.llRent.setVisibility(View.GONE);
-        }
     }
 
     /**
@@ -147,8 +144,7 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private class CarViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView tvName, tvCat, tvRentPrice, tvSalePrice;
-        LinearLayout llSale, llRent;
+        TextView tvName, tvCat, tvRentPrice, tvPriceUnit;
         RatingBar ratingBar;
         LinearLayout activeBtnGroupLayout, orderBtnGroupLayout;
         Button btnEdit, btnDelete, btnActive;
@@ -157,10 +153,8 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             image = itemView.findViewById(R.id.car_image);
             tvName = itemView.findViewById(R.id.car_name);
             tvCat = itemView.findViewById(R.id.car_cat);
-            tvRentPrice = itemView.findViewById(R.id.car_rent_price);
-            tvSalePrice = itemView.findViewById(R.id.car_sale_price);
-            llRent = itemView.findViewById(R.id.ll_rent);
-            llSale = itemView.findViewById(R.id.ll_sale);
+            tvRentPrice = itemView.findViewById(R.id.car_price);
+            tvPriceUnit = itemView.findViewById(R.id.price_unit);
             ratingBar = itemView.findViewById(R.id.car_rate);
 
             activeBtnGroupLayout = itemView.findViewById(R.id.active_btn_group_layout);

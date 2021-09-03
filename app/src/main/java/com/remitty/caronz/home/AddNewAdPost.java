@@ -613,24 +613,27 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                 editPostTitle.setText(car.getName());
                                 editPostDescription.setText(car.getDescription());
                                 editPostRentPrice.setText(car.getPrice());
-                                editPostSalePrice.setText(car.getPrice());
-//                                mLocationAutoTextView.setText(data.getString("location"));
-//                                placesContainer.setText(data.getString("address"));
-////                                mLocationAutoTextView.setText(data.getString("location"));
+                                mLocationAutoTextView.setText(car.getLocation());
+                                if(!car.getLat().isEmpty())
                                 editTextUserLat.setText(car.getLat());
+                                if(!car.getLng().isEmpty())
                                 editTextuserLong.setText(car.getLng());
+                                if(!car.getLat().isEmpty() && !car.getLng().isEmpty()) {
+                                    LatLng latLng = new LatLng(Double.parseDouble(car.getLat()), Double.parseDouble(car.getLng()));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                }
+
+
+                                editPostSpeed.setText(car.getDoubleDistance()+"");
                                 catSpinner.setSelection(car.getCatId());
-//                                switch (data.getInt("isFeatured")){
-//                                    case 1:
-//                                        rdbAuto.setChecked(true);
-//                                        break;
-//                                    case 2:
-//                                        rdbManual.setChecked(true);
-//                                        break;
-//                                    case 3:
-//                                        rdbFeature3.setChecked(true);
-//                                        break;
-//                                }
+                                if(car.getTransmission().equals("Auto"))
+                                    transmissionSpinner.setSelection(0);
+                                else transmissionSpinner.setSelection(1);
+                                seatSpinner.setSelection(Integer.parseInt(car.getSeats()));
+                                if(car.isBuy())
+                                    rdbSell.setChecked(true);
+                                if(car.isRental()) rdbRent.setChecked(true);
+                                if(car.isHire()) rdbDrive.setChecked(true);
 
                             } else {
                                 Toast.makeText(context, response.get("message").toString(), Toast.LENGTH_SHORT).show();

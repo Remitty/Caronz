@@ -11,8 +11,11 @@
         <item
             android:id="@+id/nav_sale"
             android:icon="@drawable/ic_categories"
-            android:title="Sell a Car" />
-
+            android:title="Buy a Car" />
+        <item
+            android:id="@+id/nav_hire"
+            android:icon="@drawable/ic_categories"
+            android:title="Hire a Ride" />
         <item
             android:id="@+id/nav_account"
             android:title="My Account">
@@ -22,6 +25,7 @@
                     <item
                         android:id="@+id/nav_profile"
                         android:icon="@drawable/ic_person_outline"
+                        android:visible="false"
                         android:title="Profile" />
                     <item
                         android:id="@+id/nav_cards"
@@ -56,7 +60,10 @@
             android:id="@+id/nav_myOrders"
             android:icon="@drawable/ic_calendar"
             android:title="My Bookings" />
-
+        <item
+            android:id="@+id/nav_myHire"
+            android:icon="@drawable/ic_calendar"
+            android:title="My Hires" />
 
     </group>
 

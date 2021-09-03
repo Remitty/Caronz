@@ -35,7 +35,7 @@
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="3dp"
                     android:layout_marginLeft="10dp"
-                    android:hint="Phoniex, AZ, USA"
+                    android:hint="City, State, Country"
                     android:visibility="visible"
                     android:maxLines="1"
                     android:layout_weight="1" />

@@ -3,11 +3,17 @@ package com.remitty.caronz.payment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +33,8 @@ import com.remitty.caronz.models.PlacePredictions;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 public class HireBookingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE_DEST = 1000;
     EditText editArriveDate, editArriveTime;
@@ -43,6 +51,12 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
 
         txtDestination = findViewById(R.id.txtDestination);
         txtaddressSource = findViewById(R.id.txtaddressSource);
@@ -71,6 +85,7 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
             }
             if(getIntent().hasExtra("d_address")) {
                 dropoffLocation = getIntent().getStringExtra("d_address");
+                if(!dropoffLocation.isEmpty())
                 txtDestination.setText(dropoffLocation);
             }
 
@@ -123,6 +138,7 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 boolean validate = true;
                 if(TextUtils.isEmpty(editArriveTime.getText())) {
                     editArriveTime.setError("!");
@@ -132,34 +148,55 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
                     editArriveDate.setError("!");
                     validate = false;
                 }
-                if(TextUtils.isEmpty(txtaddressSource.getText())) {
+                if(TextUtils.isEmpty(pickupLocation)) {
                     Toast.makeText(getBaseContext(), "Please pickup your location", Toast.LENGTH_SHORT).show();
                     validate = false;
                 }
-                if(TextUtils.isEmpty(txtDestination.getText())) {
+                if(TextUtils.isEmpty(dropoffLocation)) {
                     Toast.makeText(getBaseContext(), "Please pickup your destination", Toast.LENGTH_SHORT).show();
                     validate = false;
                 }
 
                 if(validate) {
-                    Intent intent = new Intent(HireBookingActivity.this, StripePayment.class);
-                    intent.putExtra("id", carId);
-                    intent.putExtra("start_time", editArriveDate.getText().toString() + " " + editArriveTime.getText().toString());
-                    intent.putExtra("s_address", txtaddressSource.getText().toString());
-                    intent.putExtra("d_address", txtDestination.getText().toString());
-                    intent.putExtra("s_latitude", s_lati);
-                    intent.putExtra("s_longitude", s_long);
-                    intent.putExtra("d_latitude", d_lati);
-                    intent.putExtra("d_longitude", d_long);
-                    intent.putExtra("service", "hire");
-                    if(bookingId != null) {
-                        intent.putExtra("booking_id", bookingId);
-                    }
-                    startActivity(intent);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HireBookingActivity.this);
+                    builder.setTitle("Confirm Info")
+                            .setMessage("Are you sure you want to continue the checkout?")
+                            .setIcon(R.mipmap.ic_launcher_round)
+                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    continueCheckout();
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+
                 }
 
             }
         });
+    }
+
+    private void continueCheckout() {
+        Intent intent = new Intent(HireBookingActivity.this, StripePayment.class);
+        intent.putExtra("id", carId);
+        intent.putExtra("start_time", editArriveDate.getText().toString() + " " + editArriveTime.getText().toString());
+        intent.putExtra("s_address", pickupLocation);
+        intent.putExtra("d_address", dropoffLocation);
+        intent.putExtra("s_latitude", s_lati);
+        intent.putExtra("s_longitude", s_long);
+        intent.putExtra("d_latitude", d_lati);
+        intent.putExtra("d_longitude", d_long);
+        intent.putExtra("service", "hire");
+        if(bookingId != null) {
+            intent.putExtra("booking_id", bookingId);
+        }
+        startActivity(intent);
     }
 
     public void hideSoftKeyboard(View view) {

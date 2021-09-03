@@ -35,7 +35,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
+        <activity android:name=".hire.MyHireActivity"
+            android:screenOrientation="portrait"
+             />
         <activity android:name=".gms.PickupLocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".payment.HireBookingActivity"

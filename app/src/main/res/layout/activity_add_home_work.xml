@@ -38,6 +38,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="6sp"
+                android:hint="Type location"
                 android:text=""
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"

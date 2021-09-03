@@ -1,4 +1,4 @@
-package com.remitty.caronz.orders.adapter;
+package com.remitty.caronz.hire.adapter;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.remitty.caronz.models.RentalModel;
+import com.remitty.caronz.models.HireModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,16 +22,16 @@ import java.util.List;
 import com.remitty.caronz.R;
 import com.remitty.caronz.utills.SettingsMain;
 
-public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomViewHolder> {
+public class HireAdapter extends RecyclerView.Adapter<HireAdapter.CustomViewHolder> {
 
     SettingsMain settingsMain;
-    private List<RentalModel> realtyList = new ArrayList<>();
+    private List<HireModel> realtyList = new ArrayList<>();
     private Context mContext;
     private Listener ItemClickListener;
     private boolean show = false;
     private int total = 0;
 
-    public RentalAdapter(Context context, List<RentalModel> realtyList, int total) {
+    public HireAdapter(Context context, List<HireModel> realtyList, int total) {
         this.realtyList = realtyList;
         this.mContext = context;
         this.total = total;
@@ -39,7 +39,7 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
 
     }
 
-    public RentalAdapter(Context context, List<RentalModel> realtyList, boolean flag) {
+    public HireAdapter(Context context, List<HireModel> realtyList, boolean flag) {
         this.realtyList = realtyList;
         this.mContext = context;
         this.show = flag;
@@ -48,23 +48,27 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
     }
 
     @Override
-    public RentalAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_booking_realty, viewGroup, false);
-        return new RentalAdapter.CustomViewHolder(view);
+    public HireAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_hire, viewGroup, false);
+        return new HireAdapter.CustomViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RentalAdapter.CustomViewHolder customViewHolder, int i) {
-        final RentalModel feedItem = realtyList.get(i);
+    public void onBindViewHolder(HireAdapter.CustomViewHolder customViewHolder, int i) {
+        final HireModel feedItem = realtyList.get(i);
 
-        customViewHolder.tvAddress.setText(feedItem.getProcessdate());
+        customViewHolder.tvAddress.setText(feedItem.getProcessDate());
         customViewHolder.tvPrice.setText("$ " + feedItem.getBookTotal());
-        customViewHolder.tvTitle.setText(feedItem.getCar().getName());
+        customViewHolder.tvTitle.setText(feedItem.getOwner().getUserName());
         customViewHolder.tvStatus.setText(feedItem.getBookStatus());
-        customViewHolder.tvStart.setText(feedItem.getBookFrom());
-        customViewHolder.tvEnd.setText(feedItem.getBookTo());
+        customViewHolder.tvTerm.setText(feedItem.getBookFrom());
+        customViewHolder.tvPickup.setText(feedItem.getPickupLocation());
+        customViewHolder.tvDropoff.setText(feedItem.getDropoffLocation());
+        customViewHolder.tvEstDistance.setText(feedItem.getEstDistance());
+        customViewHolder.tvEstTime.setText(feedItem.getEstTime());
 
-        Picasso.with(mContext).load(feedItem.getCar().getFirstImage())
+        if(!feedItem.getOwner().getPicture().isEmpty())
+        Picasso.with(mContext).load(feedItem.getOwner().getPicture())
                 .resize(270, 270).centerCrop()
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
@@ -74,7 +78,7 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
             customViewHolder.btnGroupLayout.setVisibility(View.VISIBLE);
         }
 
-        if(feedItem.getBookStatus().equals("Booked"))
+        if(feedItem.getBookStatus().equals("Hired"))
             customViewHolder.btnBookConfirm.setVisibility(View.GONE);
 
         View.OnClickListener listener = new View.OnClickListener() {
@@ -131,7 +135,7 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView tvTitle, tvAddress, tvStart, tvEnd, tvPrice, tvStatus;
+        TextView tvTitle, tvAddress, tvTerm, tvPrice, tvStatus, tvPickup, tvDropoff, tvEstTime, tvEstDistance;
         Button btnBookEdit, btnBookCancel, btnBookConfirm;
         LinearLayout btnGroupLayout;
 
@@ -141,14 +145,17 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
             this.imageView = view.findViewById(R.id.realty_image);
             this.tvTitle = view.findViewById(R.id.realty_title);
             this.tvAddress = view.findViewById(R.id.realty_date);
-            this.tvStart = view.findViewById(R.id.rental_start);
-            this.tvEnd = view.findViewById(R.id.rental_end);
+            this.tvTerm = view.findViewById(R.id.realty_term);
             this.tvPrice = view.findViewById(R.id.realty_price);
             this.tvStatus = view.findViewById(R.id.realty_status);
             this.btnBookCancel = view.findViewById(R.id.btn_book_cancel);
             this.btnBookEdit = view.findViewById(R.id.btn_book_edit);
             this.btnBookConfirm = view.findViewById(R.id.btn_book_confirm);
             this.btnGroupLayout = view.findViewById(R.id.btn_group_layout);
+            this.tvPickup = view.findViewById(R.id.pickup_location);
+            this.tvDropoff = view.findViewById(R.id.dropoff_location);
+            this.tvEstTime = view.findViewById(R.id.est_time);
+            this.tvEstDistance = view.findViewById(R.id.est_distance);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.remitty.caronz.cars;
+package com.remitty.caronz.hire;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -8,10 +8,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.remitty.caronz.hire.adapter.HirePagerAdapter;
+import com.remitty.caronz.models.HireModel;
 import com.google.android.material.tabs.TabLayout;
 import com.remitty.caronz.R;
-import com.remitty.caronz.models.CarModel;
-import com.remitty.caronz.cars.adapters.MyCarPageAdapter;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,23 +36,23 @@ import retrofit2.Response;
 
 import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
-public class MyCarsActivity extends AppCompatActivity {
+public class MyHireActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     SettingsMain settingsMain;
     RestService restService;
 
-    private ArrayList<CarModel> myActiveCarList = new ArrayList<>();
-    private ArrayList<CarModel> myRentalCarList = new ArrayList<>();
-    private ArrayList<CarModel> mySoldCarList = new ArrayList<>();
+    private List<HireModel> HireUpcomingRealtyList = new ArrayList<>();
+    private List<HireModel> HireHistoryRealtyList = new ArrayList<>();
 
     ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_realty);
+        setContentView(R.layout.activity_my_hire);
 
         settingsMain = new SettingsMain(this);
+
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -60,59 +61,64 @@ public class MyCarsActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor(getMainColor()));
-        toolbar.setTitle("My Cars");
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setTitle("My Hire");
+        }
 
+        mViewPager = (ViewPager) findViewById(R.id.container);
 
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
 
+//        if (getIntent().getBooleanExtra("receive", false))
+            mViewPager.setCurrentItem(0);
 
-        loadAllData();
+//        RentalPagerAdapter mSectionsPagerAdapter = new RentalPagerAdapter(getSupportFragmentManager(), HireUpcomingRealtyList, HireHistoryRealtyList);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        loadAllHire();
     }
 
-    private void loadAllData() {
+    private void loadAllHire() {
         settingsMain.showDilog(this);
 
         if (SettingsMain.isConnectingToInternet(this)) {
 
-            Call<ResponseBody> myCall = restService.sellerCarList( UrlController.AddHeaders(this));
+            Call<ResponseBody> myCall = restService.hireList( UrlController.AddHeaders(this));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
                     settingsMain.hideDilog();
                     try {
-                        Log.d("info load realty Resp", "" + responseObj.toString());
+                        Log.d("info load upcoming Resp", "" + responseObj.toString());
                         if (responseObj.isSuccessful()) {
 
                             JSONObject response = new JSONObject(responseObj.body().string());
                             if(response.getBoolean("success")) {
-                                myActiveCarList.clear();
-                                myRentalCarList.clear();
-                                mySoldCarList.clear();
+                                JSONArray data = response.getJSONArray("data");
+                                HireUpcomingRealtyList.clear();
+                                HireHistoryRealtyList.clear();
 
-                                JSONArray carsArray = response.getJSONArray("cars");
-                                Log.e("cars", carsArray.toString());
-                                for (int i = 0; i < carsArray.length(); i++) {
-                                    CarModel car = new CarModel(carsArray.getJSONObject(i));
-                                    if(car.getStatus().equals("Rental"))
-                                        myRentalCarList.add(car);
-                                    else if (car.getStatus().equals("Sold"))
-                                        mySoldCarList.add(car);
-                                    else myActiveCarList.add(car);
+                                Log.d("info load Hirelist", data.toString());
 
+                                if (data != null && data.length() > 0) {
+                                    for (int i = 0; i < data.length(); i++) {
+                                        HireModel item = new HireModel();
+
+                                        JSONObject realty = data.getJSONObject(i);
+
+                                        item.setData(realty);
+
+                                        if(item.getBookStatus().equals("Booked"))
+                                            HireUpcomingRealtyList.add(item);
+                                        else
+                                            HireHistoryRealtyList.add(item);
+                                    }
                                 }
-
-                                mViewPager = (ViewPager) findViewById(R.id.container);
-                                MyCarPageAdapter mSectionsPagerAdapter = new MyCarPageAdapter(getSupportFragmentManager(), myActiveCarList, myRentalCarList, mySoldCarList);
+                                HirePagerAdapter mSectionsPagerAdapter = new HirePagerAdapter(getSupportFragmentManager(), HireUpcomingRealtyList, HireHistoryRealtyList);
                                 mViewPager.setAdapter(mSectionsPagerAdapter);
-                                tabLayout = (TabLayout) findViewById(R.id.tabs);
-                                tabLayout.setupWithViewPager(mViewPager);
-                                mViewPager.setCurrentItem(0);
-
                             }
                             else{
                                 Toast.makeText(getBaseContext(), response.getString("message"), Toast.LENGTH_SHORT).show();

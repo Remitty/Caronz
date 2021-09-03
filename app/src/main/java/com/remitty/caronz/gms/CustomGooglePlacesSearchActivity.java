@@ -138,6 +138,11 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
             editLocation.setText(s_address);
         }
 
+        if(!SharedHelper.getKey(CustomGooglePlacesSearchActivity.this, "home").isEmpty())
+        txtHomeLocation.setText(SharedHelper.getKey(CustomGooglePlacesSearchActivity.this, "home"));
+        if(!SharedHelper.getKey(CustomGooglePlacesSearchActivity.this, "work").isEmpty())
+        txtWorkLocation.setText(SharedHelper.getKey(CustomGooglePlacesSearchActivity.this, "work"));
+
         editLocation.requestFocus();
         imgClose.setVisibility(View.VISIBLE);
         if (cursor.equalsIgnoreCase("source")) {
@@ -223,6 +228,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                     placePredictions.strSourceLatLng = "" + latlng;
                     editLocation.setText(placePredictions.strSourceAddress);
                     editLocation.setSelection(0);
+
 //                    editLocation.requestFocus();
                     mAutoCompleteAdapter = null;
 
@@ -517,6 +523,57 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // The user canceled the operation.
             }
+        }
+        if (requestCode == UPDATE_HOME_WORK) {
+            if (resultCode == Activity.RESULT_OK) {
+                PlacePredictions placePredictions;
+                placePredictions = (PlacePredictions) data.getSerializableExtra("Location Address");
+                String strTag = data.getStringExtra("strTag");
+                if(strTag.equals("home"))
+                    updateHomeLocation(placePredictions);
+                else updateWorkLocation(placePredictions);
+            }
+        }
+    }
+
+    private void updateWorkLocation(PlacePredictions placePredictions) {
+        if (placePredictions != null) {
+
+            if (!placePredictions.strSourceAddress.equalsIgnoreCase("")) {
+                try {
+                    Double latitude = Double.parseDouble(placePredictions.strSourceLatitude);
+                    Double longitude =  Double.parseDouble(placePredictions.strSourceLongitude);
+                    String pickupLocation = GMSHelper.getCompleteAddressString(this, latitude, longitude);
+                    txtHomeLocation.setText(pickupLocation);
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "work", pickupLocation);
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "work_lat", latitude+"");
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "work_lng", longitude+"");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    private void updateHomeLocation(PlacePredictions placePredictions) {
+
+        if (placePredictions != null) {
+
+            if (!placePredictions.strSourceAddress.equalsIgnoreCase("")) {
+                try {
+                    Double latitude = Double.parseDouble(placePredictions.strSourceLatitude);
+                    Double longitude =  Double.parseDouble(placePredictions.strSourceLongitude);
+                    String pickupLocation = GMSHelper.getCompleteAddressString(this, latitude, longitude);
+                    txtHomeLocation.setText(pickupLocation);
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "home", pickupLocation);
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "home_lat", latitude+"");
+                    SharedHelper.putKey(CustomGooglePlacesSearchActivity.this, "home_lng", longitude+"");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
     }

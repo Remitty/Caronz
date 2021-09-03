@@ -509,6 +509,12 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
+    @POST("booking/complete")
+    Call<ResponseBody> bookingcomplete(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
     @POST("booking/cancel")
     Call<ResponseBody> bookingcancel(
             @Body JsonObject jsonObject,
@@ -517,6 +523,35 @@ public interface RestService {
 
     @POST("booking/cancel/info")
     Call<ResponseBody> bookingcancelinfo(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("hire/list")
+    Call<ResponseBody> hireList(
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("hire/confirm")
+    Call<ResponseBody>hireConfirm(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("hire/complete")
+    Call<ResponseBody>hireComplete(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("hire/cancel")
+    Call<ResponseBody> hireCancel(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("hire/cancel/info")
+    Call<ResponseBody> hireCancelInfo(
             @Body JsonObject jsonObject,
             @HeaderMap Map<String, String> headers
     );

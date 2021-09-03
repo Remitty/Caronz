@@ -1,4 +1,4 @@
-package com.remitty.caronz.orders;
+package com.remitty.caronz.hire;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.remitty.caronz.car_detail.CarDetailActivity;
-import com.remitty.caronz.models.RentalModel;
+import com.remitty.caronz.hire.adapter.HireAdapter;
+import com.remitty.caronz.models.HireModel;
 import com.google.gson.JsonObject;
 import com.remitty.caronz.R;
-import com.remitty.caronz.orders.adapter.RentalAdapter;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
@@ -35,10 +35,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Upcoming extends Fragment {
-    private List<RentalModel> bookingRealtyList = new ArrayList<>();
+public class HireUpcoming extends Fragment {
+    private List<HireModel> bookingRealtyList = new ArrayList<>();
     RecyclerView recyclerUpcoming;
-    RentalAdapter mAdapter;
+    HireAdapter mAdapter;
     RestService restService;
     SettingsMain settingsMain;
     LinearLayout emptyLayout;
@@ -46,18 +46,18 @@ public class Upcoming extends Fragment {
 
     boolean type;
 
-    public Upcoming() {
+    public HireUpcoming() {
         // Required empty public constructor
     }
 
-    public static Upcoming newInstance(List<RentalModel> upcoming) {
-        Upcoming fragment = new Upcoming();
+    public static HireUpcoming newInstance(List<HireModel> upcoming) {
+        HireUpcoming fragment = new HireUpcoming();
         fragment.bookingRealtyList = upcoming;
         return fragment;
     }
 
-    public static Upcoming newInstance(boolean type) {
-        Upcoming fragment = new Upcoming();
+    public static HireUpcoming newInstance(boolean type) {
+        HireUpcoming fragment = new HireUpcoming();
         fragment.type = type;
         return fragment;
     }
@@ -72,7 +72,7 @@ public class Upcoming extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =
-                inflater.inflate(R.layout.fragment_upcoming, container, false);
+                inflater.inflate(R.layout.fragment__hire_upcoming, container, false);
         settingsMain = new SettingsMain(getActivity());
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), getActivity());
 
@@ -90,10 +90,10 @@ public class Upcoming extends Fragment {
             recyclerUpcoming.setVisibility(View.GONE);
         }
 
-        mAdapter = new RentalAdapter(getActivity(), bookingRealtyList, true);
+        mAdapter = new HireAdapter(getActivity(), bookingRealtyList, true);
         recyclerUpcoming.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new RentalAdapter.Listener(){
+        mAdapter.setOnItemClickListener(new HireAdapter.Listener(){
             @Override
             public void onItemEdit(int position) {
 
@@ -102,14 +102,14 @@ public class Upcoming extends Fragment {
             @Override
             public void onItemCancel(int position) {
                 selected = position;
-                RentalModel item = bookingRealtyList.get(position);
+                HireModel item = bookingRealtyList.get(position);
                 getCancelInfo(item.getId());
 
             }
 
             @Override
             public void onItemClick(int position) {
-                RentalModel item = bookingRealtyList.get(position);
+                HireModel item = bookingRealtyList.get(position);
                 Intent intent = new Intent(getActivity(), CarDetailActivity.class);
                 intent.putExtra("carId", item.getCarId());
                 intent.putExtra("method", "rental");
@@ -119,7 +119,7 @@ public class Upcoming extends Fragment {
             @Override
             public void onItemConfirm(int position) {
                 selected = position;
-                RentalModel item = bookingRealtyList.get(position);
+                HireModel item = bookingRealtyList.get(position);
                 showConfirmAlert(item.getId());
             }
 
@@ -163,7 +163,7 @@ public class Upcoming extends Fragment {
 
             Log.d("info cancel book", "" + params.toString());
 
-            Call<ResponseBody> myCall = restService.bookingcomplete(params, UrlController.AddHeaders(getActivity()));
+            Call<ResponseBody> myCall = restService.hireComplete(params, UrlController.AddHeaders(getActivity()));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
@@ -219,7 +219,7 @@ public class Upcoming extends Fragment {
 
             Log.d("info book cancel", "" + params.toString());
 
-            Call<ResponseBody> myCall = restService.bookingcancelinfo(params, UrlController.AddHeaders(getActivity()));
+            Call<ResponseBody> myCall = restService.hireCancelInfo(params, UrlController.AddHeaders(getActivity()));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
@@ -328,7 +328,7 @@ public class Upcoming extends Fragment {
 
             Log.d("info cancel book", "" + params.toString());
 
-            Call<ResponseBody> myCall = restService.bookingcancel(params, UrlController.AddHeaders(getActivity()));
+            Call<ResponseBody> myCall = restService.hireCancel(params, UrlController.AddHeaders(getActivity()));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {

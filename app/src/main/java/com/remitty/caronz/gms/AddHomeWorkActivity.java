@@ -28,6 +28,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -37,14 +38,18 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.remitty.caronz.App;
 import com.remitty.caronz.R;
 import com.remitty.caronz.adapters.AutoCompleteAdapter;
+import com.remitty.caronz.helper.GMSHelper;
 import com.remitty.caronz.models.PlacePredictions;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -64,6 +69,7 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
     ImageView backArrow;
     private String GETPLACESHIT = "places_hit";
     private String strTag = "";
+    String Addr, latu, longu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,8 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
         mAutoCompleteList = (ListView) findViewById(R.id.searchResultLV);
         txtLocation = (EditText) findViewById(R.id.txtLocation);
         backArrow = (ImageView) findViewById(R.id.backArrow);
+
+        txtLocation.requestFocus();
 
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +132,9 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
                         @Override
                         public void run() {
                             // cancel all the previous requests in the queue to optimise your network calls during autocomplete search
-//                            App.getInstance().cancelRequestInQueue(GETPLACESHIT);
+                            App.getInstance().cancelRequestInQueue(GETPLACESHIT);
                             JSONObject object = new JSONObject();
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getPlaceAutoCompleteUrl(txtLocation.getText().toString()),
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GMSHelper.getPlaceAutoCompleteUrl(s+"", latitude, longitude, getResources().getString(R.string.places_api_key)),
                                     object, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
@@ -151,7 +159,7 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
                                     Log.v("PayNowRequestResponse", error.toString());
                                 }
                             });
-//                            TranxitApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                            App.getInstance().addToRequestQueue(jsonObjectRequest);
                         }
                     };
 
@@ -178,24 +186,6 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
 
     }
 
-    public String getPlaceAutoCompleteUrl(String input) {
-        StringBuilder urlString = new StringBuilder();
-        urlString.append("https://maps.googleapis.com/maps/api/place/autocomplete/json");
-        urlString.append("?input=");
-        try {
-            urlString.append(URLEncoder.encode(input, "utf8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        urlString.append("&location=");
-        urlString.append(latitude + "," + longitude); // append lat long of current location to show nearby results.
-        urlString.append("&radius=500&language=en");
-        urlString.append("&key=" + getResources().getString(R.string.places_api_key));
-
-        Log.d("FINAL URL:::   ", urlString.toString());
-        return urlString.toString();
-    }
-
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -207,29 +197,45 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
     }
 
     private void setGoogleAddress(int position) {
-        if (mGoogleApiClient != null) {
-            System.out.print("Place ID == >"+ predictions.getPlaces().get(position).getPlaceID());
-            Places.GeoDataApi.getPlaceById(mGoogleApiClient, predictions.getPlaces().get(position).getPlaceID())
-                    .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                        @Override
-                        public void onResult(PlaceBuffer places) {
-                            if (places.getStatus().isSuccess()) {
-                                Place myPlace = places.get(0);
-                                LatLng queriedLocation = myPlace.getLatLng();
-                                Log.v("Latitude is", "" + queriedLocation.latitude);
-                                Log.v("Longitude is", "" + queriedLocation.longitude);
-                                placePredictions.strDestAddress = myPlace.getAddress().toString();
-                                placePredictions.strDestLatLng = myPlace.getLatLng().toString();
-                                placePredictions.strDestLatitude = myPlace.getLatLng().latitude + "";
-                                placePredictions.strDestLongitude = myPlace.getLatLng().longitude + "";
+        final String PlID = predictions.getPlaces().get(position).getPlaceID();
 
-//                                AddToHomeWork(strTag, placePredictions.strDestLatitude,
-//                                        placePredictions.strDestLongitude, placePredictions.strDestAddress);
+            Log.e("Place ID == >", PlID);
+        App.getInstance().cancelRequestInQueue(GETPLACESHIT);
+        String url = GMSHelper.getPlaceAutoLatlong(PlID,  getResources().getString(R.string.places_api_key));
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try {
+                            ArrayList<String> place = GMSHelper.parseGoogleParse(response);
+                            if(place != null) {
+                                Addr = place.get(0);
+                                latu = place.get(1);
+                                longu = place.get(2);
                             }
+
+                            Log.v("Latitude is", "" + Addr);
+
+                            placePredictions.strSourceAddress = Addr;
+                            placePredictions.strSourceLatLng = String.valueOf(latu) + ","+ String.valueOf(longu);
+                            placePredictions.strSourceLatitude = String.valueOf(latu);
+                            placePredictions.strSourceLongitude = String.valueOf(longu);
+                            mAutoCompleteAdapter = null;
+
                             mAutoCompleteList.setVisibility(View.GONE);
+                            setAddress();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        App.getInstance().addToRequestQueue(stringRequest);
     }
 
     void setAddress() {
@@ -239,6 +245,8 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
             public void run() {
                 Intent intent = new Intent();
                 if (placePredictions != null) {
+                    intent.putExtra("Location Address", placePredictions);
+                    intent.putExtra("strTag", strTag);
                     setResult(RESULT_OK, intent);
                 } else {
                     setResult(RESULT_CANCELED, intent);

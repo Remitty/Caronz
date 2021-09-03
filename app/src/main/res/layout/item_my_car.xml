@@ -63,42 +63,24 @@
                         android:textStyle="bold"
                         android:textSize="12dp"
                         android:textColor="@color/black"
-                        android:text="Rental Price: "/>
+                        android:text="Price: "/>
                     <TextView
-                        android:id="@+id/car_rent_price"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/car_price"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:text="$300"/>
                     <TextView
+                        android:id="@+id/price_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:text="per day"/>
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/ll_sale"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="12dp"
-                        android:textColor="@color/black"
-                        android:text="Sale Price: "/>
-                    <TextView
-                        android:id="@+id/car_sale_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:text="$300"/>
-                </LinearLayout>
+
                 <RatingBar
                     android:id="@+id/car_rate"
                     style="@style/Widget.AppCompat.RatingBar.Small"
