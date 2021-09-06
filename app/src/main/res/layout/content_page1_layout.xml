@@ -153,21 +153,6 @@
 
             </LinearLayout>
 
-            <AutoCompleteTextView
-                android:id="@+id/address_autoCompleteTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_weight="1" />
-
-            <EditText
-                android:id="@+id/placeContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Address"
-                android:visibility="gone"
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,6 +176,39 @@
                     android:paddingVertical="3dp"
                     android:background="@drawable/imageview_border"
                     android:inputType="text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+                <TextView
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="Address"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/address_autoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/imageview_border"
+                    android:visibility="visible"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/placeContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 

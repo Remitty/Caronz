@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.remitty.caronz.Search.FragmentSearch;
@@ -51,6 +52,7 @@ public class FragmentAllCategories extends Fragment {
     ArrayList<String> categories = new ArrayList<>();
     private Context context;
     private String method;
+    EditText editModel;
 
 
     public FragmentAllCategories() {
@@ -78,6 +80,8 @@ public class FragmentAllCategories extends Fragment {
 
             Log.e("method: ", method);
         }
+
+        editModel = view.findViewById(R.id.et_model);
 
         categoriesRecycler_view = view.findViewById(R.id.categoriesRecycler_view);
 
@@ -178,6 +182,7 @@ public class FragmentAllCategories extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("catId", item.getId());
                 bundle.putString("method", method);
+                bundle.putString("model", editModel.getText().toString());
 
                 fragment_search.setArguments(bundle);
                 replaceFragment(fragment_search, "FragmentSearch");

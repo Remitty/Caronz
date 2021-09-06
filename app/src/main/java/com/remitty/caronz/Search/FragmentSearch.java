@@ -104,7 +104,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
 
     private ArrayList<CarModel> carsList = new ArrayList<>();
     private boolean isMore = false;
-    private String location;
+    private String location, model;
 
     public FragmentSearch() {
     }
@@ -155,7 +155,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             catId = bundle.getString("catId");
             if(catId == null) catId = "0";
             method = bundle.getString("method");
-
+            model = bundle.getString("model");
         }
 
         restService = UrlController.createService(RestService.class);
@@ -224,7 +224,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH) {
                     location = currentLocationText.getText().toString();
-                    getAllData();
+                    submitQuery();
                 }
                 return false;
             }
@@ -234,7 +234,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
 
         initNestedScrollView();
 
-        getAllData();
+        submitQuery();
 
         return mView;
 
@@ -394,13 +394,13 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                     showMoreLoading();
                     pageNumber = page+1;
                     Log.d("page number", page+"");
-                    getAllData();
+                    submitQuery();
                 }
             });
         }
     }
 
-    private void getAllData() {
+    private void submitQuery() {
 
         if (SettingsMain.isConnectingToInternet(getActivity())) {
             if(!isMore) {
@@ -410,6 +410,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             }
             JsonObject object = new JsonObject();
             object.addProperty("cat_id", catId);
+            object.addProperty("model", model);
             object.addProperty("service", method);
             if(location != null)
             object.addProperty("location", location);

@@ -118,6 +118,7 @@ public class CarModel {
     }
 
     public String getLocation() { return data.optString("location");}
+    public String getAddress() { return data.optString("address");}
 
     public String getDistance() {
         return data.optString("distance") + " Mile";

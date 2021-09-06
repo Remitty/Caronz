@@ -11,7 +11,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <EditText
+            android:id="@+id/et_model"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:maxLines="1"
+            android:drawableEnd="@drawable/places_ic_search"
+            android:imeOptions="actionSearch"
+            android:hint="Search model"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="5dp"
+            android:textSize="12sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categoriesRecycler_view"
@@ -19,7 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:layout_marginStart="6dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="3dp"
+            android:layout_below="@+id/et_model"
             android:paddingBottom="20dp" />
 
     </RelativeLayout>

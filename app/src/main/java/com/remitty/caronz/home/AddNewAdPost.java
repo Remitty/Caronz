@@ -156,7 +156,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     EditText editPostTitle, editPostDescription,
             editTextUserLat, editTextuserLong, editPostRentPrice, editPostSalePrice, editPostSpeed;
 
-    TextView tvLocation, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice;
+    TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice;
 
     ImageView imageViewBack2, imageViewBack3;
     Button btnNext1, btnNext2, btnPostAd;
@@ -367,6 +367,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 .address_autoCompleteTextView);
 
         tvLocation = findViewById(R.id.tv_car_location);
+        tvAddress = findViewById(R.id.tv_car_address);
         tvBrand = findViewById(R.id.tv_car_cat);
         tvTransmission = findViewById(R.id.tv_car_transmission);
         tvSpeed = findViewById(R.id.tv_car_speed);
@@ -429,6 +430,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.right_enter));
 
                 tvLocation.setText(mLocationAutoTextView.getText().toString());
+                tvAddress.setText(mAddressAutoTextView.getText().toString());
                 tvTransmission.setText(getTransmission());
 
                 int selectedId1=rdgService.getCheckedRadioButtonId();
@@ -614,6 +616,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                 editPostDescription.setText(car.getDescription());
                                 editPostRentPrice.setText(car.getPrice());
                                 mLocationAutoTextView.setText(car.getLocation());
+                                if(!car.getAddress().isEmpty())
+                                mAddressAutoTextView.setText(car.getAddress());
                                 if(!car.getLat().isEmpty())
                                 editTextUserLat.setText(car.getLat());
                                 if(!car.getLng().isEmpty())
@@ -622,7 +626,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                     LatLng latLng = new LatLng(Double.parseDouble(car.getLat()), Double.parseDouble(car.getLng()));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                 }
-
 
                                 editPostSpeed.setText(car.getDoubleDistance()+"");
                                 catSpinner.setSelection(car.getCatId());
@@ -698,7 +701,12 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if(mLocationAutoTextView.getText().toString().isEmpty()) {
-            Toast.makeText(getBaseContext(), "Please put location.", Toast.LENGTH_SHORT).show();
+            mLocationAutoTextView.setError("!");
+            validate = false;
+        }
+
+        if(mAddressAutoTextView.getText().toString().isEmpty()) {
+            mAddressAutoTextView.setError("!");
             validate = false;
         }
 
@@ -1221,6 +1229,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap Map) {
         mMap = Map;
+
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            // TODO: Consider calling
 //            //    ActivityCompat#requestPermissions
@@ -1269,7 +1278,26 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
                 2000, null);
 
-
+        List<Address> addresses1 = new ArrayList<>();
+        try {
+            addresses1 = new Geocoder(this, Locale.getDefault()).getFromLocation(gpsTracker.getLatitude(), gpsTracker.getLongitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        StringBuilder result = new StringBuilder();
+        if (addresses1.size() > 0) {
+            Address address = addresses1.get(0);
+            int maxIndex = address.getMaxAddressLineIndex();
+            for (int x = 0; x <= maxIndex; x++) {
+                result.append(address.getAddressLine(x));
+                //result.append(",");
+            }
+        }
+        try {
+            mAddressAutoTextView.setText(result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         editTextUserLat.setText(String.format("%s", gpsTracker.getLatitude()));
         editTextuserLong.setText(String.format("%s", gpsTracker.getLongitude()));
@@ -1281,6 +1309,26 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
             editTextuserLong.setText(String.format("%s", latLng.longitude));
             editTextUserLat.setText(String.format("%s", latLng.latitude));
+            List<Address> addresses2 = new ArrayList<>();
+            try {
+                addresses2 = new Geocoder(this, Locale.getDefault()).getFromLocation(latLng.longitude, latLng.latitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            StringBuilder result1 = new StringBuilder();
+            if (addresses2.size() > 0) {
+                Address address = addresses2.get(0);
+                int maxIndex = address.getMaxAddressLineIndex();
+                for (int x = 0; x <= maxIndex; x++) {
+                    result1.append(address.getAddressLine(x));
+                    //result.append(",");
+                }
+            }
+            try {
+                mAddressAutoTextView.setText(result1.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
