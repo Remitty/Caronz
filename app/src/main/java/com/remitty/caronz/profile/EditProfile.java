@@ -496,6 +496,17 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
+            if (requestCode == COUNTRYCODE_ACTION) {
+                if (data != null) {
+                    if (data.hasExtra("COUNTRY")) {
+                        Country country = (Country) data.getSerializableExtra("COUNTRY");
+                        this.mSelectedCountry = country;
+                        setPhoneNumberHint();
+                        etCountryCode.setText("+" + country.getPhoneCode() + "");
+                        imgFlag.setImageResource(CountryUtils.getFlagDrawableResId(country.getIso()));
+                    }
+                }
+            }
         }
     }
 

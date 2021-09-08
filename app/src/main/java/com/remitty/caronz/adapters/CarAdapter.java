@@ -71,6 +71,7 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final CarModel item = carList.get(position);
         if(item.isHire()) {
             UserModel owner = item.getOwner();
+            if(owner != null && !owner.getPicture().isEmpty())
             Picasso.with(mContext).load(owner.getPicture()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
         }
         else {
@@ -93,11 +94,11 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.saleLayout.setVisibility(View.GONE);
             holder.rentLayout.setVisibility(View.VISIBLE);
             if(item.isRental()) {
-                holder.tvPriceView.setText(" /day");
+                holder.tvPriceView.setText("per day");
                 holder.tvPrice.setText("$ " + item.getPrice());
             }
             else {
-                holder.tvPriceView.setText(" /hour");
+                holder.tvPriceView.setText("per" + " " + item.getUnit());
                 holder.tvPrice.setText("$ " + item.getPrice());
             }
         }
@@ -106,7 +107,7 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.saleLayout.setVisibility(View.VISIBLE);
             holder.rentLayout.setVisibility(View.GONE);
         }
-        holder.tvName.setText(item.getName());
+        holder.tvName.setText(item.getCatName() + " " + item.getName());
 
 
     }

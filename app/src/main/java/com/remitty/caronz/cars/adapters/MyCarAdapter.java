@@ -100,6 +100,7 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.tvRentPrice.setText("$ " + item.getPrice());
         holder.tvCat.setText(item.getCatName());
         holder.tvName.setText(item.getName());
+        holder.tvYear.setText(item.getYear());
         if(item.getStatus().equals("Rental") || item.getStatus().equals("Sold")) {
             holder.orderBtnGroupLayout.setVisibility(View.VISIBLE);
             holder.activeBtnGroupLayout.setVisibility(View.GONE);
@@ -109,7 +110,7 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         if(item.isHire())
-            holder.tvPriceUnit.setText("/hr");
+            holder.tvPriceUnit.setText(" /" + item.getUnit());
         if(item.isRental())
             holder.tvPriceUnit.setText("/day");
         if(item.isBuy())
@@ -144,7 +145,7 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private class CarViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView tvName, tvCat, tvRentPrice, tvPriceUnit;
+        TextView tvName, tvCat, tvRentPrice, tvPriceUnit, tvYear;
         RatingBar ratingBar;
         LinearLayout activeBtnGroupLayout, orderBtnGroupLayout;
         Button btnEdit, btnDelete, btnActive;
@@ -152,6 +153,7 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             image = itemView.findViewById(R.id.car_image);
             tvName = itemView.findViewById(R.id.car_name);
+            tvYear = itemView.findViewById(R.id.car_year);
             tvCat = itemView.findViewById(R.id.car_cat);
             tvRentPrice = itemView.findViewById(R.id.car_price);
             tvPriceUnit = itemView.findViewById(R.id.price_unit);

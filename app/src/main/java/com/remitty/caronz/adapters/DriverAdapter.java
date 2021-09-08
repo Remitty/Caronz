@@ -89,7 +89,7 @@ public class DriverAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
 
-        holder.tvPriceView.setText(" /hr");
+        holder.tvPriceView.setText(" /" + item.getUnit());
         holder.tvPrice.setText("$ " + item.getPrice());
         holder.tvName.setText(owner.getUserName());
 

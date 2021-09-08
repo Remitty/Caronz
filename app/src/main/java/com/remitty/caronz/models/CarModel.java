@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CarModel {
@@ -34,6 +35,10 @@ public class CarModel {
 
     public String getName() {
         return data.optString("name");
+    }
+
+    public String getYear() {
+        return data.optString("year");
     }
 
     public Integer getSellerId() {
@@ -92,7 +97,7 @@ public class CarModel {
     }
 
     public String getPrice() {
-        return data.optString("price");
+        return new DecimalFormat("#,###.##").format(data.optDouble("price"));
     }
 
     public boolean isRental() {
@@ -121,19 +126,11 @@ public class CarModel {
     public String getAddress() { return data.optString("address");}
 
     public String getDistance() {
-        return data.optString("distance") + " Mile";
-    }
-
-    public Double getDoubleDistance() {
-        try {
-            return data.getDouble("distance");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return 0.0;
-        }
+        return data.optString("distance");
     }
 
     public String getTransmission() { return data.optString("transmission");}
+    public String getUnit() { return data.optString("unit");}
 
     public JSONArray getImages() {
         try {

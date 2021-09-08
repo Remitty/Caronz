@@ -207,7 +207,7 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
     private void showTimePickerDialog() {
         Date currentTime = Calendar.getInstance().getTime();
         TimePickerDialog dpd = TimePickerDialog.newInstance(
-                this, currentTime.getHours(), currentTime.getMinutes(), true
+                this, currentTime.getHours(), currentTime.getMinutes(), false
         );
         dpd.show(this.getSupportFragmentManager(), "Timepickerdialog");
     }

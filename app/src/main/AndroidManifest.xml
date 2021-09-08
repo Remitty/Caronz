@@ -35,10 +35,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".hire.MyHireActivity"
+        <activity android:name=".withdraw.WithdrawHistoryActivity"></activity>
+        <activity
+            android:name=".helper.WebViewActivity"
             android:screenOrientation="portrait"
-             />
-        <activity android:name=".gms.PickupLocationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".hire.MyHireActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gms.PickupLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -159,13 +165,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".payment.WithdrawActivity"
+            android:name=".withdraw.WithdrawActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".payment.CardsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".cars.MyCarsActivity"
             android:screenOrientation="portrait"

@@ -1,21 +1,26 @@
-package com.remitty.caronz.payment;
+package com.remitty.caronz.withdraw;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.remitty.caronz.models.CreditCard;
-import com.remitty.caronz.utills.Network.RestService;
-import com.remitty.caronz.utills.UrlController;
-import com.google.android.material.tabs.TabLayout;
 import com.remitty.caronz.R;
-import com.remitty.caronz.payment.adapter.CardPageAdapter;
+import com.remitty.caronz.helper.WebViewActivity;
+import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.SettingsMain;
-import com.google.gson.JsonObject;
+import com.remitty.caronz.utills.UrlController;
+import com.remitty.caronz.withdraw.adapters.WithdrawAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,12 +29,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,19 +38,21 @@ import retrofit2.Response;
 
 import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
-public class CardsActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
+public class WithdrawHistoryActivity extends AppCompatActivity {
+
     SettingsMain settingsMain;
     RestService restService;
-    List<CreditCard> cardList = new ArrayList<>();
+
+    RecyclerView historyView;
+    WithdrawAdapter mAdapter;
+    private ArrayList<JSONObject> history = new ArrayList<>();
+
+    TextView tvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cards);
-
-        settingsMain = new SettingsMain(this);
-        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
+        setContentView(R.layout.activity_withdraw_history);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -57,61 +60,50 @@ public class CardsActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        settingsMain = new SettingsMain(this);
+        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
 
+        tvEmpty = findViewById(R.id.tv_empty);
 
-        loadCardList();
+        historyView = findViewById(R.id.history_view);
+        historyView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        mAdapter = new WithdrawAdapter(history);
+        historyView.setAdapter(mAdapter);
 
+        getData();
     }
 
-    private void loadCardList() {
+    private void getData() {
         if (SettingsMain.isConnectingToInternet(this)) {
             settingsMain.showDilog(this);
-            JsonObject params = new JsonObject();
 
-            Call<ResponseBody> myCall = restService.cardlist( UrlController.AddHeaders(this));
+            Call<ResponseBody> myCall = restService.getWithdrawHistory(UrlController.AddHeaders(getBaseContext()));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
                     settingsMain.hideDilog();
                     try {
-                        Log.d("info load cards Resp", "" + responseObj.toString());
+                        Log.d("info delete card Resp", "" + responseObj.toString());
                         if (responseObj.isSuccessful()) {
-
+                            history.clear();
                             JSONObject response = new JSONObject(responseObj.body().string());
+                            JSONArray data = response.getJSONArray("data");
+                            for (int i = 0; i < data.length(); i ++) {
+                                JSONObject item = data.getJSONObject(i);
+                                history.add(item);
+                            }
+                            mAdapter.notifyDataSetChanged();
 
-                            JSONArray cardsArray = response.getJSONArray("cards");
-
-                            Log.d("card list", response.toString());
-
-                            if (response != null && cardsArray.length() > 0) {
-                                for(int i = 0; i < cardsArray.length(); i ++) {
-                                    try {
-                                        JSONObject cardObject = cardsArray.getJSONObject(i);
-
-                                        CreditCard card = new CreditCard();
-                                        card.setData(cardObject);
-                                        cardList.add(card);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-
-
+                            if(history.size() > 0) {
+                                tvEmpty.setVisibility(View.GONE);
                             }
 
-                            CardPageAdapter mSectionsPagerAdapter = new CardPageAdapter(getSupportFragmentManager(), cardList);
-
-                            ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
-                            mViewPager.setAdapter(mSectionsPagerAdapter);
-
-                            tabLayout = (TabLayout) findViewById(R.id.tabs);
-                            tabLayout.setupWithViewPager(mViewPager);
-                            mViewPager.setCurrentItem(0);
-
+                        } else {
+                            Log.e("withdraw history error", responseObj.errorBody().string());
+                            Toast.makeText(getBaseContext(), "Network error.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -140,6 +132,7 @@ public class CardsActivity extends AppCompatActivity {
                 }
             });
         } else {
+            settingsMain.hideDilog();
             Toast.makeText(this, settingsMain.getAlertDialogTitle("error"), Toast.LENGTH_SHORT).show();
         }
     }
@@ -154,10 +147,5 @@ public class CardsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 }

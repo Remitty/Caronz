@@ -1,57 +1,67 @@
 package com.remitty.caronz.utills;
 
 import android.app.Activity;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.plaid.link.BuildConfig;
 import com.plaid.link.Plaid;
-import com.plaid.linkbase.models.configuration.LinkConfiguration;
-import com.plaid.linkbase.models.configuration.PlaidEnvironment;
-import com.plaid.linkbase.models.configuration.PlaidProduct;
-import com.plaid.linkbase.models.connection.PlaidLinkResultHandler;
-//import com.plaid.link.configuration.LinkConfiguration;
-//import com.plaid.link.configuration.PlaidProduct;
-//import com.plaid.link.result.PlaidLinkResultHandler;
-//import com.plaid.link.configuration.LinkConfiguration;
-////import com.plaid.link.configuration.LinkTokenConfiguration;
-//import com.plaid.link.configuration.PlaidProduct;
-//import com.plaid.link.result.PlaidLinkResultHandler;
-//import com.plaid.linkbase.models.configuration.LinkConfiguration;
-//import com.plaid.linkbase.models.configuration.PlaidProduct;
-//import com.plaid.linkbase.models.connection.PlaidLinkResultHandler;
+import com.plaid.link.PlaidHandler;
+import com.plaid.link.configuration.LinkLogLevel;
+import com.plaid.link.configuration.LinkTokenConfiguration;
+import com.plaid.link.result.LinkResultHandler;
+import com.remitty.caronz.utills.Network.RestService;
 
-import java.util.ArrayList;
-import java.util.Locale;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.text.DecimalFormat;
+import java.util.concurrent.TimeoutException;
 
 import kotlin.Unit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaidConnect {
     private Activity mContext;
-    private String linkToken="link-sandbox-754d35c8-24a2-47a8-b4fd-145a907bf3c9";
+    RestService restService;
+    SettingsMain settingsMain;
+    
+    String linkToken;
 
-    PlaidConnect(Activity context){
-        mContext = context;
+    public LinkResultHandler myPlaidResultHandler = new LinkResultHandler(
+            linkSuccess -> {
+                sendPublicToken(linkSuccess.getPublicToken(), linkSuccess.getMetadata().getAccounts().get(0).getId());
 
-        new PlaidLinkResultHandler(0,
-                onSuccess ->{
-                    Log.d("plaidsuccess", onSuccess.toString());
-                    sendPublicToken(onSuccess.getPublicToken());
-                    return Unit.INSTANCE;
-                },
-                onExit -> {
-                    Log.d("plaidexit", onExit.toString());
-                    return Unit.INSTANCE;
-                },
-                onCancelled -> {
-                    Log.d("plaidcancel", onCancelled.toString());
-                    return Unit.INSTANCE;
+                return Unit.INSTANCE;
+            },
+            linkExit -> {
+                if (linkExit.getError() != null) {
+                    showAlert(linkExit.getError().getDisplayMessage());
+                } else {
+                    showAlert(linkExit.getMetadata().getStatus() != null ? linkExit.getMetadata()
+                            .getStatus()
+                            .getJsonValue() : "unknown");
                 }
-        );
+                return Unit.INSTANCE;
+            }
+    );
 
-        getLinkTokenFromServer();
+    public PlaidConnect(Activity context){
+        mContext = context;
+        settingsMain = new SettingsMain(context);
+        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), context);
+    }
+
+    public void openPlaid() {
         setOptionalEventListener();
-        openLink();
-
+        getLinkTokenFromServer();
     }
 
     public static void initPlaid(Activity context){
@@ -73,37 +83,137 @@ public class PlaidConnect {
      * <a href="https://plaid.com/docs/link/android/#parameter-reference">parameter reference</>
      */
     private void openLink() {
-        ArrayList<PlaidProduct> products = new ArrayList<>();
-        products.add(PlaidProduct.TRANSACTIONS);
+        LinkLogLevel logLevel = BuildConfig.DEBUG ? LinkLogLevel.VERBOSE : LinkLogLevel.ERROR;
 
-        ArrayList<String> countries = new ArrayList<>();
-        countries.add("US");
-
-        Plaid.openLink(
-                mContext,
-                new LinkConfiguration.Builder("clientName", products)
-                        .webhook("https://xamoapp.com")
-//                        .token(linkToken)
-                        .countryCodes(countries)
-                        .language(Locale.ENGLISH.getLanguage())
-                        .environment(PlaidEnvironment.SANDBOX)
-//                        .userEmailAddress("remittyinc@yahoo.com")
-//                        .userLegalName("Brian Zifac")
-//                        .userPhoneNumber("+15204063923")
-                        .build(),
-                0);
+        Plaid.create(
+                mContext.getApplication(),
+                new LinkTokenConfiguration.Builder()
+                        .token(linkToken)
+                        .logLevel(logLevel)
+                        .build()
+        ).open(mContext);
     }
 
     private void getLinkTokenFromServer() {
-        Log.d("getlinktoken", "here");
+        if (SettingsMain.isConnectingToInternet(mContext)) {
+            settingsMain.showDilog(mContext);
+
+            Call<ResponseBody> myCall = restService.getPlaidLinkToken(UrlController.AddHeaders(mContext));
+            myCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
+                    settingsMain.hideDilog();
+                    try {
+                        Log.d("info plaid link token", "" + responseObj.toString());
+                        if (responseObj.isSuccessful()) {
+
+                            JSONObject response = new JSONObject(responseObj.body().string());
+                            Log.d("info plaid link token", response.toString());
+                            try {
+                                linkToken = response.getString("link_token");
+                                openLink();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            showAlert(responseObj.errorBody().string());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    settingsMain.hideDilog();
+                    if (t instanceof TimeoutException) {
+                        Toast.makeText(mContext, settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                    }
+                    if (t instanceof SocketTimeoutException || t instanceof NullPointerException) {
+                        Toast.makeText(mContext, settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                    }
+                    if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
+                        Log.d("info Checkout ", "NullPointert Exception" + t.getLocalizedMessage());
+                    }
+                    else {
+                        Toast.makeText(mContext, "Something error", Toast.LENGTH_SHORT).show();
+                        Log.d("info Checkout err", String.valueOf(t));
+                        Log.d("info Checkout err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
+                    }
+                }
+            });
+        } else {
+            settingsMain.hideDilog();
+            Toast.makeText(mContext, settingsMain.getAlertDialogTitle("error"), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void sendPublicToken(String publicToken) {
+    private void sendPublicToken(String publicToken, String accountId) {
         Log.d("publictoken", publicToken);
+        if (SettingsMain.isConnectingToInternet(mContext)) {
+            settingsMain.showDilog(mContext);
+
+            JsonObject params = new JsonObject();
+            params.addProperty("pub_token", publicToken);
+            params.addProperty("account_id", accountId);
+
+            Call<ResponseBody> myCall = restService.postPlaidCreateBank(params, UrlController.AddHeaders(mContext));
+            myCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
+                    settingsMain.hideDilog();
+                    try {
+                        Log.d("info crate bank", "" + responseObj.toString());
+                        if (responseObj.isSuccessful()) {
+
+                            JSONObject response = new JSONObject(responseObj.body().string());
+                            showAlert(response.optString("message"));
+
+                        } else {
+                            showAlert(responseObj.errorBody().string());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    settingsMain.hideDilog();
+                    if (t instanceof TimeoutException) {
+                        Toast.makeText(mContext, settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                    }
+                    if (t instanceof SocketTimeoutException || t instanceof NullPointerException) {
+                        Toast.makeText(mContext, settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                    }
+                    if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
+                        Log.d("info Checkout ", "NullPointert Exception" + t.getLocalizedMessage());
+                    }
+                    else {
+                        Toast.makeText(mContext, "Something error", Toast.LENGTH_SHORT).show();
+                        Log.d("info Checkout err", String.valueOf(t));
+                        Log.d("info Checkout err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
+                    }
+                }
+            });
+        } else {
+            settingsMain.hideDilog();
+            Toast.makeText(mContext, settingsMain.getAlertDialogTitle("error"), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void displayMessage(String toastString){
-        Toast.makeText(mContext,toastString,Toast.LENGTH_SHORT).show();
+    private void showAlert(String message) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+        alert.setTitle("Alert")
+//                .setIcon(R.mipmap.ic_launcher_round)
+                .setMessage(message)
+                .setPositiveButton("Ok", null)
+                .show();
     }
 
 }

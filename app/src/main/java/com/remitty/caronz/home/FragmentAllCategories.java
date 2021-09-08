@@ -88,7 +88,7 @@ public class FragmentAllCategories extends Fragment {
         categoriesRecycler_view.setHasFixedSize(true);
         categoriesRecycler_view.setNestedScrollingEnabled(false);
         ViewCompat.setNestedScrollingEnabled(categoriesRecycler_view, false);
-        GridLayoutManager MyLayoutManager = new GridLayoutManager(context, 2);
+        GridLayoutManager MyLayoutManager = new GridLayoutManager(context, 3);
         MyLayoutManager.setOrientation(RecyclerView.VERTICAL);
         categoriesRecycler_view.setLayoutManager(MyLayoutManager);
         

@@ -59,6 +59,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,6 +71,7 @@ import com.remitty.caronz.utills.RuntimePermissionHelper;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
 import com.phonenumberui.utility.Utility;
+import com.squareup.picasso.Picasso;
 
 import ss.com.bannerslider.banners.Banner;
 import ss.com.bannerslider.banners.RemoteBanner;
@@ -87,14 +89,16 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
     RestService restService, authRestService;
     RuntimePermissionHelper runtimePermissionHelper;
 
-    TextView textViewAdName, tvCatName, textViewDescrition, tvRentPrice, tvSalePrice, tvRentTotalPrice, tvSpeed, tvSeat, tvViewComments, tvCarLocation, tvCarRate, tvCarTransmission, tvHirePrice;
+    TextView textViewAdName, tvCatName, textViewDescrition, tvRentPrice, tvSalePrice, tvRentTotalPrice, tvSpeed, tvSeat, tvViewComments, tvCarLocation, tvCarRate, tvCarTransmission, tvHirePrice, tvYear, tvOwner;
     LinearLayout contactLayout;
-    TextView btnMsg;
+    TextView btnMsg, btnCall;
     Button btnBuy, btnBook, btnHire;
     AppCompatEditText editPickup;
     HtmlTextView htmlTextView;
     RatingBar ratingBar;
     ImageButton btnViewSeller;
+    LinearLayout callLayout;
+    CircleImageView ownerProfile;
 
     BannerSlider bannerSlider;
     List<Banner> banners = new ArrayList<>();
@@ -179,6 +183,15 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                 }
             });
 
+        btnCall.setOnClickListener(view13 -> {
+            if (!settingsMain.getAppOpen()) {
+                Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                runtimePermissionHelper.requestCallPermission(1);
+            }
+        });
+
         btnBook.setOnClickListener(view14 -> {
             if (!settingsMain.getAppOpen()) {
                 Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
@@ -257,6 +270,18 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                 startActivity(intent);
             }
         });
+
+        callLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!settingsMain.getAppOpen()) {
+                    Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    runtimePermissionHelper.requestCallPermission(1);
+                }
+            }
+        });
     }
 
     private void initComponents() {
@@ -266,6 +291,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         bannerSlider = mView.findViewById(R.id.banner_slider1);
 
         btnMsg = getActivity().findViewById(R.id.message);
+        btnCall = getActivity().findViewById(R.id.call);
         contactLayout = getActivity().findViewById(R.id.contact_layout);
 
         textViewAdName = mView.findViewById(R.id.tv_car_name);
@@ -281,6 +307,8 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         tvCarLocation = mView.findViewById(R.id.tv_car_location);
         tvCarRate = mView.findViewById(R.id.tv_car_rate);
         tvCarTransmission = mView.findViewById(R.id.tv_car_transmission);
+        tvYear = mView.findViewById(R.id.tv_car_year);
+        tvOwner = mView.findViewById(R.id.tv_car_owner);
 
         btnBook = mView.findViewById(R.id.btn_rent);
         btnBuy = mView.findViewById(R.id.btn_buy);
@@ -297,6 +325,9 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
 
         htmlTextView = mView.findViewById(R.id.html_text);
         ratingBar = mView.findViewById(R.id.car_rate);
+
+        ownerProfile = mView.findViewById(R.id.owner_profile);
+        callLayout = mView.findViewById(R.id.ll_call);
 
         LayerDrawable stars = (LayerDrawable) this.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
@@ -373,10 +404,11 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
 
             textViewAdName.setText(item.getName());
             tvCatName.setText(item.getCatName());
+            tvYear.setText(item.getYear());
             textViewDescrition.setText(item.getDescription());
             tvSeat.setText(item.getSeats());
-            tvSpeed.setText(item.getDistance());
-            tvCarLocation.setText(item.getLocation());
+            tvSpeed.setText(item.getDistance() + " " + item.getUnit());
+            tvCarLocation.setText(item.getAddress());
             tvRentPrice.setText("$ " + item.getPrice());
             tvHirePrice.setText("$ " + item.getPrice());
             tvRentTotalPrice.setText("$ 0");
@@ -384,6 +416,12 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             ratingBar.setRating(item.getRate());
             tvCarRate.setText(String.valueOf(item.getRate()));
             tvCarTransmission.setText(item.getTransmission());
+            tvOwner.setText(item.getOwner().getUserName());
+            phoneNumber = item.getOwner().getPhone();
+
+            if(!item.getOwner().getPicture().isEmpty()) {
+                Picasso.with(getActivity()).load(item.getOwner().getPicture()).into(ownerProfile);
+            }
 
             banners.clear();
             imageUrls.clear();
@@ -397,7 +435,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                     path = UrlController.ASSET_ADDRESS + path;
                 banners.add(new RemoteBanner(path));
                 imageUrls.add(path);
-                banners.get(i).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                banners.get(i).setScaleType(ImageView.ScaleType.FIT_XY);
             }
 
             if (banners.size() > 0 && bannerSlider != null)
@@ -550,11 +588,8 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
     }
 
     public void Call() {
-        if (callDialog != null) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + maskedPhoneNumber));
-            startActivity(intent);
-            callDialog.dismiss();
-        }
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
     }
 
     @Override

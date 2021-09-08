@@ -202,7 +202,7 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
     private void showTimePickerDialog() {
         Date currentTime = Calendar.getInstance().getTime();
         TimePickerDialog dpd = TimePickerDialog.newInstance(
-                RentalBookingActivity.this, currentTime.getHours(), currentTime.getMinutes(), true
+                RentalBookingActivity.this, currentTime.getHours(), currentTime.getMinutes(), false
         );
         dpd.show(this.getSupportFragmentManager(), "Timepickerdialog");
     }

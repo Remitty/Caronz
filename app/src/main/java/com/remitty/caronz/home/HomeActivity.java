@@ -67,7 +67,7 @@ import com.google.gson.JsonObject;
 
 import com.remitty.caronz.orders.MyBookingActivity;
 import com.remitty.caronz.payment.CardsActivity;
-import com.remitty.caronz.payment.WithdrawActivity;
+import com.remitty.caronz.withdraw.WithdrawActivity;
 
 import com.remitty.caronz.cars.MyCarsActivity;
 import com.squareup.picasso.Picasso;

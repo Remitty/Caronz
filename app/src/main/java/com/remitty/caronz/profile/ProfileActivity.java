@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
         mRecyclerView = findViewById(R.id.related_recycler_view);
 //        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(carAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 
         setAllViewsText();
 

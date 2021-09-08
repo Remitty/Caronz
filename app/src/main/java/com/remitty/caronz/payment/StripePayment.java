@@ -125,17 +125,24 @@ public class StripePayment extends AppCompatActivity {
 
         getInvoiceData();
 
-        if(getIntent().hasExtra("from"))
-        tvFrom.setText(from);
-        if(getIntent().hasExtra("to"))
-        tvTo.setText(to);
+        if(mIntent != null) {
 
-        if(getIntent().hasExtra("start_time"))
-            tvArriveTime.setText(mIntent.getStringExtra("start_time"));
-        if(getIntent().hasExtra("s_address"))
-            tvPickupLocation.setText(mIntent.getStringExtra("s_address"));
-        if(getIntent().hasExtra("d_address"))
-            tvDropoffLocation.setText(mIntent.getStringExtra("d_address"));
+            if(mIntent.hasExtra("from"))
+                tvFrom.setText(from);
+            if(mIntent.hasExtra("from_time"))
+                tvFrom.setText(from + " " + mIntent.getStringExtra("from_time"));
+            if(mIntent.hasExtra("to"))
+                tvTo.setText(to);
+            if(mIntent.hasExtra("to_time"))
+                tvTo.setText(to + " " + mIntent.getStringExtra("to_time"));
+
+            if(mIntent.hasExtra("start_time"))
+                tvArriveTime.setText(mIntent.getStringExtra("start_time"));
+            if(mIntent.hasExtra("s_address"))
+                tvPickupLocation.setText(mIntent.getStringExtra("s_address"));
+            if(mIntent.hasExtra("d_address"))
+                tvDropoffLocation.setText(mIntent.getStringExtra("d_address"));
+        }
 
         loadingLayout = (FrameLayout) findViewById(R.id.loadingLayout);
 
@@ -350,7 +357,7 @@ public class StripePayment extends AppCompatActivity {
 
                                 JSONObject data = response.getJSONObject("data");
 
-                                tvUnitPrice.setText("$ " + data.getString("unit_price"));
+                                tvUnitPrice.setText("$ " +  String.format("%.2f", data.getDouble("unit_price")));
                                 duration = data.getString("duration");
 
                                 tvDuration.setText(duration);

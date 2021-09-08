@@ -29,26 +29,40 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/car_name"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:textSize="16dp"
-                    android:ellipsize="end"
-                    android:text="name"/>
-                <TextView
-                    android:id="@+id/car_cat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="name"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/car_cat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="cat"/>
+                    <TextView
+                        android:id="@+id/car_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="name"/>
+                    <TextView
+                        android:id="@+id/car_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="year"/>
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_rent"
                     android:layout_width="match_parent"

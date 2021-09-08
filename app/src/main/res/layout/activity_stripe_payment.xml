@@ -17,7 +17,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="40dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="20dp"
                 android:orientation="vertical">
                 <TextView
@@ -54,7 +54,6 @@
                                 android:id="@+id/invoice_from"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="11/11/1111"/>
@@ -75,7 +74,6 @@
                                 android:id="@+id/invoice_to"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="11/11/1111"/>
@@ -102,7 +100,6 @@
                                     android:id="@+id/invoice_duration"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@color/black"
                                     android:text="0"
                                     android:textSize="14sp"
                                     android:textStyle="bold" />
@@ -139,7 +136,6 @@
                                 android:id="@+id/invoice_start_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="00:00"/>
@@ -161,7 +157,8 @@
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
+                                android:maxLines="2"
+                                android:ellipsize="end"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="pockup"/>
@@ -183,7 +180,8 @@
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
+                                android:maxLines="2"
+                                android:ellipsize="end"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="dropoff"/>
@@ -198,13 +196,12 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
-                                android:text="Est. Distance"/>
+                                android:text="Est. distance"/>
 
                             <TextView
                                 android:id="@+id/invoice_est_distance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="pockup"/>
@@ -219,13 +216,12 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
-                                android:text="Est. Time"/>
+                                android:text="Est. time"/>
 
                             <TextView
                                 android:id="@+id/invoice_est_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="dropoff"/>
@@ -242,7 +238,7 @@
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:textSize="14sp"
-                            android:text="Unit Price"/>
+                            android:text="Unit price"/>
                         <LinearLayout
                             android:layout_weight="1"
                             android:layout_width="match_parent"
@@ -255,7 +251,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:text="$ 0"
-                                android:textColor="@color/black"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -278,7 +273,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="$ 0"
-                            android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -298,7 +292,6 @@
                             android:id="@+id/invoice_tax"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/black"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:text="$ 0"/>
@@ -328,7 +321,6 @@
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorRedCrayon"
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:gravity="center"

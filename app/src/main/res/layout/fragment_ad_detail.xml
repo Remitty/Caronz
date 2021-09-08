@@ -12,20 +12,11 @@
             android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/tv_car_cat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Car category"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
             <ss.com.bannerslider.views.BannerSlider
                 android:id="@+id/banner_slider1"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginHorizontal="10dp"
                 app:animateIndicators="true"
                 app:defaultBanner="1"
@@ -52,32 +43,106 @@
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10sp"
                         android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tv_car_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Car name"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="20sp" />
+
+
                         <TextView
                             android:id="@+id/tv_car_location"
                             android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_place"
                             android:textColor="@color/black"
                             android:textSize="12dp"
+                            android:textStyle="bold"
                             android:text="Car location"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/owner_profile"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/ic_register_user"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/tv_car_owner"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    android:textSize="15dp"
+                                    android:text="Car owner"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:id="@+id/tv_car_cat"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Car category"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/tv_car_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Car name"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                        />
+                                    <TextView
+                                        android:id="@+id/tv_car_year"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Car year"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                         />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll_call"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:src="@drawable/callbutton"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:textColor="@color/blue"
+                                        android:text="Call"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                            <ImageButton
+                                android:id="@+id/btn_view_seller"
+                                android:layout_height="40dp"
+                                android:layout_width="40dp"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_eye"
+                                android:layout_gravity="center_vertical"
+                                />
+                        </LinearLayout>
+
                     </LinearLayout>
-                    <ImageButton
-                        android:id="@+id/btn_view_seller"
-                        android:layout_height="40dp"
-                        android:layout_width="40dp"
-                        android:src="@drawable/ic_person_outline"
-                        android:layout_gravity="center_vertical"
-                        />
+
 
 
                 </LinearLayout>
@@ -165,7 +230,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="Mile"
+                                android:text="Distance"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
 
@@ -510,10 +575,11 @@
                                 android:text="$0"
                                 android:textSize="20sp" />
                             <TextView
+                                android:id="@+id/tv_unit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:text=" /hr"
+                                android:text=""
                                 android:textSize="14sp" />
                         </LinearLayout>
                         <Button

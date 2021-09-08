@@ -111,9 +111,15 @@ dependencies {
     implementation 'io.michaelrocks:libphonenumber-android:8.4.1'
 
     //PaypPal
-    implementation('com.paypal.sdk:paypal-android-sdk:2.13.3') {
+    implementation('com.paypal.sdk:paypal-android-sdk:2.16.0') {
         exclude group: 'io.card'
     }
+
+    implementation "com.plaid.link:sdk-core:3.2.0"
+
+//    implementation("com.plaid.link:sdk-core:1.4.1") {
+//        exclude group: "com.android.support", module: "graphics"
+//    }
 
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
     implementation 'com.karumi:dexter:5.0.0'
@@ -121,12 +127,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'com.github.ybq:AndroidSpinKit:v1.0.0'
 
-
-//    implementation "com.plaid.link:sdk-core:2.1.0"
-
-    implementation("com.plaid.link:sdk-core:1.4.1") {
-        exclude group: "com.android.support", module: "graphics"
-    }
 
     implementation project(":PhoneVerification")
 

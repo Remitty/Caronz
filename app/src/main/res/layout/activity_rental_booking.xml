@@ -173,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="14sp"
-                        android:text="Unit Price"/>
+                        android:text="Unit price"/>
                     <LinearLayout
                         android:layout_weight="1"
                         android:layout_width="match_parent"

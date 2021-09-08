@@ -561,13 +561,40 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
-    @GET("seller/balance")
-    Call<ResponseBody> balance(
+    @GET("stripe/connect")
+    Call<ResponseBody> connectStripe(
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("seller/account")
+    Call<ResponseBody> getAccount(
             @HeaderMap Map<String, String> headers
     );
 
     @POST("cashout")
     Call<ResponseBody> withdraw(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("cashout/history")
+    Call<ResponseBody> getWithdrawHistory(
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("plaid/linktoken")
+    Call<ResponseBody> getPlaidLinkToken(
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("plaid/pubtoken")
+    Call<ResponseBody> postPlaidPubToken(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("plaid/bank/create")
+    Call<ResponseBody> postPlaidCreateBank(
             @Body JsonObject jsonObject,
             @HeaderMap Map<String, String> headers
     );
@@ -636,7 +663,7 @@ public interface RestService {
     Call<ResponseBody> postUserBlock(
             @Body JsonObject Block,
             @HeaderMap Map<String, String> headers);
-@POST("message/chat/userUnblock/")
+    @POST("message/chat/userUnblock/")
     Call<ResponseBody> postUserUnBlock(
             @Body JsonObject UnBlock,
             @HeaderMap Map<String, String> headers);

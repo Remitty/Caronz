@@ -2,8 +2,10 @@ package com.remitty.caronz.home;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -154,14 +156,14 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
     TextView btnSelectPix, Gallary, tv_done, tvServiceStatement;
     EditText editPostTitle, editPostDescription,
-            editTextUserLat, editTextuserLong, editPostRentPrice, editPostSalePrice, editPostSpeed;
+            editTextUserLat, editTextuserLong, editPostRentPrice, editYear, editPostSpeed;
 
     TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice;
 
     ImageView imageViewBack2, imageViewBack3;
     Button btnNext1, btnNext2, btnPostAd;
     CheckBox featureAdChkBox;
-    Spinner catSpinner, transmissionSpinner, seatSpinner;
+    Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner;
     RadioGroup RdgTransmission, rdgService;
     RadioButton rdbAuto, rdbManual, rdbRent, rdbSell, rdbDrive;
 
@@ -211,7 +213,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     String myId;
 
     ArrayList<String> categories = new ArrayList<String>();
-    String[] trans = {"Auto", "Manual"};
+    String[] trans = {"Automatic", "Manual"};
+    String[] units = {"Mi", "Km"};
 
     //    PackagesFragment packagesFragment;
     public static Bitmap rotateImage(Bitmap source, float angle) {
@@ -274,6 +277,11 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         transmissionSpinner.setAdapter(adapter1);
         transmissionSpinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, units);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitsSpinner.setAdapter(adapter3);
+        unitsSpinner.setOnItemSelectedListener(this);
 
         String[] seats = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, seats);
@@ -338,6 +346,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         editPostDescription = findViewById(R.id.postDescriptionET);
         editPostRentPrice = findViewById(R.id.postRentPriceET);
         editPostSpeed = findViewById(R.id.postSpeedET);
+        editYear = findViewById(R.id.postYearET);
         tvServiceStatement = findViewById(R.id.tv_service_statement);
 
         featureAdChkBox = (CheckBox) findViewById(R.id.featureAdChkBox);
@@ -345,6 +354,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         catSpinner = findViewById(R.id.cat_spinner);
         transmissionSpinner = findViewById(R.id.transmission_spinner);
         seatSpinner = findViewById(R.id.seat_spinner);
+        unitsSpinner = findViewById(R.id.units_spinner);
 
 
         rdgService = findViewById(R.id.rdg_service);
@@ -409,13 +419,13 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 int selectedId=rdgService.getCheckedRadioButtonId();
                 switch(selectedId) {
                     case R.id.rdb_rent:
-                        tvServiceStatement.setText("Please enter daily rent price.");
+                        tvServiceStatement.setText("Enter daily rent price.");
                         break;
                     case R.id.rdb_sell:
-                        tvServiceStatement.setText("Please enter sale price.");
+                        tvServiceStatement.setText("Enter sale price.");
                         break;
                     case R.id.rdb_drive:
-                        tvServiceStatement.setText("Please enter hourly rate.");
+                        tvServiceStatement.setText("Enter price per " + getUnit() + ".");
                         break;
                 }
             }
@@ -445,11 +455,11 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                         break;
                     case R.id.rdb_drive:
                         tvService.setText("Drive");
-                        tvPrice.setText("$" + editPostRentPrice.getText().toString() + " /hour");
+                        tvPrice.setText("$" + editPostRentPrice.getText().toString() + " /" + getUnit());
                         break;
                 }
 
-                tvSpeed.setText(editPostSpeed.getText().toString() + " Mile");
+                tvSpeed.setText(editPostSpeed.getText().toString() + " " + getUnit());
                 tvSeats.setText(String.valueOf(seatSpinner.getSelectedItemPosition() + 1));
                 tvName.setText(editPostTitle.getText().toString());
                 tvDescription.setText(editPostDescription.getText().toString());
@@ -508,6 +518,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
     private String getTransmission() {
         return trans[transmissionSpinner.getSelectedItemPosition()];
+    }
+
+    private String getUnit() {
+        return units[unitsSpinner.getSelectedItemPosition()];
     }
 
     private void getCategories() {
@@ -613,6 +627,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
 
                                 editPostTitle.setText(car.getName());
+                                editYear.setText(car.getYear());
                                 editPostDescription.setText(car.getDescription());
                                 editPostRentPrice.setText(car.getPrice());
                                 mLocationAutoTextView.setText(car.getLocation());
@@ -627,11 +642,14 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                 }
 
-                                editPostSpeed.setText(car.getDoubleDistance()+"");
+                                editPostSpeed.setText(car.getDistance());
                                 catSpinner.setSelection(car.getCatId());
-                                if(car.getTransmission().equals("Auto"))
-                                    transmissionSpinner.setSelection(0);
-                                else transmissionSpinner.setSelection(1);
+                                if(car.getTransmission().equals("Manual"))
+                                    transmissionSpinner.setSelection(1);
+                                else transmissionSpinner.setSelection(0);
+                                if(car.getUnit().equals("Km"))
+                                    unitsSpinner.setSelection(1);
+                                else unitsSpinner.setSelection(0);
                                 seatSpinner.setSelection(Integer.parseInt(car.getSeats()));
                                 if(car.isBuy())
                                     rdbSell.setChecked(true);
@@ -712,6 +730,11 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         if (editPostTitle.getText().toString().isEmpty()) {
             editPostTitle.setError("!");
+            validate = false;
+        }
+
+        if (editYear.getText().toString().isEmpty()) {
+            editYear.setError("!");
             validate = false;
         }
 
@@ -927,19 +950,27 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                             if (response.getBoolean("success")) {
                                 Log.d("info AdPost object", response.toString());
 
-                                Toast.makeText(context, response.get("message").toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
+                                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                                alert.setIcon(R.mipmap.ic_launcher_round)
+                                        .setTitle("Congratulation!!!")
+                                        .setMessage(response.getString("message"))
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(AddNewAdPost.this, HomeActivity.class);
+                                                startActivity(intent);
+                                                AddNewAdPost.this.finish();
+                                            }
+                                        }).show();
 
-                                Intent intent = new Intent(AddNewAdPost.this, HomeActivity.class);
-//                                intent.putExtra("adId", response.getJSONObject("data").getString("ad_id"));
-                                startActivity(intent);
 
-                                AddNewAdPost.this.finish();
                             } else {
-                                Toast.makeText(context, response.get("message").toString(), Toast.LENGTH_SHORT).show();
+                                alertMsg(response.getString("message"));
                             }
                         } else {
                             Log.e("post car error: ", responseObj.errorBody().string());
-                            Toast.makeText(context, responseObj.errorBody().string(), Toast.LENGTH_SHORT).show();
+                            alertMsg(responseObj.errorBody().string());
                         }
                         SettingsMain.hideDilog();
                     } catch (JSONException e) {
@@ -963,6 +994,19 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
             SettingsMain.hideDilog();
             Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void alertMsg(String msg) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setIcon(R.mipmap.ic_launcher_round)
+                .setTitle("Alert")
+                .setMessage(msg)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     // getting images selected from gallery for post and sending them to server
@@ -1309,26 +1353,26 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
             editTextuserLong.setText(String.format("%s", latLng.longitude));
             editTextUserLat.setText(String.format("%s", latLng.latitude));
-            List<Address> addresses2 = new ArrayList<>();
-            try {
-                addresses2 = new Geocoder(this, Locale.getDefault()).getFromLocation(latLng.longitude, latLng.latitude, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            StringBuilder result1 = new StringBuilder();
-            if (addresses2.size() > 0) {
-                Address address = addresses2.get(0);
-                int maxIndex = address.getMaxAddressLineIndex();
-                for (int x = 0; x <= maxIndex; x++) {
-                    result1.append(address.getAddressLine(x));
-                    //result.append(",");
-                }
-            }
-            try {
-                mAddressAutoTextView.setText(result1.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            List<Address> addresses2 = new ArrayList<>();
+//            try {
+//                addresses2 = new Geocoder(this, Locale.getDefault()).getFromLocation(latLng.longitude, latLng.latitude, 1);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            StringBuilder result1 = new StringBuilder();
+//            if (addresses2.size() > 0) {
+//                Address address = addresses2.get(0);
+//                int maxIndex = address.getMaxAddressLineIndex();
+//                for (int x = 0; x <= maxIndex; x++) {
+//                    result1.append(address.getAddressLine(x));
+//                    //result.append(",");
+//                }
+//            }
+//            try {
+//                mAddressAutoTextView.setText(result1.toString());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         });
     }
 
