@@ -81,7 +81,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
     public static String myId, myBookId;
 
     View mView;
-    CardView cardRent, cardSale, cardRating, cardHire;
+    CardView cardRating;
     NestedScrollView nestedScroll;
     Dialog callDialog;
     Dialog dialog;
@@ -89,10 +89,9 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
     RestService restService, authRestService;
     RuntimePermissionHelper runtimePermissionHelper;
 
-    TextView textViewAdName, tvCatName, textViewDescrition, tvRentPrice, tvSalePrice, tvRentTotalPrice, tvSpeed, tvSeat, tvViewComments, tvCarLocation, tvCarRate, tvCarTransmission, tvHirePrice, tvYear, tvOwner;
-    LinearLayout contactLayout;
+    TextView textViewAdName, tvCatName, textViewDescrition, tvPrice, tvCurrency, tvPriceUnit, tvSpeed, tvSeat, tvViewComments, tvCarLocation, tvCarRate, tvCarTransmission, tvYear, tvOwner;
+    LinearLayout contactLayout, msgLayout, offerLayout;
     TextView btnMsg, btnCall;
-    Button btnBuy, btnBook, btnHire;
     AppCompatEditText editPickup;
     HtmlTextView htmlTextView;
     RatingBar ratingBar;
@@ -183,59 +182,46 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                 }
             });
 
-        btnCall.setOnClickListener(view13 -> {
+        offerLayout.setOnClickListener(view13 -> {
             if (!settingsMain.getAppOpen()) {
                 Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
 
-            } else {
-                runtimePermissionHelper.requestCallPermission(1);
             }
-        });
-
-        btnBook.setOnClickListener(view14 -> {
-            if (!settingsMain.getAppOpen()) {
-                Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
-
-            } else {
-                Intent intent = new Intent(getActivity(), RentalBookingActivity.class);
-                intent.putExtra("car_id", item.getId());
-                startActivity(intent);
-            }
-        });
-
-        btnHire.setOnClickListener(view18 -> {
-            Intent intent = new Intent(getActivity(), HireBookingActivity.class);
-            intent.putExtra("car_id", item.getId());
-            startActivity(intent);
-        });
-
-        btnBuy.setOnClickListener(view15 -> {
-            if (!settingsMain.getAppOpen()) {
-                Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
-
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getContext().getResources().getString(R.string.app_name))
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setMessage("Are you sure you want to to buy this car?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), StripePayment.class);
-                        intent.putExtra("id", item.getId());
-                        intent.putExtra("service", "buy");
-                        startActivity(intent);
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+             else {
+                if(item.isBuy()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(getContext().getResources().getString(R.string.app_name))
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setMessage("Are you sure you want to to buy this car?");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getActivity(), StripePayment.class);
+                            intent.putExtra("id", item.getId());
+                            intent.putExtra("service", "buy");
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                if(item.isRental()) {
+                    Intent intent = new Intent(getActivity(), RentalBookingActivity.class);
+                    intent.putExtra("car_id", item.getId());
+                    startActivity(intent);
+                }
+                if (item.isHire()) {
+                    Intent intent = new Intent(getActivity(), HireBookingActivity.class);
+                    intent.putExtra("car_id", item.getId());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -255,14 +241,8 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             }
         });
 
-        editPickup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utility.hideKeyBoardFromView(getActivity());
-            }
-        });
 
-        btnViewSeller.setOnClickListener(new View.OnClickListener() {
+        ownerProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
@@ -293,14 +273,15 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         btnMsg = getActivity().findViewById(R.id.message);
         btnCall = getActivity().findViewById(R.id.call);
         contactLayout = getActivity().findViewById(R.id.contact_layout);
+        offerLayout = getActivity().findViewById(R.id.ll_offer);
 
         textViewAdName = mView.findViewById(R.id.tv_car_name);
         tvCatName = mView.findViewById(R.id.tv_car_cat);
         textViewDescrition = mView.findViewById(R.id.tv_car_description);
-        tvRentPrice = mView.findViewById(R.id.tv_rent_price);
-        tvRentTotalPrice = mView.findViewById(R.id.tv_car_rent_total_price);
-        tvSalePrice = mView.findViewById(R.id.tv_car_sale_price);
-        tvHirePrice = mView.findViewById(R.id.tv_hire_price);
+        tvPrice = mView.findViewById(R.id.tv_price);
+        tvCurrency = mView.findViewById(R.id.tv_currency);
+        tvPriceUnit = mView.findViewById(R.id.tv_price_unit);
+
         tvSpeed = mView.findViewById(R.id.tv_car_speed);
         tvSeat = mView.findViewById(R.id.tv_car_seat);
         tvViewComments = mView.findViewById(R.id.tv_more_rating);
@@ -310,18 +291,9 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         tvYear = mView.findViewById(R.id.tv_car_year);
         tvOwner = mView.findViewById(R.id.tv_car_owner);
 
-        btnBook = mView.findViewById(R.id.btn_rent);
-        btnBuy = mView.findViewById(R.id.btn_buy);
-        btnHire = mView.findViewById(R.id.btn_hire);
         btnViewSeller = mView.findViewById(R.id.btn_view_seller);
 
-        cardRent = mView.findViewById(R.id.card_rent);
-        cardSale = mView.findViewById(R.id.card_sale);
         cardRating = mView.findViewById(R.id.card_rate);
-        cardHire = mView.findViewById(R.id.card_hire);
-
-        editPickup = mView.findViewById(R.id.edit_pickup);
-//        editPickup.setFocusable(true);
 
         htmlTextView = mView.findViewById(R.id.html_text);
         ratingBar = mView.findViewById(R.id.car_rate);
@@ -406,17 +378,30 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             tvCatName.setText(item.getCatName());
             tvYear.setText(item.getYear());
             textViewDescrition.setText(item.getDescription());
-            tvSeat.setText(item.getSeats());
+            tvSeat.setText(item.getSeats() + " Seats");
             tvSpeed.setText(item.getDistance() + " " + item.getUnit());
             tvCarLocation.setText(item.getAddress());
-            tvRentPrice.setText("$ " + item.getPrice());
-            tvHirePrice.setText("$ " + item.getPrice());
-            tvRentTotalPrice.setText("$ 0");
-            tvSalePrice.setText("$ " + item.getPrice());
+            tvPrice.setText(item.getPrice());
+            tvCurrency.setText(item.getCurrency());
+            if(item.isHire()) {
+                tvPriceUnit.setText("/ " + item.getUnit());
+                btnCall.setText("Hire Now");
+            }
+            if(item.isRental()) {
+                tvPriceUnit.setText("/ day");
+                btnCall.setText("Book Now");
+            }
+            if (item.isBuy()) {
+                tvPriceUnit.setVisibility(View.GONE);
+                offerLayout.setVisibility(View.GONE);
+                cardRating.setVisibility(View.GONE);
+                ratingBar.setVisibility(View.GONE);
+//                btnCall.setText("Buy Now");
+            }
             ratingBar.setRating(item.getRate());
             tvCarRate.setText(String.valueOf(item.getRate()));
             tvCarTransmission.setText(item.getTransmission());
-            tvOwner.setText(item.getOwner().getUserName());
+            tvOwner.setText(item.getOwner().getFirstName());
             phoneNumber = item.getOwner().getPhone();
 
             if(!item.getOwner().getPicture().isEmpty()) {
@@ -441,17 +426,8 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             if (banners.size() > 0 && bannerSlider != null)
                 bannerSlider.setBanners(banners);
 
-            if(!item.isRental()) cardRent.setVisibility(View.GONE);
-            if(!item.isBuy()) cardSale.setVisibility(View.GONE);
-            if(!item.isHire()) cardHire.setVisibility(View.GONE);
-
-            if(item.isBuy()) cardRating.setVisibility(View.GONE);
-
             if(settingsMain.getAppOpen())
             if(settingsMain.getUserId() == item.getSellerId()) {
-                cardRent.setVisibility(View.GONE);
-                cardSale.setVisibility(View.GONE);
-                cardHire.setVisibility(View.GONE);
                 contactLayout.setVisibility(View.GONE);
             }
 

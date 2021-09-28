@@ -162,7 +162,7 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
                     AlertDialog.Builder builder = new AlertDialog.Builder(RentalBookingActivity.this);
                     builder.setTitle("Confirm Info")
                             .setMessage("Are you sure you want to continue the checkout?")
-                            .setIcon(R.mipmap.ic_launcher_round)
+                            .setIcon(R.mipmap.ic_launcher)
                             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

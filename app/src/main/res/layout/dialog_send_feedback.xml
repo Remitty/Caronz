@@ -25,32 +25,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_email"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_edittext_search"
-                android:gravity="center_vertical"
-                android:inputType="textEmailAddress"
-                android:padding="10dp"
-                android:textColor="#777777"
-                android:textColorHint="#777777"
-                android:textSize="12sp" />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:text="Please select your satisfaction."/>
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"/>
 
             <EditText
-                android:id="@+id/et_subject"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_edittext_search"
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColor="#777777"
-                android:textColorHint="#777777"
-                android:textSize="12sp" />
-
-            <EditText
+                android:visibility="gone"
                 android:id="@+id/textArea_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,6 +75,7 @@
             android:background="@android:color/holo_blue_dark"
             android:padding="15dp"
             android:textAllCaps="false"
+            android:text="Cancel"
             android:textColor="@color/white" />
 
         <View
@@ -101,6 +91,7 @@
             android:background="@android:color/holo_blue_dark"
             android:padding="15dp"
             android:textAllCaps="false"
+            android:text="Confirm"
             android:textColor="@color/white" />
     </LinearLayout>
 

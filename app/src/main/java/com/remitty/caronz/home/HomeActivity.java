@@ -19,6 +19,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.remitty.caronz.Notification.Config;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.coins.CoinActivity;
 import com.remitty.caronz.hire.MyHireActivity;
 import com.remitty.caronz.messages.ChatActivity;
 import com.remitty.caronz.messages.Inbox;
@@ -66,6 +67,9 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.google.gson.JsonObject;
 
 import com.remitty.caronz.orders.MyBookingActivity;
+import com.remitty.caronz.others.ActivityHelp;
+import com.remitty.caronz.others.NotificationActivity;
+import com.remitty.caronz.others.NotificationFragment;
 import com.remitty.caronz.payment.CardsActivity;
 import com.remitty.caronz.withdraw.WithdrawActivity;
 
@@ -589,7 +593,7 @@ HomeActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
         Log.d("info onDestroy called", "onDestroy");
     }
 
@@ -652,6 +656,10 @@ HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), WithdrawActivity.class));
                 overridePendingTransition(R.anim.right_enter, R.anim.left_out);
                 break;
+            case R.id.nav_coins:
+                startActivity(new Intent(getApplicationContext(), CoinActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
             case R.id.nav_myCars:
                 startActivity(new Intent(getApplicationContext(), MyCarsActivity.class));
                 overridePendingTransition(R.anim.right_enter, R.anim.left_out);
@@ -664,6 +672,10 @@ HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), ActivityHelp.class));
                 overridePendingTransition(R.anim.right_enter, R.anim.left_out);
                 break;
+//            case R.id.nav_notification:
+//                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+//                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+//                break;
             case R.id.nav_log_in:
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.right_enter, R.anim.left_out);
@@ -694,9 +706,17 @@ HomeActivity extends AppCompatActivity
                 break;
             case R.id.nav_chat:
                 fragment = new Inbox();
+                tag="Inbox";
                 BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
                 BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_chat);
                 badge.setVisible(false);
+                break;
+            case R.id.nav_notification:
+                fragment = new NotificationFragment();
+                tag="NotificationFragment";
+                BottomNavigationView bottomNav1 = findViewById(R.id.bottom_navigation);
+                BadgeDrawable badge1 =  bottomNav1.getOrCreateBadge(R.id.nav_notification);
+                badge1.setVisible(false);
                 break;
             case R.id.nav_post:
                 if (settingsMain.getAppOpen()) {
@@ -804,10 +824,13 @@ HomeActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             String kind = intent.getStringExtra("kind");
             Log.e("received action", kind);
-            if(kind.equals(Config.PUSH_NOTIFICATION))
-                action_notification.setVisible(true);
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            if(kind.equals(Config.PUSH_NOTIFICATION)) {
+//                action_notification.setVisible(true);
+                BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_notification);
+                badge.setVisible(true);
+            }
             else {
-                    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
                     BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_chat);
                     badge.setVisible(true);
             }

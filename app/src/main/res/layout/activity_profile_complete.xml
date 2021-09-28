@@ -296,6 +296,43 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginRight="5dp"
+                                android:text="Location"
+                                android:gravity="right"
+                                android:layout_weight="1"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/editTextLocation"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rounded_corners_edittext_dark"
+                                    android:gravity="center_vertical"
+                                    android:padding="10dp"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:hint="city, state, country"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="5dp"
                                 android:text="City"
                                 android:gravity="right"
                                 android:layout_weight="1"/>
@@ -325,7 +362,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <TextView
@@ -362,7 +399,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <TextView
@@ -408,7 +445,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginRight="5dp"
-                                android:text="Zip/PostalCode"
+                                android:text="Zip Code"
                                 android:gravity="right"
                                 android:layout_weight="1"/>
 
@@ -523,24 +560,140 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/textViewSetImage"
                                 android:layout_width="0dp"
-                                android:text="Upload"
+                                android:text="Photo"
                                 android:gravity="right"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="1"/>
 
                             <ImageView
-                                android:id="@+id/imageSelected"
+                                android:id="@+id/image_photo"
                                 android:layout_width="0dp"
-                                android:layout_height="150dp"
+                                android:layout_height="100dp"
                                 android:layout_weight="2"
                                 android:contentDescription="@null"
                                 android:src="@drawable/profileimg" />
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:text="Driver license image"
+                                android:gravity="right"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"/>
+
+                            <ImageView
+                                android:id="@+id/image_license"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@null"
+                                android:src="@drawable/placeholder" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:text="Car registration image"
+                                android:gravity="right"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"/>
+
+                            <ImageView
+                                android:id="@+id/image_register"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@null"
+                                android:src="@drawable/placeholder" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:text="Proof of insurance image"
+                                android:gravity="right"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"/>
+
+                            <ImageView
+                                android:id="@+id/image_insurance"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@null"
+                                android:src="@drawable/placeholder" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:text="Other"
+                                android:gravity="right"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"/>
+
+                            <ImageView
+                                android:id="@+id/image_other1"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@null"
+                                android:src="@drawable/placeholder" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:text="Other"
+                                android:gravity="right"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"/>
+
+                            <ImageView
+                                android:id="@+id/image_other2"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@null"
+                                android:src="@drawable/placeholder" />
+
+                        </LinearLayout>
                         <LinearLayout
                             android:visibility="gone"
                             android:layout_width="match_parent"
@@ -617,6 +770,7 @@
                                     android:layout_weight="1"
                                     android:background="@drawable/loginbutton_gmail"
                                     android:gravity="center"
+                                    android:visibility="gone"
                                     android:padding="10dp"
                                     android:text="Cancel"
                                     android:textColor="@color/white" />

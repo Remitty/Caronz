@@ -1,4 +1,4 @@
-package com.remitty.caronz.home;
+package com.remitty.caronz.others;
 
 import android.Manifest;
 import android.content.Context;
@@ -172,7 +172,7 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(context.getResources().getString(R.string.app_name))
-                            .setIcon(R.mipmap.ic_launcher_round)
+                            .setIcon(R.mipmap.ic_launcher)
                             .setMessage("Sorry for inconvenient. Our assisants are busy right now")
                             .setCancelable(false)
                             .setPositiveButton("ok",

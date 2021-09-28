@@ -210,7 +210,7 @@ public class PlaidConnect {
     private void showAlert(String message) {
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
         alert.setTitle("Alert")
-//                .setIcon(R.mipmap.ic_launcher_round)
+//                .setIcon(R.mipmap.ic_launcher)
                 .setMessage(message)
                 .setPositiveButton("Ok", null)
                 .show();

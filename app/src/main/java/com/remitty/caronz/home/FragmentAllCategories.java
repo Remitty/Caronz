@@ -181,6 +181,7 @@ public class FragmentAllCategories extends Fragment {
                 FragmentSearch fragment_search = new FragmentSearch();
                 Bundle bundle = new Bundle();
                 bundle.putString("catId", item.getId());
+                bundle.putString("cat_name", item.getTitle());
                 bundle.putString("method", method);
                 bundle.putString("model", editModel.getText().toString());
 

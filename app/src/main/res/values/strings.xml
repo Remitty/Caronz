@@ -93,4 +93,21 @@
         <item>12</item>
     </string-array>
 
+    <string-array name="odometer_array">
+        <item>Mi</item>
+        <item>Km</item>
+    </string-array>
+
+    <string-array name="currency_array">
+        <item>$</item>
+        <item>€</item>
+        <item>£</item>
+        <item>¥</item>
+        <item>₩</item>
+        <item>₹</item>
+        <item>₱</item>
+        <item>₦</item>
+        <item>R$</item>
+    </string-array>
+
 </resources>

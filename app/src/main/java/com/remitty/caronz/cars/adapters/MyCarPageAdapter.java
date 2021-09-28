@@ -1,9 +1,13 @@
 package com.remitty.caronz.cars.adapters;
 
+import com.remitty.caronz.cars.MyHiredCarPage;
 import com.remitty.caronz.models.CarModel;
 import com.remitty.caronz.cars.MySoldCarPage;
 import com.remitty.caronz.cars.MyActiveCarPage;
 import com.remitty.caronz.cars.MyRentalCarPage;
+import com.remitty.caronz.models.HireModel;
+import com.remitty.caronz.models.OrderModel;
+import com.remitty.caronz.models.RentalModel;
 
 import java.util.ArrayList;
 
@@ -13,26 +17,30 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class MyCarPageAdapter extends FragmentStatePagerAdapter {
 
-    private ArrayList<CarModel> myRealtyList = new ArrayList<>();
-    private ArrayList<CarModel> rentalRealtyList = new ArrayList<>();
-    private ArrayList<CarModel> rentalHistoryList = new ArrayList<>();
+    private ArrayList<CarModel> myActiveCarList = new ArrayList<>();
+    private ArrayList<RentalModel> myRentalCarList = new ArrayList<>();
+    private ArrayList<HireModel> myHireCarList = new ArrayList<>();
+    private ArrayList<OrderModel> mySoldCarList = new ArrayList<>();
 
-    public MyCarPageAdapter(FragmentManager fm, ArrayList<CarModel> list, ArrayList<CarModel> rental, ArrayList<CarModel> rentalHistory) {
+    public MyCarPageAdapter(FragmentManager fm, ArrayList<CarModel> myActiveCarList, ArrayList<RentalModel> myRentalCarList, ArrayList<HireModel> myHireCarList, ArrayList<OrderModel> mySoldCarList) {
         super(fm);
-        this.myRealtyList = list;
-        this.rentalRealtyList = rental;
-        this.rentalHistoryList = rentalHistory;
+        this.myActiveCarList = myActiveCarList;
+        this.myRentalCarList = myRentalCarList;
+        this.myHireCarList = myHireCarList;
+        this.mySoldCarList = mySoldCarList;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MyActiveCarPage.newInstance(this.myRealtyList);
+                return MyActiveCarPage.newInstance(this.myActiveCarList);
             case 1:
-                return MyRentalCarPage.newInstance(this.rentalRealtyList);
+                return MyRentalCarPage.newInstance(this.myRentalCarList);
             case 2:
-                return MySoldCarPage.newInstance(this.rentalHistoryList);
+                return MyHiredCarPage.newInstance(this.myHireCarList);
+            case 3:
+                return MySoldCarPage.newInstance(this.mySoldCarList);
             default:
 
                 return null;
@@ -53,6 +61,8 @@ public class MyCarPageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return "Rental";
             case 2:
+                return "Hired";
+            case 3:
                 return "Sold";
         }
         return null;
@@ -64,6 +74,9 @@ public class MyCarPageAdapter extends FragmentStatePagerAdapter {
             return POSITION_NONE;
         }
         if(object instanceof MyRentalCarPage){
+            return POSITION_NONE;
+        }
+        if(object instanceof MyHiredCarPage){
             return POSITION_NONE;
         }
         if(object instanceof MySoldCarPage){

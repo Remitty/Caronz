@@ -48,7 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.remitty.caronz.App;
 import com.remitty.caronz.R;
-import com.remitty.caronz.adapters.AutoCompleteAdapter;
+import com.remitty.caronz.adapters.AutoCompletePlaceAdapter;
 import com.remitty.caronz.helper.GMSHelper;
 import com.remitty.caronz.helper.SharedHelper;
 import com.remitty.caronz.models.PlacePredictions;
@@ -72,7 +72,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
     private PlacePredictions predictions = new PlacePredictions();
     private PlacePredictions placePredictions = new PlacePredictions();
 
-    private AutoCompleteAdapter mAutoCompleteAdapter;
+    private AutoCompletePlaceAdapter mAutoCompletePlaceAdapter;
     private Location mLastLocation;
     private static final int MY_PERMISSIONS_REQUEST_LOC = 30;
     private Handler handler;
@@ -230,7 +230,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                     editLocation.setSelection(0);
 
 //                    editLocation.requestFocus();
-                    mAutoCompleteAdapter = null;
+                    mAutoCompletePlaceAdapter = null;
 
                     setAddress();
                 }
@@ -252,7 +252,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                     editLocation.setText(placePredictions.strSourceAddress);
                     editLocation.setSelection(0);
 //                    editLocation.requestFocus();
-                    mAutoCompleteAdapter = null;
+                    mAutoCompletePlaceAdapter = null;
 
                     setAddress();
                 }
@@ -289,15 +289,15 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                                     Log.v("PayNowRequestResponse", response.toString());
                                     Gson gson = new Gson();
                                     predictions = gson.fromJson(response.toString(), PlacePredictions.class);
-                                    if (mAutoCompleteAdapter == null) {
+                                    if (mAutoCompletePlaceAdapter == null) {
                                         mAutoCompleteList.setVisibility(View.VISIBLE);
-                                        mAutoCompleteAdapter = new AutoCompleteAdapter(CustomGooglePlacesSearchActivity.this, predictions.getPlaces(), CustomGooglePlacesSearchActivity.this);
-                                        mAutoCompleteList.setAdapter(mAutoCompleteAdapter);
+                                        mAutoCompletePlaceAdapter = new AutoCompletePlaceAdapter(CustomGooglePlacesSearchActivity.this, predictions.getPlaces(), CustomGooglePlacesSearchActivity.this);
+                                        mAutoCompleteList.setAdapter(mAutoCompletePlaceAdapter);
                                     } else {
                                         mAutoCompleteList.setVisibility(View.VISIBLE);
-                                        mAutoCompleteAdapter.clear();
-                                        mAutoCompleteAdapter.addAll(predictions.getPlaces());
-                                        mAutoCompleteAdapter.notifyDataSetChanged();
+                                        mAutoCompletePlaceAdapter.clear();
+                                        mAutoCompletePlaceAdapter.addAll(predictions.getPlaces());
+                                        mAutoCompletePlaceAdapter.notifyDataSetChanged();
                                         mAutoCompleteList.invalidate();
                                     }
                                 }
@@ -348,7 +348,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                         builder.setMessage("Please choose pickup location")
                                 .setTitle(thisActivity.getString(R.string.app_name))
                                 .setCancelable(true)
-                                .setIcon(R.mipmap.ic_launcher_round)
+                                .setIcon(R.mipmap.ic_launcher)
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         editLocation.requestFocus();
@@ -406,7 +406,7 @@ public class CustomGooglePlacesSearchActivity extends AppCompatActivity implemen
                             editLocation.setText(placePredictions.strSourceAddress);
                             editLocation.setSelection(0);
                             editLocation.requestFocus();
-                            mAutoCompleteAdapter = null;
+                            mAutoCompletePlaceAdapter = null;
 
                             mAutoCompleteList.setVisibility(View.GONE);
 

@@ -25,11 +25,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,7 +42,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.remitty.caronz.R;
+import com.remitty.caronz.home.AddNewAdPost;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
 import com.remitty.caronz.utills.SettingsMain;
@@ -57,6 +68,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 import static android.view.View.INVISIBLE;
@@ -68,30 +80,34 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
     TextView textViewName, textViewLocation, textViewMainTitle, textViewImage,
             textViewAccType, textViewIntroduction;
     TextView btnCancel, btnSave, btnDeleteAccount;
-    ImageView btnSeletImage;
+    ImageView photoImage, licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
     EditText  editTextAddress1, editTextAddress2, editTextCity,
             editTextState, editTextCountry, editTextPostalCode;
     CircleImageView imageViewProfile;
-    JSONObject jsonObjectforCustom, extraText;
     Spinner spinnerACCType;
     LinearLayout viewSocialIconsLayout;
     RestService restService;
     boolean checkValidation = true;
-    LinearLayout publicProfileCustomIcons;
     RuntimePermissionHelper runtimePermissionHelper;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private String userChoosenTask;
-    private JSONObject jsonObject;
-    private JSONObject jsonObjectChnge, jsonObject_select_pic, deleteAccountJsonObject;
     private CardView profileCard;
     private FrameLayout frameLayout;
-    private String firstName, lastName, email;
     private AppCompatEditText etCountryCode;
     private AppCompatEditText etPhoneNumber;
     private ImageView imgFlag;
     private Country mSelectedCountry;
     private static final int COUNTRYCODE_ACTION = 10001;
     private PhoneNumberUtil mPhoneUtil;
+
+    AutoCompleteTextView mLocationAutoTextView;
+    private PlacesClient placesClient;
+
+    ArrayList<String> places = new ArrayList<>();
+    ArrayList<String> ids = new ArrayList<>();
+    private String firstName, lastName, email;
+    private String userChoosenTask;
+    private int choosenImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +118,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
 
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
         runtimePermissionHelper = new RuntimePermissionHelper(this, this);
+        placesClient = com.google.android.libraries.places.api.Places.createClient(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -185,12 +202,28 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         }
     }
     private void initListeners() {
-        btnSeletImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(1));
+        photoImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(1));
+        licenseImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(2));
+        registrationImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(3));
+        insuranceImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(4));
+        otherImage1.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(5));
+        otherImage2.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(6));
 
         btnSave.setOnClickListener(view12 -> {
             if (isCheckValidation()) sendData();
         });
         btnCancel.setOnClickListener(view13 -> this.onBackPressed());
+
+        mLocationAutoTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                manageAutoComplete(s.toString(), "location");
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
     }
 
@@ -201,7 +234,12 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         textViewIntroduction = findViewById(R.id.textViewIntroduction);
         textViewImage = findViewById(R.id.textViewSetImage);
         btnCancel = findViewById(R.id.textViewCancel);
-        btnSeletImage = findViewById(R.id.imageSelected);
+        photoImage = findViewById(R.id.image_photo);
+        licenseImage = findViewById(R.id.image_license);
+        registrationImage = findViewById(R.id.image_register);
+        insuranceImage = findViewById(R.id.image_insurance);
+        otherImage1 = findViewById(R.id.image_other1);
+        otherImage2 = findViewById(R.id.image_other2);
         btnDeleteAccount = findViewById(R.id.deleteAccount);
         textViewLastLogin = findViewById(R.id.loginTime);
         verifyBtn = findViewById(R.id.verified);
@@ -224,6 +262,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         editTextCity = findViewById(R.id.editTextCity);
         editTextCountry = findViewById(R.id.editTextCountry);
         editTextState = findViewById(R.id.editTextState);
+        mLocationAutoTextView = findViewById(R.id.editTextLocation);
 
 
         profileCard = findViewById(R.id.profile_card);
@@ -236,6 +275,45 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
 
     }
 
+    private void manageAutoComplete(String query, String type) {
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        FindAutocompletePredictionsRequest.Builder request = FindAutocompletePredictionsRequest.builder();
+//        request.setCountry("US");
+        if(type.equals("address"))
+            request.setTypeFilter(TypeFilter.ADDRESS);
+        else  // location
+            request.setTypeFilter(TypeFilter.REGIONS);
+
+        request.setSessionToken(token)
+                .setQuery(query);
+
+
+        placesClient.findAutocompletePredictions(request.build()).addOnSuccessListener((response) -> {
+
+            ids.clear();
+            places.clear();
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                places.add(prediction.getFullText(null).toString());
+                ids.add(prediction.getPlaceId());
+                Log.i("Places", prediction.getPlaceId());
+                Log.i("Places", prediction.getFullText(null).toString());
+            }
+            String[] data = places.toArray(new String[places.size()]); // terms is a List<String>
+
+            ArrayAdapter<?> adapter = new ArrayAdapter<Object>(ProfileCompleteActivity.this, android.R.layout.simple_dropdown_item_1line, data);
+            mLocationAutoTextView.setAdapter(adapter);
+
+            adapter.notifyDataSetChanged();
+        }).addOnFailureListener((exception) -> {
+            if (exception instanceof ApiException) {
+                ApiException apiException = (ApiException) exception;
+                Log.e("Places", "Place not found: " + apiException.getStatusCode());
+            }
+        });
+
+    }
+
     private boolean isCheckValidation() {
         checkValidation = true;
         // Check if all strings are null or not
@@ -243,18 +321,22 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             editTextAddress1.setError("!");
             checkValidation = false;
         }
-        if (editTextState.getText().toString().isEmpty()) {
-            editTextState.setError("!");
+        if (textViewLocation.getText().toString().isEmpty()) {
+            textViewLocation.setError("!");
             checkValidation = false;
         }
-        if (editTextCountry.getText().toString().isEmpty()) {
-            editTextCountry.setError("!");
-            checkValidation = false;
-        }
-        if (editTextCity.getText().toString().isEmpty()) {
-            editTextCity.setError("!");
-            checkValidation = false;
-        }
+//        if (editTextState.getText().toString().isEmpty()) {
+//            editTextState.setError("!");
+//            checkValidation = false;
+//        }
+//        if (editTextCountry.getText().toString().isEmpty()) {
+//            editTextCountry.setError("!");
+//            checkValidation = false;
+//        }
+//        if (editTextCity.getText().toString().isEmpty()) {
+//            editTextCity.setError("!");
+//            checkValidation = false;
+//        }
         if (editTextPostalCode.getText().toString().isEmpty()) {
             editTextPostalCode.setError("!");
             checkValidation = false;
@@ -282,9 +364,10 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             params.addProperty("country_code", etCountryCode.getText().toString());
             params.addProperty("address1", editTextAddress1.getText().toString());
             params.addProperty("address2", editTextAddress2.getText().toString());
-            params.addProperty("city", editTextCity.getText().toString());
-            params.addProperty("country", editTextCountry.getText().toString());
-            params.addProperty("state", editTextState.getText().toString());
+            params.addProperty("location", mLocationAutoTextView.getText().toString());
+//            params.addProperty("city", editTextCity.getText().toString());
+//            params.addProperty("country", editTextCountry.getText().toString());
+//            params.addProperty("state", editTextState.getText().toString());
             params.addProperty("postalcode", editTextPostalCode.getText().toString());
 
             Log.d("info Send UpdatePofile", "" + params.toString());
@@ -398,7 +481,26 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         Uri tempUri = SettingsMain.getImageUri(this, thumbnail);
         File finalFile = new File(SettingsMain.getRealPathFromURI(this, tempUri));
         galleryImageUpload(tempUri);
-        btnSeletImage.setImageURI(tempUri);
+        switch (choosenImage) {
+            case 1:
+                photoImage.setImageURI(tempUri);
+                break;
+            case 2:
+                licenseImage.setImageURI(tempUri);
+                break;
+            case 3:
+                registrationImage.setImageURI(tempUri);
+                break;
+            case 4:
+                insuranceImage.setImageURI(tempUri);
+                break;
+            case 5:
+                otherImage1.setImageURI(tempUri);
+                break;
+            case 6:
+                otherImage2.setImageURI(tempUri);
+                break;
+        }
     }
 
     private void onSelectFromGalleryResult(Intent data) {
@@ -415,8 +517,26 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                 e.printStackTrace();
             }
         }
-
-        btnSeletImage.setImageBitmap(bm);
+        switch (choosenImage) {
+            case 1:
+                photoImage.setImageBitmap(bm);
+                break;
+            case 2:
+                licenseImage.setImageBitmap(bm);
+                break;
+            case 3:
+                registrationImage.setImageBitmap(bm);
+                break;
+            case 4:
+                insuranceImage.setImageBitmap(bm);
+                break;
+            case 5:
+                otherImage1.setImageBitmap(bm);
+                break;
+            case 6:
+                otherImage2.setImageBitmap(bm);
+                break;
+        }
     }
 
     private void galleryImageUpload(final Uri absolutePath) {
@@ -430,8 +550,29 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                             MediaType.parse(getBaseContext().getContentResolver().getType(absolutePath)),
                             finalFile
                     );
-            MultipartBody.Part body =
-                    MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
+            MultipartBody.Part body = null;
+
+
+            switch (choosenImage) {
+                case 1:
+                    body = MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
+                    break;
+                case 2:
+                    body = MultipartBody.Part.createFormData("license_img", finalFile.getName(), requestFile);
+                    break;
+                case 3:
+                    body = MultipartBody.Part.createFormData("registration_img", finalFile.getName(), requestFile);
+                    break;
+                case 4:
+                    body = MultipartBody.Part.createFormData("insurance_img", finalFile.getName(), requestFile);
+                    break;
+                case 5:
+                    body = MultipartBody.Part.createFormData("other1_img", finalFile.getName(), requestFile);
+                    break;
+                case 6:
+                    body = MultipartBody.Part.createFormData("other2_img", finalFile.getName(), requestFile);
+                    break;
+            }
 
             Call<ResponseBody> req = restService.postUploadProfileImage(body, UrlController.UploadImageAddHeaders(this));
             req.enqueue(new Callback<ResponseBody>() {
@@ -458,7 +599,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
 
 
                     } else {
-                            Log.e("update profile img error", response.errorBody().string());
+                            Log.e("update img error", response.errorBody().string());
                             Toast.makeText(getBaseContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
                     }
                     SettingsMain.hideDilog();
@@ -515,6 +656,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
 
     @Override
     public void onSuccessPermission(int code) {
+        choosenImage = code;
         selectImage();
     }
 
@@ -525,12 +667,10 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
+            if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
-        }
 
-        if (requestCode == COUNTRYCODE_ACTION) {
-            if (resultCode == RESULT_OK) {
+            if (requestCode == COUNTRYCODE_ACTION) {
                 if (data != null) {
                     if (data.hasExtra("COUNTRY")) {
                         Country country = (Country) data.getSerializableExtra("COUNTRY");
@@ -542,6 +682,8 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                 }
             }
         }
+
+
     }
 
     @Override

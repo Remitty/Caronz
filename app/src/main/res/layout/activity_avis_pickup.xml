@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".payment.HireBookingActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <!--source & dest layout-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5sp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="30sp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/round" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/black" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/box" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rytAddressSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <!-- City and Country Selector -->
+                    <EditText
+                        android:id="@+id/txtaddressSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/bg_gray"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:hint="Pickup location"
+                         />
+
+                    <ImageView
+                        android:id="@+id/imgSourceClose"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/close"
+                        android:textAlignment="viewStart"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dest_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/rytAddressSource"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/txtDestination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#D3D3D3"
+                        android:hint="Dropoff location"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/imgDestClose"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/close"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/s_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rytAddressSource"/>
+                <ListView
+                    android:id="@+id/d_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dest_layout"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+        <!--source & dest layout  end-->
+        <LinearLayout
+            android:id="@+id/hire_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pickup Time"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_arrive_date"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/imageview_border"
+                    android:focusable="false"
+                    android:hint="mm/dd/yyyy"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_arrive_time"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/imageview_border"
+                    android:focusable="false"
+                    android:hint="00:00"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dropoff Time"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_dropoff_date"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/imageview_border"
+                    android:focusable="false"
+                    android:hint="mm/dd/yyyy"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_dropoff_time"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/imageview_border"
+                    android:focusable="false"
+                    android:hint="00:00"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:paddingHorizontal="40dp"
+                android:background="@color/colorPrimary"
+                android:text="Search Car"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

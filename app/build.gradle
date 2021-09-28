@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
@@ -109,6 +108,8 @@ dependencies {
 //    implementation 'com.aminography:primecalendar:1.2.15'
     implementation 'com.github.jarklee:materialdatetimepicker:2.5.3'
     implementation 'io.michaelrocks:libphonenumber-android:8.4.1'
+
+    implementation 'com.google.zxing:core:3.3.0'
 
     //PaypPal
     implementation('com.paypal.sdk:paypal-android-sdk:2.16.0') {

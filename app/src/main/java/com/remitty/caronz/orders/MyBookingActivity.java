@@ -114,7 +114,7 @@ public class MyBookingActivity extends AppCompatActivity {
 
                                         item.setData(realty);
 
-                                        if(item.getBookStatus().equals("Booked"))
+                                        if(item.getBookStatus().equals("Booked") || item.getBookStatus().equals("Confirmed"))
                                             bookingUpcomingRealtyList.add(item);
                                         else
                                             bookingHistoryRealtyList.add(item);

@@ -137,5 +137,24 @@ public class UserModel {
         }
     }
 
+    public String getLocation(){
+        try {
+            ProfileModel profile = new ProfileModel(data.getJSONObject("profile"));
+            return profile.getLocation();
+        } catch (JSONException e) {
+            return "";
+        }
+    }
+
+    public DocumentModel getDocument() {
+        try {
+            DocumentModel document = new DocumentModel(data.getJSONObject("document"));
+            return document;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

@@ -1,11 +1,6 @@
-package com.remitty.caronz.adapters;
+package com.remitty.caronz.avis.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.remitty.caronz.R;
-import com.remitty.caronz.models.PlaceAutoComplete;
+import com.remitty.caronz.avis.models.AvisLocation;
 
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
-public class AutoCompleteAdapter extends ArrayAdapter<PlaceAutoComplete> {
+public class AutoCompleteLocationAdapter extends ArrayAdapter<AvisLocation> {
     ViewHolder holder;
     Context context;
-    List<PlaceAutoComplete> Places;
-    private Activity mActivity;
+    ArrayList<AvisLocation> Places;
 
-    public AutoCompleteAdapter(Context context, List<PlaceAutoComplete> modelsArrayList, Activity activity) {
+    public AutoCompleteLocationAdapter(Context context, ArrayList<AvisLocation> modelsArrayList) {
         super(context, R.layout.autocomplete_row, modelsArrayList);
         this.context = context;
         this.Places = modelsArrayList;
-        this.mActivity = activity;
     }
 
     @Override
@@ -47,28 +39,20 @@ public class AutoCompleteAdapter extends ArrayAdapter<PlaceAutoComplete> {
             rowView.setTag(holder);
         } else
             holder = (ViewHolder) rowView.getTag();
-        /***** Get each Model object from ArrayList ********/
-        holder.Place = Places.get(position);
-        StringTokenizer st=new StringTokenizer(holder.Place.getPlaceDesc(), ",");
-        /************  Set Model values in Holder elements ***********/
 
-        holder.name.setText(st.nextToken());
+        holder.Place = Places.get(position);
+
         holder.imgRecent.setImageResource(R.drawable.location_search);
-        String desc_detail="";
-        for(int i=1; i<st.countTokens(); i++) {
-            if(i==st.countTokens()-1){
-                desc_detail = desc_detail + st.nextToken();
-            }else {
-                desc_detail = desc_detail + st.nextToken() + ",";
-            }
-        }
-        holder.location.setText(desc_detail);
+
+
+        holder.location.setText(holder.Place.getAddress());
+        holder.name.setText(holder.Place.getName() + "(" + holder.Place.getHours() + ")");
         return rowView;
     }
 
     class ViewHolder {
-        PlaceAutoComplete Place;
-        TextView name, location;
+        AvisLocation Place;
+        TextView location, name;
         ImageView imgRecent;
     }
 

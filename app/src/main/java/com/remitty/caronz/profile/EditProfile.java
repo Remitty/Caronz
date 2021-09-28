@@ -13,18 +13,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +41,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.remitty.caronz.home.AddNewAdPost;
+import com.remitty.caronz.models.DocumentModel;
 import com.remitty.caronz.models.UserModel;
 import com.google.gson.JsonObject;
 import com.phonenumberui.CountryCodeActivity;
@@ -46,6 +64,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,12 +92,12 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.INVISIBLE;
 
-public class EditProfile extends Fragment implements RuntimePermissionHelper.permissionInterface{
+public class EditProfile extends Fragment implements RuntimePermissionHelper.permissionInterface, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, AdapterView.OnItemClickListener{
 
     SettingsMain settingsMain;
     
     TextView btnCancel, btnSend, btnChangePwd, btnDeleteAccount;
-    ImageView btnSeletImage;
+    ImageView photoImage, licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
     EditText editTextName, editTextLastName, editTextEmail, editTextAddress1, editTextAddress2, editTextCity, editTextPostalCode, editTextState, editTextCountry;
     CircleImageView imageViewProfile;
     Spinner spinnerACCType;
@@ -98,7 +117,14 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
     private static final int COUNTRYCODE_ACTION = 10001;
     private PhoneNumberUtil mPhoneUtil;
 
+    AutoCompleteTextView mLocationAutoTextView;
+    private PlacesClient placesClient;
+
+    ArrayList<String> places = new ArrayList<>();
+    ArrayList<String> ids = new ArrayList<>();
+
     private View mView;
+    private int choosenImage;
 
     public EditProfile() {
         // Required empty public constructor
@@ -114,6 +140,7 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), getActivity());
 //        publicProfileCustomIcons = view.findViewById(R.id.publicProfileCustomIcons);
         runtimePermissionHelper = new RuntimePermissionHelper(getActivity(), this);
+        placesClient = com.google.android.libraries.places.api.Places.createClient(getActivity());
 
         initComponents();
         initListeners();
@@ -187,7 +214,12 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
     }
 
     private void initListeners() {
-        btnSeletImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(1));
+        photoImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(1));
+        licenseImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(2));
+        registrationImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(3));
+        insuranceImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(4));
+        otherImage1.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(5));
+        otherImage2.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(6));
 
         btnSend.setOnClickListener(view12 -> {
             if (isCheckValidation()) sendData();
@@ -196,6 +228,17 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         btnChangePwd.setOnClickListener(view14 -> showDilogChangePassword());
         btnDeleteAccount.setOnClickListener(v -> showDeteleDialog());
 
+        mLocationAutoTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                manageAutoComplete(s.toString(), "location");
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
     }
 
     private void initComponents() {
@@ -203,11 +246,19 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         btnSend = mView.findViewById(R.id.textViewSend);
         btnCancel = mView.findViewById(R.id.textViewCancel);
         btnChangePwd = mView.findViewById(R.id.textViewChangePwd);
-        btnSeletImage =  mView.findViewById(R.id.imageSelected);
         btnDeleteAccount =  mView.findViewById(R.id.deleteAccount);
         spinnerACCType =  mView.findViewById(R.id.spinner);
 
         imageViewProfile =  mView.findViewById(R.id.image_view);
+
+        photoImage =  mView.findViewById(R.id.imageSelected);
+        licenseImage = mView.findViewById(R.id.image_license);
+        registrationImage = mView.findViewById(R.id.image_register);
+        insuranceImage = mView.findViewById(R.id.image_insurance);
+        otherImage1 = mView.findViewById(R.id.image_other1);
+        otherImage2 = mView.findViewById(R.id.image_other2);
+        
+        
         viewSocialIconsLayout =  mView.findViewById(R.id.editProfileCustomLayout);
         viewSocialIconsLayout.setVisibility(INVISIBLE);
 
@@ -225,6 +276,47 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         etCountryCode =  mView.findViewById(com.phonenumberui.R.id.etCountryCode);
         etPhoneNumber =  mView.findViewById(com.phonenumberui.R.id.etPhoneNumber);
         imgFlag =  mView.findViewById(com.phonenumberui.R.id.flag_imv);
+
+        mLocationAutoTextView = mView.findViewById(R.id.editTextLocation);
+
+    }
+
+    private void manageAutoComplete(String query, String type) {
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        FindAutocompletePredictionsRequest.Builder request = FindAutocompletePredictionsRequest.builder();
+//        request.setCountry("US");
+        if(type.equals("address"))
+            request.setTypeFilter(TypeFilter.ADDRESS);
+        else // location
+            request.setTypeFilter(TypeFilter.REGIONS);
+
+        request.setSessionToken(token)
+                .setQuery(query);
+
+
+        placesClient.findAutocompletePredictions(request.build()).addOnSuccessListener((response) -> {
+
+            ids.clear();
+            places.clear();
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                places.add(prediction.getFullText(null).toString());
+                ids.add(prediction.getPlaceId());
+                Log.i("Places", prediction.getPlaceId());
+                Log.i("Places", prediction.getFullText(null).toString());
+            }
+            String[] data = places.toArray(new String[places.size()]); // terms is a List<String>
+
+            ArrayAdapter<?> adapter = new ArrayAdapter<Object>(getActivity(), android.R.layout.simple_dropdown_item_1line, data);
+            mLocationAutoTextView.setAdapter(adapter);
+
+            adapter.notifyDataSetChanged();
+        }).addOnFailureListener((exception) -> {
+            if (exception instanceof ApiException) {
+                ApiException apiException = (ApiException) exception;
+                Log.e("Places", "Place not found: " + apiException.getStatusCode());
+            }
+        });
 
     }
 
@@ -257,18 +349,22 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
             editTextAddress1.setError("!");
             checkValidation = false;
         }
-        if (editTextState.getText().toString().isEmpty()) {
-            editTextState.setError("!");
+        if (mLocationAutoTextView.getText().toString().isEmpty()) {
+            mLocationAutoTextView.setError("!");
             checkValidation = false;
         }
-        if (editTextCountry.getText().toString().isEmpty()) {
-            editTextCountry.setError("!");
-            checkValidation = false;
-        }
-        if (editTextCity.getText().toString().isEmpty()) {
-            editTextCity.setError("!");
-            checkValidation = false;
-        }
+//        if (editTextState.getText().toString().isEmpty()) {
+//            editTextState.setError("!");
+//            checkValidation = false;
+//        }
+//        if (editTextCountry.getText().toString().isEmpty()) {
+//            editTextCountry.setError("!");
+//            checkValidation = false;
+//        }
+//        if (editTextCity.getText().toString().isEmpty()) {
+//            editTextCity.setError("!");
+//            checkValidation = false;
+//        }
         if (editTextPostalCode.getText().toString().isEmpty()) {
             editTextPostalCode.setError("!");
             checkValidation = false;
@@ -319,7 +415,7 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                                 Picasso.with(getContext()).load(settingsMain.getUserImage())
                                         .error(R.drawable.placeholder)
                                         .placeholder(R.drawable.placeholder)
-                                        .into(btnSeletImage);
+                                        .into(photoImage);
 
                                 editTextName.setText(profile.getFirstName());
                                 editTextLastName.setText(profile.getLastName());
@@ -329,9 +425,20 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                                 editTextAddress2.setText(profile.getSecondAddress());
                                 editTextCountry.setText(profile.getCountry());
                                 editTextState.setText(profile.getState());
+                                mLocationAutoTextView.setText(profile.getLocation());
                                 editTextCity.setText(profile.getCity());
                                 etCountryCode.setText(profile.getCountryCode());
                                 etPhoneNumber.setText(profile.getMobile());
+
+                                DocumentModel document = profile.getDocument();
+                                if(document != null) {
+                                    Picasso.with(getActivity()).load(document.getLicense()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(licenseImage);
+                                    Picasso.with(getActivity()).load(document.getRegistration()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(registrationImage);
+                                    Picasso.with(getActivity()).load(document.getInsurance()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(insuranceImage);
+                                    Picasso.with(getActivity()).load(document.getOther1()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage1);
+                                    Picasso.with(getActivity()).load(document.getOther2()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage2);
+
+                                }
 
                             } else {
                                 Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
@@ -374,9 +481,10 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
             params.addProperty("country_code", etCountryCode.getText().toString());
             params.addProperty("address1", editTextAddress1.getText().toString());
             params.addProperty("address2", editTextAddress2.getText().toString());
-            params.addProperty("city", editTextCity.getText().toString());
-            params.addProperty("country", editTextCountry.getText().toString());
-            params.addProperty("state", editTextState.getText().toString());
+            params.addProperty("location", mLocationAutoTextView.getText().toString());
+//            params.addProperty("city", editTextCity.getText().toString());
+//            params.addProperty("country", editTextCountry.getText().toString());
+//            params.addProperty("state", editTextState.getText().toString());
             params.addProperty("postalcode", editTextPostalCode.getText().toString());
 
             Log.d("info Send UpdatePofile", "" + params.toString());
@@ -400,11 +508,11 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                                     ((HomeActivity) getActivity()).changeImage();
 
                                     Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
-                                    if(!verify)
-                                        SettingsMain.reload(getActivity(), "EditProfile");
-                                    else{
+//                                    if(!verify)
+//                                        SettingsMain.reload(getActivity(), "EditProfile");
+//                                    else{
                                         startActivity(new Intent(getActivity(), HomeActivity.class));
-                                    }
+//                                    }
                                 } else {
                                     Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -516,7 +624,26 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         Uri tempUri = SettingsMain.getImageUri(getActivity(), thumbnail);
         File finalFile = new File(SettingsMain.getRealPathFromURI(getActivity(), tempUri));
         galleryImageUpload(tempUri);
-        btnSeletImage.setImageURI(tempUri);
+        switch (choosenImage) {
+            case 1:
+                photoImage.setImageURI(tempUri);
+                break;
+            case 2:
+                licenseImage.setImageURI(tempUri);
+                break;
+            case 3:
+                registrationImage.setImageURI(tempUri);
+                break;
+            case 4:
+                insuranceImage.setImageURI(tempUri);
+                break;
+            case 5:
+                otherImage1.setImageURI(tempUri);
+                break;
+            case 6:
+                otherImage2.setImageURI(tempUri);
+                break;
+        }
     }
 
     private void onSelectFromGalleryResult(Intent data) {
@@ -534,7 +661,26 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
             }
         }
 
-        btnSeletImage.setImageBitmap(bm);
+        switch (choosenImage) {
+            case 1:
+                photoImage.setImageBitmap(bm);
+                break;
+            case 2:
+                licenseImage.setImageBitmap(bm);
+                break;
+            case 3:
+                registrationImage.setImageBitmap(bm);
+                break;
+            case 4:
+                insuranceImage.setImageBitmap(bm);
+                break;
+            case 5:
+                otherImage1.setImageBitmap(bm);
+                break;
+            case 6:
+                otherImage2.setImageBitmap(bm);
+                break;
+        }
     }
 
     private void galleryImageUpload(final Uri absolutePath) {
@@ -548,8 +694,29 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                             MediaType.parse(getContext().getContentResolver().getType(absolutePath)),
                             finalFile
                     );
-            MultipartBody.Part body =
-                    MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
+            MultipartBody.Part body = null;
+
+
+            switch (choosenImage) {
+                case 1:
+                    body = MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
+                    break;
+                case 2:
+                    body = MultipartBody.Part.createFormData("license_img", finalFile.getName(), requestFile);
+                    break;
+                case 3:
+                    body = MultipartBody.Part.createFormData("registration_img", finalFile.getName(), requestFile);
+                    break;
+                case 4:
+                    body = MultipartBody.Part.createFormData("insurance_img", finalFile.getName(), requestFile);
+                    break;
+                case 5:
+                    body = MultipartBody.Part.createFormData("other1_img", finalFile.getName(), requestFile);
+                    break;
+                case 6:
+                    body = MultipartBody.Part.createFormData("other2_img", finalFile.getName(), requestFile);
+                    break;
+            }
 
             Call<ResponseBody> req = restService.postUploadProfileImage(body, UrlController.UploadImageAddHeaders(getActivity()));
             req.enqueue(new Callback<ResponseBody>() {
@@ -651,19 +818,9 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
         Button Send = dialog.findViewById(R.id.send_button);
         Button Cancel = dialog.findViewById(R.id.cancel_button);
 
-        Send.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
-        Cancel.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
-
         final EditText editTextOld = dialog.findViewById(R.id.editText);
         final EditText editTextNew = dialog.findViewById(R.id.editText2);
         final EditText editTextConfirm = dialog.findViewById(R.id.editText3);
-
-        Send.setText(btnSend.getText());
-        Cancel.setText(btnCancel.getText());
-
-        editTextOld.setHint("Old Password");
-        editTextNew.setHint("New Password");
-        editTextConfirm.setHint("Password Confirm");
 
         Send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -866,6 +1023,27 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
 
     @Override
     public void onSuccessPermission(int code) {
+        choosenImage = code;
         selectImage();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

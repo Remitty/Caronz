@@ -31,24 +31,18 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.remitty.caronz.App;
 import com.remitty.caronz.R;
-import com.remitty.caronz.adapters.AutoCompleteAdapter;
+import com.remitty.caronz.adapters.AutoCompletePlaceAdapter;
 import com.remitty.caronz.helper.GMSHelper;
 import com.remitty.caronz.models.PlacePredictions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -58,7 +52,7 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
     private RecyclerView rvRecentResults;
     private EditText txtLocation;
     private PlacePredictions predictions = new PlacePredictions();
-    private AutoCompleteAdapter mAutoCompleteAdapter;
+    private AutoCompletePlaceAdapter mAutoCompletePlaceAdapter;
     private static final int MY_PERMISSIONS_REQUEST_LOC = 30;
     private PlacePredictions placePredictions = new PlacePredictions();
     private GoogleApiClient mGoogleApiClient;
@@ -125,7 +119,7 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtLocation.getText().length() > 0) {
                     rvRecentResults.setVisibility(View.GONE);
-                    if (mAutoCompleteAdapter == null)
+                    if (mAutoCompletePlaceAdapter == null)
                         mAutoCompleteList.setVisibility(View.VISIBLE);
 
                     Runnable run = new Runnable() {
@@ -142,14 +136,14 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
                                     Log.v("PayNowRequestResponse", response.toString());
                                     Gson gson = new Gson();
                                     predictions = gson.fromJson(response.toString(), PlacePredictions.class);
-                                    if (mAutoCompleteAdapter == null) {
-                                        mAutoCompleteAdapter = new AutoCompleteAdapter(AddHomeWorkActivity.this, predictions.getPlaces(), AddHomeWorkActivity.this);
-                                        mAutoCompleteList.setAdapter(mAutoCompleteAdapter);
+                                    if (mAutoCompletePlaceAdapter == null) {
+                                        mAutoCompletePlaceAdapter = new AutoCompletePlaceAdapter(AddHomeWorkActivity.this, predictions.getPlaces(), AddHomeWorkActivity.this);
+                                        mAutoCompleteList.setAdapter(mAutoCompletePlaceAdapter);
                                     } else {
                                         mAutoCompleteList.setVisibility(View.VISIBLE);
-                                        mAutoCompleteAdapter.clear();
-                                        mAutoCompleteAdapter.addAll(predictions.getPlaces());
-                                        mAutoCompleteAdapter.notifyDataSetChanged();
+                                        mAutoCompletePlaceAdapter.clear();
+                                        mAutoCompletePlaceAdapter.addAll(predictions.getPlaces());
+                                        mAutoCompletePlaceAdapter.notifyDataSetChanged();
                                         mAutoCompleteList.invalidate();
                                     }
                                 }
@@ -221,7 +215,7 @@ public class AddHomeWorkActivity  extends AppCompatActivity implements GoogleApi
                             placePredictions.strSourceLatLng = String.valueOf(latu) + ","+ String.valueOf(longu);
                             placePredictions.strSourceLatitude = String.valueOf(latu);
                             placePredictions.strSourceLongitude = String.valueOf(longu);
-                            mAutoCompleteAdapter = null;
+                            mAutoCompletePlaceAdapter = null;
 
                             mAutoCompleteList.setVisibility(View.GONE);
                             setAddress();

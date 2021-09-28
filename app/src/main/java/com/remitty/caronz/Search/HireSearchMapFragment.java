@@ -199,6 +199,24 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
             }
         });
 
+        mapfocus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double crtLat, crtLng;
+                if (!current_lat.equalsIgnoreCase("") && !current_lng.equalsIgnoreCase("")) {
+                    crtLat = Double.parseDouble(current_lat);
+                    crtLng = Double.parseDouble(current_lng);
+
+                    if (crtLat != null) {
+                        LatLng loc = new LatLng(crtLat, crtLng);
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(16).build();
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        mapfocus.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
+
         checkGPS();
 
         return view;
@@ -372,7 +390,7 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
     private void showDialogForGPSIntent() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getResources().getString(R.string.app_name))
-                .setIcon(R.mipmap.ic_launcher_round)
+                .setIcon(R.mipmap.ic_launcher)
                 .setMessage("GPS is disabled in your device. Enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Enable GPS",
@@ -591,7 +609,7 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     mMap.setPadding(0, 0, 0, 0);
                     mMap.getUiSettings().setZoomControlsEnabled(false);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(true);
+//                    mMap.getUiSettings().setMyLocationButtonEnabled(true);
                     mMap.getUiSettings().setMapToolbarEnabled(false);
                     mMap.getUiSettings().setCompassEnabled(false);
 
@@ -615,11 +633,11 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onCameraMove() {
-        System.out.print("Current marker: " + "Zoom Level " + mMap.getCameraPosition().zoom);
+       Log.e("Current marker: ", "Zoom Level " + mMap.getCameraPosition().zoom);
         cmPosition = mMap.getCameraPosition();
         if (marker != null) {
             if (mMap.getProjection().getVisibleRegion().latLngBounds.contains(marker.getPosition())) {
-                System.out.print("Current marker: " + "Current Marker is visible");
+                Log.e("Current marker: ", "Current Marker is visible");
                 if (mapfocus.getVisibility() == View.VISIBLE) {
                     mapfocus.setVisibility(View.INVISIBLE);
                 }
@@ -629,7 +647,7 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
                     }
                 }
             } else {
-                System.out.print("Current marker: " + "Current Marker is not visible");
+                Log.e("Current marker: " , "Current Marker is not visible");
                 if (mapfocus.getVisibility() == View.INVISIBLE) {
                     mapfocus.setVisibility(View.VISIBLE);
                 }
@@ -695,25 +713,23 @@ public class HireSearchMapFragment extends Fragment implements OnMapReadyCallbac
         else if (gpsTracker.canGetLocation() && gpsTracker.isCheckPermission()) {
 
 //            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
+//            mMap.setOnMyLocationButtonClickListener(this);
+//            mMap.setOnMyLocationClickListener(this);
         }
 
         LatLng currentPos = null;
         currentPos = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
         // create marker
         MarkerOptions marker = new MarkerOptions()
-                .position(currentPos)
+                .position(currentPos);
 //                .title(gpsTracker.get)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         mMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())).zoom(16).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
                 2000, null);
-
-
 
         source_lat = String.format("%s", gpsTracker.getLatitude());
         source_lng = String.format("%s", gpsTracker.getLongitude());

@@ -273,75 +273,8 @@ public class Settings extends AppCompatPreferenceActivity {
         }
 
         private void adforest_showFeedbackDialog() {
-            final Dialog dialog = new Dialog(getActivity(), R.style.customDialog);
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.dialog_send_feedback);
-            //noinspection ConstantConditions
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.parseColor("#00000000")));
-
-            Button Send = dialog.findViewById(R.id.send_button);
-            Button Cancel = dialog.findViewById(R.id.cancel_button);
-            final EditText et_email = dialog.findViewById(R.id.et_email);
-            final EditText et_subject = dialog.findViewById(R.id.et_subject);
-            final EditText textArea_information = dialog.findViewById(R.id.textArea_information);
-
-            try {
-                JSONObject formJsonObject = feadbackJsonObject.getJSONObject("form");
-                et_email.setHint(formJsonObject.getString("email"));
-                et_subject.setHint(formJsonObject.getString("title"));
-                textArea_information.setHint(formJsonObject.getString("message"));
-                Send.setText(formJsonObject.getString("btn_submit"));
-                Cancel.setText(formJsonObject.getString("btn_cancel"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Send.setBackgroundColor(Color.parseColor(SettingsMain.getMainColor()));
-            Cancel.setBackgroundColor(Color.parseColor(SettingsMain.getMainColor()));
-
-
-            Send.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean check = true;
-                    String email = et_email.getText().toString();
-                    String subject = et_subject.getText().toString();
-                    String message = textArea_information.getText().toString();
-                    final String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";
-
-                    Pattern p = Pattern.compile(regEx);
-
-                    Matcher m = p.matcher(email);
-                    if (email.isEmpty() || !m.find()) {
-                        et_email.setError("");
-                        et_email.requestFocus();
-                        check = false;
-                    } else if (subject.isEmpty()) {
-                        et_subject.setError("");
-                        et_subject.requestFocus();
-                        check = false;
-                    } else if (message.isEmpty()) {
-                        textArea_information.setError("");
-                        textArea_information.requestFocus();
-                        check = false;
-                    }
-                    if (check) {
-                        adforest_sendFeedBack(email, subject, message);
-                        dialog.dismiss();
-                    }
-
-                }
-            });
-
-            Cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
         }
+
 
         private void adforest_setGeneralSettings(JSONObject responseJsonObject) {
             try {

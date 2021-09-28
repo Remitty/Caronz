@@ -3,6 +3,7 @@ package com.remitty.caronz.models;
 import com.remitty.caronz.utills.UrlController;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RentalModel {
@@ -32,6 +33,12 @@ public class RentalModel {
     private int bookStatus;
 
     private JSONObject data;
+
+    public RentalModel(JSONObject data) {
+        this.data = data;
+    }
+
+    public RentalModel(){}
 
     public void setData(JSONObject data) {
         this.data = data;
@@ -94,28 +101,8 @@ public class RentalModel {
         this.location = location;
     }
 
-    public String getAdViews() {
-        return adViews;
-    }
-
-    public void setAdViews(String adViews) {
-        this.adViews = adViews;
-    }
-
-    public int getIsturned() {
-        return isturned;
-    }
-
     public void setIsturned(int isturned) {
         this.isturned = isturned;
-    }
-
-    public int getIsfav() {
-        return isfav;
-    }
-
-    public void setIsfav(int isfav) {
-        this.isfav = isfav;
     }
 
     public String getCardName() {
@@ -135,15 +122,6 @@ public class RentalModel {
             imageResourceId = UrlController.ASSET_ADDRESS + imageResourceId;
         this.imageResourceId = imageResourceId;
     }
-
-    public boolean isSearchItem() {
-        return isSearchItem;
-    }
-
-    public void setSearchItem(boolean searchItem) {
-        isSearchItem = searchItem;
-    }
-
     public String getId() {
         return data.optString("id");
     }
@@ -152,74 +130,28 @@ public class RentalModel {
         this.id = id;
     }
 
-    public String getFavBtnText() {
-        return favBtnText;
-    }
-
-    public void setFavBtnText(String favBtnText) {
-        this.favBtnText = favBtnText;
-    }
-
-    public String getFavColorCode() {
-        return favColorCode;
-    }
-
-    public void setFavColorCode(String favColorCode) {
-        this.favColorCode = favColorCode;
-    }
-
     public String getAddTypeFeature() {
         return addTypeFeature;
     }
 
-    public void setAddTypeFeature(String addTypeFeature) {
-        this.addTypeFeature = addTypeFeature;
-    }
-
-    public void setFeatureType(boolean featureType) {
-        this.isFeatureType = featureType;
-    }
-
-    public boolean getFeaturetype() {
-        return this.isFeatureType;
-    }
-
-    public void setBookFrom(String from){this.bookFrom = from;}
-
     public String getBookFrom(){return data.optString("book_from");}
-
-    public void setBookTo(String to){this.bookTo = to;}
 
     public String getBookTo(){return data.optString("book_to");}
 
-    public void setBookTotal(String total){this.bookTotal = total;}
-
     public String getBookTotal(){return data.optString("total");}
+    public String getSubTotal(){return data.optString("subtotal");}
 
-    public void setBookDuration(String duration){this.bookDuration = duration;}
-
-    public String getBookDuration(){return data.optString("duration");}
-
-    public void setBookCustomer(String customer){this.bookCustomerName = customer;}
-
-    public String getBookCustomer(){return this.bookCustomerName;}
-
-    public void setBookStatus(int status){this.bookStatus = status;}
 
     public String getBookStatus(){return data.optString("status");}
-
-    public void setBookId(String id){this.bookId = id;}
+    public String getPayment(){return data.optString("source");}
 
     public String getCarId(){return data.optString("car_id");}
 
-    public void setBookTranssaction(String transaction){this.bookTransaction = transaction;}
-
-    public String getBookTransaction(){return this.bookTransaction;}
-
     public String getProcessdate() {return this.data.optString("updated_at").substring(0, 10);}
 
-    public void setFee(String fee) {this.fee = fee;}
-    public String getFee(){return this.fee;}
+    public Float getRate() {
+        return Float.parseFloat(data.optString("rate"));
+    }
 
     public CarModel getCar() {
         return new CarModel(data.optJSONObject("car"));

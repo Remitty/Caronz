@@ -156,10 +156,18 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             if(catId == null) catId = "0";
             method = bundle.getString("method");
             model = bundle.getString("model");
+            String catName = bundle.getString("cat_name");
+            if(catName != null) {
+                getActivity().setTitle(catName);
+            } else {
+//                getActivity().setTitle(R.string.app_name);
+                getActivity().setTitle(getResources().getString(R.string.app_name) + " Private User");
+            }
         }
 
         restService = UrlController.createService(RestService.class);
         placesClient = com.google.android.libraries.places.api.Places.createClient(context);
+
 
         scrollView = mView.findViewById(R.id.scrollView);
         carAdapter = new CarAdapter(getActivity(), carsList, method);
@@ -182,8 +190,6 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
         ViewCompat.setNestedScrollingEnabled(mRecyclerView, true);
 
         ((HomeActivity) getActivity()).changeImage();
-
-        getActivity().setTitle(getResources().getString(R.string.app_name));
 
         btnCat = mView.findViewById(R.id.btn_cat);
         btnCat.setOnClickListener(new View.OnClickListener() {
@@ -431,7 +437,8 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                             if (response.getBoolean("success")) {
                                 JSONArray data = response.getJSONArray("data");
                                 Log.d("home data", data.toString());
-                                carsList.clear();
+                                if(!isMore)
+                                    carsList.clear();
                                 for (int i = 0; i < data.length(); i ++) {
                                     CarModel car = new CarModel(data.getJSONObject(i));
                                     carsList.add(car);
@@ -439,7 +446,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                                 carAdapter.loadMore(carsList);
                                 HomeActivity.checkLoading = false;
 
-                                if(data.length() > 0) {
+                                if(carsList.size() > 0) {
                                     scrollView.setVisibility(View.VISIBLE);
                                     emptyLayout.setVisibility(View.GONE);
                                 }
@@ -455,7 +462,8 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                             Toast.makeText(getActivity(), responseObj.errorBody().string(), Toast.LENGTH_SHORT).show();
                         }
                         SettingsMain.hideDilog();
-
+                        if(isMore)
+                            hideMoreLoading();
                     } catch (JSONException e) {
                         SettingsMain.hideDilog();
                         e.printStackTrace();
@@ -468,12 +476,16 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     SettingsMain.hideDilog();
+                    if(isMore)
+                        hideMoreLoading();
                     Log.d("info HomeGet error", String.valueOf(t));
 //                    Timber.d(String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
                 }
             });
 
         } else {
+            if(isMore)
+                hideMoreLoading();
             SettingsMain.hideDilog();
             Toast.makeText(getActivity(), "Internet error", Toast.LENGTH_SHORT).show();
         }

@@ -111,7 +111,7 @@ public class MyHireActivity extends AppCompatActivity {
 
                                         item.setData(realty);
 
-                                        if(item.getBookStatus().equals("Booked"))
+                                        if(item.getBookStatus().equals("Hired") || item.getBookStatus().equals("Confirmed"))
                                             HireUpcomingRealtyList.add(item);
                                         else
                                             HireHistoryRealtyList.add(item);

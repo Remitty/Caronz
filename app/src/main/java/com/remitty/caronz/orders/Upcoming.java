@@ -1,13 +1,20 @@
 package com.remitty.caronz.orders;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.remitty.caronz.car_detail.CarDetailActivity;
@@ -25,6 +32,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -120,7 +129,7 @@ public class Upcoming extends Fragment {
             public void onItemConfirm(int position) {
                 selected = position;
                 RentalModel item = bookingRealtyList.get(position);
-                showConfirmAlert(item.getId());
+                showFeedbackDialog(item.getId());
             }
 
         });
@@ -130,36 +139,50 @@ public class Upcoming extends Fragment {
         return view;
     }
 
-    private void showConfirmAlert(String bookid) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getContext().getResources().getString(R.string.app_name))
-                .setIcon(R.mipmap.ic_launcher)
-                .setMessage("Are you sure you want to to confirm this rental? ");
-        builder.setCancelable(true);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    private void showFeedbackDialog(String bookid) {
+        final Dialog dialog = new Dialog(getActivity(), R.style.customDialog);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_send_feedback);
+        //noinspection ConstantConditions
+        Button Send = dialog.findViewById(R.id.send_button);
+        Button Cancel = dialog.findViewById(R.id.cancel_button);
+        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+        final EditText textArea_information = dialog.findViewById(R.id.textArea_information);
+
+        Send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                submitConfirmBook(bookid);
+            public void onClick(View v) {
+                boolean check = true;
+                if(ratingBar.getRating() == 0) {
+                    Toast.makeText(getContext(), "Please select rating bar.", Toast.LENGTH_SHORT).show();
+                    check = false;
+                }
+                if (check) {
+                    submitConfirmBook(bookid, ratingBar.getRating());
+                    dialog.dismiss();
+                }
+
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+        Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
-        AlertDialog alert = builder.create();
-        alert.show();
+        dialog.show();
     }
 
-    private void submitConfirmBook(String bookid) {
+    private void submitConfirmBook(String bookid, float rating) {
         if (SettingsMain.isConnectingToInternet(getActivity())) {
 
             SettingsMain.showDilog(getActivity());
 
             JsonObject params = new JsonObject();
             params.addProperty("book_id", bookid);
+            params.addProperty("rate", rating);
 
             Log.d("info cancel book", "" + params.toString());
 

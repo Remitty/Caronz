@@ -60,4 +60,12 @@ public class ProfileModel {
         }
     }
 
+    public String getLocation(){
+        try {
+            return data.getString("location");
+        } catch (JSONException e) {
+            return "";
+        }
+    }
+
 }

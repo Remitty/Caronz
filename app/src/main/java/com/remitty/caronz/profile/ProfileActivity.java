@@ -53,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
 
     TextView textViewUserName, textViewEmailvalue, textViewPhonevalue, textViewLocationvalue, tvAddress;
     ImageView imageViewProfile;
-    ImageButton btnCall;
+    ImageView btnCall;
 
     private Integer userId;
 
@@ -149,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
                                 textViewEmailvalue.setText(profile.getEmail());
 
                                 textViewPhonevalue.setText(profile.getPhone());
-                                textViewLocationvalue.setText(profile.getCity() + ", " + profile.getState() + ", " + profile.getCountry());
+                                textViewLocationvalue.setText(profile.getLocation());
                                 tvAddress.setText(profile.getFirstAddress() + ", " + profile.getSecondAddress());
 
                                 JSONArray carsArray = response.getJSONArray("related_cars");

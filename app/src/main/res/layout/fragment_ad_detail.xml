@@ -15,7 +15,7 @@
             <ss.com.bannerslider.views.BannerSlider
                 android:id="@+id/banner_slider1"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="180dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginHorizontal="10dp"
                 app:animateIndicators="true"
@@ -23,14 +23,14 @@
                 app:defaultIndicators="circle"
                 app:loopSlides="true" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <RatingBar
+                android:id="@+id/car_rate"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardmain"
-                android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="5dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center_vertical" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -44,16 +44,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-
                         <TextView
                             android:id="@+id/tv_car_location"
                             android:layout_marginTop="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/ic_place"
+                            android:drawablePadding="10dp"
                             android:textColor="@color/black"
-                            android:textSize="12dp"
+                            android:textAllCaps="true"
+                            android:textSize="15dp"
                             android:textStyle="bold"
                             android:text="Car location"/>
                         <LinearLayout
@@ -67,9 +67,11 @@
                                 android:layout_height="50dp"
                                 android:src="@drawable/ic_register_user"/>
                             <LinearLayout
+                                android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
+                                android:minWidth="200dp"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/tv_car_owner"
@@ -78,7 +80,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:textColor="@color/black"
+                                    android:textColor="@color/blue"
                                     android:textStyle="bold"
                                     android:textSize="15dp"
                                     android:text="Car owner"/>
@@ -90,39 +92,47 @@
                                         android:id="@+id/tv_car_cat"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Car category"
+                                        android:text="category"
+                                        android:textAllCaps="true"
                                         android:textColor="@color/black"
-                                        android:textSize="14sp" />
+                                        android:textStyle="bold"
+                                        android:textSize="16sp" />
+
                                     <TextView
                                         android:id="@+id/tv_car_name"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="5dp"
-                                        android:text="Car name"
+                                        android:text="name"
+                                        android:textAllCaps="true"
                                         android:textColor="@color/black"
-                                        android:textSize="14sp"
-                                        />
-                                    <TextView
-                                        android:id="@+id/tv_car_year"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="5dp"
-                                        android:text="Car year"
-                                        android:textColor="@color/black"
-                                        android:textSize="14sp"
-                                         />
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
 
                                 </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_car_year"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="Car year"
+                                    android:textColor="@color/quantum_purple"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+
                                 <LinearLayout
                                     android:id="@+id/ll_call"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:orientation="horizontal">
+
                                     <ImageView
-                                        android:layout_width="20dp"
+                                        android:layout_width="19dp"
                                         android:layout_height="20dp"
-                                        android:src="@drawable/callbutton"/>
+                                        android:src="@drawable/callbutton" />
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -131,6 +141,46 @@
                                         android:text="Call"/>
                                 </LinearLayout>
                             </LinearLayout>
+
+                            <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:gravity="right"
+                                    android:layout_marginLeft="10dp"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:id="@+id/tv_currency"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:textStyle="bold"
+                                            android:textColor="@color/quantum_orange"
+                                            android:text="$"
+                                            android:textSize="15sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_price"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="0"
+                                            android:textColor="@color/quantum_orange"
+                                            android:textSize="28sp"
+                                            android:textStyle="bold" />
+                                    </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/tv_price_unit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:text="/ day"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
                             <ImageButton
                                 android:id="@+id/btn_view_seller"
                                 android:layout_height="40dp"
@@ -146,16 +196,170 @@
 
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:baselineAligned="false"
+                    android:visibility="gone"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="3dp"
+                                android:text="Odometer"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_car_speed1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0 Mile"
+                                android:padding="3dp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1px"
+                            android:layout_height="match_parent"
+                            android:background="@color/white_greyish" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Seat"
+                                android:textColor="@color/black"
+                                android:padding="3dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_car_seat1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="4"
+                                android:padding="3dp" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="1px"
+                            android:layout_height="match_parent"
+                            android:background="@color/white_greyish" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Transmission"
+                                android:textColor="@color/black"
+                                android:padding="3dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_car_transmission1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Auto"
+                                android:padding="3dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:background="@color/white_greyish" />
+
+
+                </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardmain"
-                android:layout_marginHorizontal="5dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="5dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corner_blue_rectangle"
+                    android:layout_marginHorizontal="3dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_car_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="0 Mi"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corner_blue_rectangle"
+                    android:layout_marginHorizontal="3dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+                    <TextView
+                        android:id="@+id/tv_car_seat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 seat"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corner_blue_rectangle"
+                    android:layout_marginHorizontal="3dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_car_transmission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Auto"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -194,120 +398,6 @@
                         android:visibility="gone"
                         android:textAppearance="@android:style/TextAppearance.Small" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_margin="5dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:baselineAligned="false"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="3dp"
-                                android:text="Distance"
-                                android:textColor="@color/black"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_car_speed"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="0 Mile"
-                                android:padding="3dp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1px"
-                            android:layout_height="match_parent"
-                            android:background="@color/white_greyish" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Seat"
-                                android:textColor="@color/black"
-                                android:padding="3dp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_car_seat"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="4"
-                                android:padding="3dp" />
-                        </LinearLayout>
-
-
-                        <View
-                            android:layout_width="1px"
-                            android:layout_height="match_parent"
-                            android:background="@color/white_greyish" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Transmission"
-                                android:textColor="@color/black"
-                                android:padding="3dp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_car_transmission"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="4"
-                                android:padding="3dp" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_greyish" />
-
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_rate"
@@ -316,6 +406,7 @@
                 android:layout_below="@+id/cardmain"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 app:cardCornerRadius="7dp"
                 app:cardElevation="3dp"
                 app:cardUseCompatPadding="true">
@@ -338,13 +429,7 @@
                             android:textSize="25dp"
                             android:textStyle="bold"
                             android:text="4.3"/>
-                        <RatingBar
-                            android:id="@+id/car_rate"
-                            style="@style/CustomRatingBar"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rating_recycler_view"
@@ -366,239 +451,13 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_sale"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cardmain"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="5dp"
-                app:cardCornerRadius="7dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:minHeight="50dp"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:text="Sale Price"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tv_car_sale_price"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="20dp"
-                        android:text="$0"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-                        <Button
-                            android:id="@+id/btn_buy"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorRedCrayon"
-                            android:text="Buy Now"
-                            android:textColor="@color/white"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_rent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cardmain"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="5dp"
-                app:cardCornerRadius="7dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:minHeight="50dp"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="10dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:text="Rent Price"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:visibility="gone"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:text="Pickup Date"/>
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/edit_pickup"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dp"
-                            android:padding="5dp"
-                            android:focusable="false"
-                            android:hint="19/08/2021 - 19/08/2021"
-                            android:background="@drawable/buton_border"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:id="@+id/tv_rent_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"
-                                android:text="$0"
-                                android:textSize="20sp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text=" /day"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                        <TextView
-                            android:id="@+id/tv_car_rent_total_price"
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginRight="20dp"
-                            android:visibility="gone"
-                            android:text="$0"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/btn_rent"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorRedCrayon"
-                            android:text="Book Now"
-                            android:textColor="@color/white"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_hire"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cardmain"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="5dp"
-                app:cardCornerRadius="7dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:minHeight="50dp"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:text="Hire Price"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:id="@+id/tv_hire_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"
-                                android:text="$0"
-                                android:textSize="20sp" />
-                            <TextView
-                                android:id="@+id/tv_unit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text=""
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                        <Button
-                            android:id="@+id/btn_hire"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorRedCrayon"
-                            android:text="Hire Now"
-                            android:textColor="@color/white"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/relatedText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:text="Related Cars"
                 android:textColor="@color/black"
                 android:textStyle="bold"

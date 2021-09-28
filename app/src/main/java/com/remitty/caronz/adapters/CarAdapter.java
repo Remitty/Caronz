@@ -91,24 +91,20 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
 
         if(!item.isBuy()) {
-            holder.saleLayout.setVisibility(View.GONE);
-            holder.rentLayout.setVisibility(View.VISIBLE);
             if(item.isRental()) {
                 holder.tvPriceView.setText("per day");
-                holder.tvPrice.setText("$ " + item.getPrice());
             }
             else {
                 holder.tvPriceView.setText("per" + " " + item.getUnit());
-                holder.tvPrice.setText("$ " + item.getPrice());
             }
         }
         else {
-            holder.tvSalePrice.setText("$ " + item.getPrice());
-            holder.saleLayout.setVisibility(View.VISIBLE);
-            holder.rentLayout.setVisibility(View.GONE);
+            holder.ratingBar.setVisibility(View.GONE);
+            holder.tvPriceView.setVisibility(View.GONE);
         }
-        holder.tvName.setText(item.getCatName() + " " + item.getName());
-
+        holder.tvPrice.setText(item.getPrice());
+        holder.tvCurrency.setText(item.getCurrency());
+        holder.tvName.setText(item.getName());
 
     }
 
@@ -136,20 +132,17 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private class CarViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView tvName, tvPrice, tvPriceView, tvSalePrice;
+        TextView tvName, tvPrice, tvPriceView, tvCurrency;
         RatingBar ratingBar;
-        LinearLayout rentLayout, saleLayout;
 
         public CarViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.car_image);
             tvName = itemView.findViewById(R.id.tv_car_title);
             tvPrice = itemView.findViewById(R.id.tv_car_price);
-            tvSalePrice = itemView.findViewById(R.id.tv_car_sale_price);
+            tvCurrency = itemView.findViewById(R.id.tv_currency);
             tvPriceView = itemView.findViewById(R.id.tv_car_price_view);
             ratingBar = itemView.findViewById(R.id.car_rating);
-            saleLayout = itemView.findViewById(R.id.sale_layout);
-            rentLayout = itemView.findViewById(R.id.rent_layout);
         }
     }
 

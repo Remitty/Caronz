@@ -12,6 +12,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.remitty.caronz.R;
 import com.remitty.caronz.models.CarModel;
 import com.remitty.caronz.cars.adapters.MyCarPageAdapter;
+import com.remitty.caronz.models.HireModel;
+import com.remitty.caronz.models.OrderModel;
+import com.remitty.caronz.models.RentalModel;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
@@ -41,8 +44,9 @@ public class MyCarsActivity extends AppCompatActivity {
     RestService restService;
 
     private ArrayList<CarModel> myActiveCarList = new ArrayList<>();
-    private ArrayList<CarModel> myRentalCarList = new ArrayList<>();
-    private ArrayList<CarModel> mySoldCarList = new ArrayList<>();
+    private ArrayList<RentalModel> myRentalCarList = new ArrayList<>();
+    private ArrayList<OrderModel> mySoldCarList = new ArrayList<>();
+    private ArrayList<HireModel> myHireCarList = new ArrayList<>();
 
     ViewPager mViewPager;
 
@@ -93,21 +97,38 @@ public class MyCarsActivity extends AppCompatActivity {
                                 myActiveCarList.clear();
                                 myRentalCarList.clear();
                                 mySoldCarList.clear();
+                                myHireCarList.clear();
 
-                                JSONArray carsArray = response.getJSONArray("cars");
-                                Log.e("cars", carsArray.toString());
-                                for (int i = 0; i < carsArray.length(); i++) {
-                                    CarModel car = new CarModel(carsArray.getJSONObject(i));
-                                    if(car.getStatus().equals("Rental"))
-                                        myRentalCarList.add(car);
-                                    else if (car.getStatus().equals("Sold"))
-                                        mySoldCarList.add(car);
-                                    else myActiveCarList.add(car);
+                                JSONArray activeCars = response.getJSONArray("active");
+                                Log.e("activecars", activeCars.toString());
+                                for (int i = 0; i < activeCars.length(); i++) {
+                                    CarModel car = new CarModel(activeCars.getJSONObject(i));
+                                        myActiveCarList.add(car);
+                                }
 
+                                JSONArray rentalCars = response.getJSONArray("rentals");
+                                Log.e("rentalcars", rentalCars.toString());
+                                for (int i = 0; i < rentalCars.length(); i++) {
+                                    RentalModel car = new RentalModel(rentalCars.getJSONObject(i));
+                                    myRentalCarList.add(car);
+                                }
+
+                                JSONArray orderCars = response.getJSONArray("orders");
+                                Log.e("ordercars", orderCars.toString());
+                                for (int i = 0; i < orderCars.length(); i++) {
+                                    OrderModel car = new OrderModel(orderCars.getJSONObject(i));
+                                    mySoldCarList.add(car);
+                                }
+
+                                JSONArray hireCars = response.getJSONArray("hires");
+                                Log.e("hirecars", hireCars.toString());
+                                for (int i = 0; i < hireCars.length(); i++) {
+                                    HireModel car = new HireModel(hireCars.getJSONObject(i));
+                                    myHireCarList.add(car);
                                 }
 
                                 mViewPager = (ViewPager) findViewById(R.id.container);
-                                MyCarPageAdapter mSectionsPagerAdapter = new MyCarPageAdapter(getSupportFragmentManager(), myActiveCarList, myRentalCarList, mySoldCarList);
+                                MyCarPageAdapter mSectionsPagerAdapter = new MyCarPageAdapter(getSupportFragmentManager(), myActiveCarList, myRentalCarList, myHireCarList, mySoldCarList);
                                 mViewPager.setAdapter(mSectionsPagerAdapter);
                                 tabLayout = (TabLayout) findViewById(R.id.tabs);
                                 tabLayout.setupWithViewPager(mViewPager);

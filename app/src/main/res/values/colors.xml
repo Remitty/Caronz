@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#199603</color>
+    <color name="colorPrimary">#008f00</color>
     <color name="colorAccent">#66BB6A</color>
-    <color name="colorPrimaryDark">#a0d468</color>
+    <color name="colorPrimaryDark">#199603</color>
 
     <color name="background_color">#f58936</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white_greyish">#a0a0a0</color>
     <color name="rattingBarColor">#aaffffff</color>
-    <color name="green">#66BB6A</color>
+    <color name="green">#008f00</color>
 
     <color name="tab1">#a0d468</color>
     <color name="tab2">#3498db</color>

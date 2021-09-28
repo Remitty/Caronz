@@ -6,6 +6,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +16,11 @@ import android.os.IBinder;
 import android.provider.Settings;
 import androidx.core.app.ActivityCompat;
 import android.util.Log;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by taimu on 2/7/2018.
@@ -116,6 +123,27 @@ public class GPSTracker extends Service implements LocationListener {
         }
 
         return location;
+    }
+
+    public String getAddress() {
+        List<Address> addresses1 = new ArrayList<>();
+        try {
+            addresses1 = new Geocoder(this.mContext, Locale.getDefault()).getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        StringBuilder result = new StringBuilder();
+        if (addresses1.size() > 0) {
+            Address address = addresses1.get(0);
+            int maxIndex = address.getMaxAddressLineIndex();
+            for (int x = 0; x <= maxIndex; x++) {
+                result.append(address.getAddressLine(x));
+                //result.append(",");
+            }
+        }
+        Log.e("gps tracker address", result.toString());
+
+        return result.toString();
     }
 
     public boolean isCheckPermission() {

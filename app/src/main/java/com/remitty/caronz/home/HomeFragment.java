@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.remitty.caronz.R;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.avis.AvisFragment;
 
 
 public class HomeFragment extends Fragment {
@@ -44,9 +45,12 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        getActivity().setTitle(R.string.app_name);
+
         buyLayout = view.findViewById(R.id.buy_layout);
         rentLayout = view.findViewById(R.id.rent_layout);
         hireLayout = view.findViewById(R.id.hire_layout);
+
 
         buyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,12 +66,8 @@ public class HomeFragment extends Fragment {
         rentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentSearch fragment_cat = new FragmentSearch();
-                Bundle bundle = new Bundle();
-                bundle.putString("method", "rent");
-                bundle.putString("catId", "0");
-                fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentSearch");
+                AvisFragment fragment_cat = new AvisFragment();
+                replaceFragment(fragment_cat, "AvisFragment");
             }
         });
 

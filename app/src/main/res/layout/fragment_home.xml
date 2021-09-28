@@ -24,7 +24,7 @@
         <LinearLayout
             android:id="@+id/rent_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:background="@drawable/border_red_dark"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -35,8 +35,8 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/car_logo"/>
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_launcher"/>
 
             </LinearLayout>
             <LinearLayout
@@ -58,7 +58,7 @@
         <LinearLayout
             android:id="@+id/buy_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/border_red_dark"
             android:gravity="center_vertical"
@@ -72,8 +72,8 @@
 
                 <ImageView
                     android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/car_logo" />
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_launcher" />
 
             </LinearLayout>
 
@@ -96,7 +96,7 @@
         <LinearLayout
             android:id="@+id/hire_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/border_red_dark"
             android:gravity="center_vertical"
@@ -110,8 +110,8 @@
 
                 <ImageView
                     android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/car_logo" />
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_launcher" />
 
             </LinearLayout>
 

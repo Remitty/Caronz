@@ -122,6 +122,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payment"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"/>
+                    <TextView
+                        android:id="@+id/realty_source"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:gravity="end"
+                        android:textSize="13dp"
+                        android:text="Card"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                     android:orientation="horizontal">
                     <TextView
@@ -130,15 +152,27 @@
                         android:text="Status"
                         android:textColor="@color/black"
                         android:textSize="12dp"/>
-                    <TextView
-                        android:id="@+id/realty_status"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:gravity="end"
-                        android:textSize="13dp"
-                        android:text="Processing"/>
+                        android:gravity="right"
+                        android:orientation="horizontal">
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            style="@style/Widget.AppCompat.RatingBar.Small"/>
+                        <TextView
+                            android:id="@+id/realty_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:gravity="end"
+                            android:textSize="13dp"
+                            android:text="Processing"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -172,18 +206,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="horizontal">
-                    <Button
-                        android:layout_weight="1"
-                        android:id="@+id/btn_book_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:background="@color/green"
-                        android:textColor="@color/white"
-                        android:textSize="10dp"
-                        android:text="Complete"/>
+
                     <Button
                         android:id="@+id/btn_book_edit"
                         android:layout_weight="1"
@@ -198,11 +223,22 @@
                         android:text="Edit"/>
                     <Button
                         android:layout_weight="1"
+                        android:id="@+id/btn_book_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/green"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        android:text="Complete"/>
+                    <Button
+                        android:layout_weight="1"
                         android:id="@+id/btn_book_cancel"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:background="@color/bg_gray"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/colorRedCrayon"
+                        android:textColor="@color/white"
                         android:textSize="10dp"
                         android:text="Cancel"/>
                 </LinearLayout>

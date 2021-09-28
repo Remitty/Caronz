@@ -3,6 +3,9 @@ package com.remitty.caronz.orders.adapter;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.remitty.caronz.models.RentalModel;
@@ -29,12 +33,10 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
     private Context mContext;
     private Listener ItemClickListener;
     private boolean show = false;
-    private int total = 0;
 
-    public RentalAdapter(Context context, List<RentalModel> realtyList, int total) {
+    public RentalAdapter(Context context, List<RentalModel> realtyList) {
         this.realtyList = realtyList;
         this.mContext = context;
-        this.total = total;
         settingsMain = new SettingsMain(context);
 
     }
@@ -57,25 +59,37 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
     public void onBindViewHolder(RentalAdapter.CustomViewHolder customViewHolder, int i) {
         final RentalModel feedItem = realtyList.get(i);
 
-        customViewHolder.tvAddress.setText(feedItem.getProcessdate());
-        customViewHolder.tvPrice.setText("$ " + feedItem.getBookTotal());
-        customViewHolder.tvTitle.setText(feedItem.getCar().getName());
+        customViewHolder.tvDate.setText(feedItem.getProcessdate());
+        customViewHolder.tvPrice.setText(feedItem.getCar().getCurrency() + feedItem.getBookTotal());
+        customViewHolder.tvTitle.setText(feedItem.getCar().getCatName() + " " + feedItem.getCar().getName());
         customViewHolder.tvStatus.setText(feedItem.getBookStatus());
         customViewHolder.tvStart.setText(feedItem.getBookFrom());
         customViewHolder.tvEnd.setText(feedItem.getBookTo());
+        customViewHolder.tvSource.setText(feedItem.getPayment());
+
+
 
         Picasso.with(mContext).load(feedItem.getCar().getFirstImage())
-                .resize(270, 270).centerCrop()
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
                 .into(customViewHolder.imageView);
 
         if(show) {
-            customViewHolder.btnGroupLayout.setVisibility(View.VISIBLE);
+            if(feedItem.getBookStatus().equals("Booked"))
+                customViewHolder.btnBookConfirm.setVisibility(View.GONE);
+        } else {
+            customViewHolder.btnGroupLayout.setVisibility(View.GONE);
         }
 
-        if(feedItem.getBookStatus().equals("Booked"))
-            customViewHolder.btnBookConfirm.setVisibility(View.GONE);
+        if(!feedItem.getBookStatus().equals("Completed")) {
+            customViewHolder.ratingBar.setVisibility(View.GONE);
+        } else {
+            customViewHolder.ratingBar.setRating(feedItem.getRate());
+            LayerDrawable stars = (LayerDrawable) customViewHolder.ratingBar.getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
+        }
+
+
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -130,8 +144,9 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
+        private final RatingBar ratingBar;
         ImageView imageView;
-        TextView tvTitle, tvAddress, tvStart, tvEnd, tvPrice, tvStatus;
+        TextView tvTitle, tvDate, tvStart, tvEnd, tvPrice, tvStatus, tvSource;
         Button btnBookEdit, btnBookCancel, btnBookConfirm;
         LinearLayout btnGroupLayout;
 
@@ -140,15 +155,17 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
 
             this.imageView = view.findViewById(R.id.realty_image);
             this.tvTitle = view.findViewById(R.id.realty_title);
-            this.tvAddress = view.findViewById(R.id.realty_date);
+            this.tvDate = view.findViewById(R.id.realty_date);
             this.tvStart = view.findViewById(R.id.rental_start);
             this.tvEnd = view.findViewById(R.id.rental_end);
             this.tvPrice = view.findViewById(R.id.realty_price);
             this.tvStatus = view.findViewById(R.id.realty_status);
+            this.tvSource = view.findViewById(R.id.realty_source);
             this.btnBookCancel = view.findViewById(R.id.btn_book_cancel);
             this.btnBookEdit = view.findViewById(R.id.btn_book_edit);
             this.btnBookConfirm = view.findViewById(R.id.btn_book_confirm);
             this.btnGroupLayout = view.findViewById(R.id.btn_group_layout);
+            this.ratingBar = view.findViewById(R.id.ratingBar);
         }
     }
 

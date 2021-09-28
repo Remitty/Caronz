@@ -84,6 +84,12 @@ public class DriverAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 ItemClickListener.onView(position);
             }
         });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ItemClickListener.onView(position);
+            }
+        });
 
         holder.ratingBar.setRating(item.getRate());
         LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();

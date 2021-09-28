@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.remitty.caronz.models.DocumentModel;
 import com.remitty.caronz.models.UserModel;
 import com.squareup.picasso.Picasso;
 
@@ -39,8 +40,9 @@ public class FragmentProfile extends Fragment {
 
     TextView editProfBtn;
 
-    TextView textViewUserName, textViewEmailvalue, textViewPhonevalue, textViewLocationvalue, tvAddress, tvBalance;
+    TextView textViewUserName, textViewEmailvalue, textViewPhonevalue, textViewLocationvalue, tvAddress, tvAddress2, tvBalance, tvZipcode;
     ImageView imageViewProfile;
+    ImageView licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
     Dialog dialog;
 
     @Override
@@ -77,10 +79,18 @@ public class FragmentProfile extends Fragment {
         textViewPhonevalue = view.findViewById(R.id.textViewPhoneValue);
         textViewLocationvalue = view.findViewById(R.id.tv_location);
         tvAddress = view.findViewById(R.id.tv_address);
+        tvAddress2 = view.findViewById(R.id.tv_address2);
         tvBalance = view.findViewById(R.id.tv_balance);
+        tvZipcode = view.findViewById(R.id.tv_zipcode);
 
         textViewUserName.setText(settingsMain.getUserName());
         textViewEmailvalue.setText(settingsMain.getUserEmail());
+
+        licenseImage = view.findViewById(R.id.image_license);
+        registrationImage = view.findViewById(R.id.image_register);
+        insuranceImage = view.findViewById(R.id.image_insurance);
+        otherImage1 = view.findViewById(R.id.image_other1);
+        otherImage2 = view.findViewById(R.id.image_other2);
 
 
         dialog = new Dialog(getActivity(), R.style.customDialog);
@@ -125,9 +135,21 @@ public class FragmentProfile extends Fragment {
                                         .into(imageViewProfile);
 
                                 textViewPhonevalue.setText(profile.getPhone());
-                                textViewLocationvalue.setText(profile.getCity() + ", " + profile.getState() + ", " +  profile.getCountry());
-                                tvAddress.setText(profile.getFirstAddress() + ", " + profile.getSecondAddress());
+                                textViewLocationvalue.setText(profile.getLocation());
+                                tvAddress.setText(profile.getFirstAddress());
+                                tvAddress2.setText(profile.getSecondAddress());
+                                tvZipcode.setText(profile.getPostalCode());
                                 tvBalance.setText("$ " + profile.getBalance());
+
+                                DocumentModel document = profile.getDocument();
+                                if(document != null) {
+                                    Picasso.with(getActivity()).load(document.getLicense()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(licenseImage);
+                                    Picasso.with(getActivity()).load(document.getRegistration()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(registrationImage);
+                                    Picasso.with(getActivity()).load(document.getInsurance()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(insuranceImage);
+                                    Picasso.with(getActivity()).load(document.getOther1()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage1);
+                                    Picasso.with(getActivity()).load(document.getOther2()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage2);
+
+                                }
 
                             } else {
                                 Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();

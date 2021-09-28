@@ -179,13 +179,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:textStyle="bold" />
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/btn_call"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
-                        android:background="@color/green"
-                        android:src="@drawable/phone_white"/>
+                        android:src="@drawable/callbutton"/>
                 </LinearLayout>
 
                 <View

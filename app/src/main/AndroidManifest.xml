@@ -29,13 +29,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".withdraw.WithdrawHistoryActivity"></activity>
+        <activity android:name=".avis.AvisCarDetailActivity"></activity>
+        <activity android:name=".avis.AvisSearchActivity" />
+        <activity android:name=".avis.AvisPickupActivity" />
+        <activity android:name=".coins.CoinHistoryActivity" />
+        <activity
+            android:name=".coins.CoinActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".others.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".withdraw.WithdrawHistoryActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".helper.WebViewActivity"
             android:screenOrientation="portrait"
@@ -65,7 +77,7 @@
             android:name=".auth.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.ActivityHelp"
+            android:name=".others.ActivityHelp"
             android:screenOrientation="portrait" />
         <activity
             android:name=".auth.ProfileCompleteActivity"

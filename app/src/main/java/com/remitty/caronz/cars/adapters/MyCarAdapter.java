@@ -94,6 +94,8 @@ public class MyCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ItemClickListener.onActive(position);
             }
         });
+        if(item.isBuy())
+            holder.ratingBar.setVisibility(View.GONE);
         holder.ratingBar.setRating(item.getRate());
         LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);

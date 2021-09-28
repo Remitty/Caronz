@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.remitty.caronz.R;
+import com.remitty.caronz.utills.GRadioGroup;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
@@ -57,7 +60,7 @@ public class StripePayment extends AppCompatActivity {
     SettingsMain settingsMain;
 
     FrameLayout loadingLayout;
-    LinearLayout bookInvoiceLayout, hireInvoiceLayout, cardFormLayout, cardViewLayout;
+    LinearLayout bookInvoiceLayout, hireInvoiceLayout, cardFormLayout, cardViewLayout, balanceLayout, cashLayout;
 
     EditText editCardNumber, editCvc;
     Spinner monthSpinner, yearSpinner;
@@ -65,10 +68,13 @@ public class StripePayment extends AppCompatActivity {
     Button btnChkOut;
 
     TextView tvCardNo, tvCardDate;
-    TextView tvUnitPrice, tvDuration, tvTax, tvCommission, tvTotal, tvFrom, tvTo, tvArriveTime, tvPickupLocation, tvDropoffLocation, tvEstTime, tvEstDistance;
+    TextView tvUnitPrice, tvDuration, tvTax, tvCommission, tvTotal, tvFrom, tvTo, tvArriveTime, tvPickupLocation, tvDropoffLocation, tvEstTime, tvEstDistance, tvBalance;
     TextView tvAddCard, tvChangeCard;
     ImageView imgCardBrand;
     CheckBox checkStoreCard;
+
+    GRadioGroup rdgService;
+    RadioButton rdbCard, rdbBalance, rdbCash;
 
     private Intent mIntent;
 
@@ -184,14 +190,23 @@ public class StripePayment extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showLoading();
-                        if(editCardNumber.getText().toString().isEmpty() && creditCards.size() == 0) {
-                            Toast.makeText(getBaseContext(), "Please add card.", Toast.LENGTH_SHORT).show();
+
+                        if(!rdbCard.isChecked() && !rdbCash.isChecked() && !rdbBalance.isChecked() && editCardNumber.getText().toString().isEmpty() && creditCards.size() == 0) {
+                            Toast.makeText(getBaseContext(), "Please add card or select payment method.", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if(editCardNumber.getText().toString().isEmpty())
-                            checkout();
-                        else
+                        if(!rdbCard.isChecked() && !rdbCash.isChecked() && !rdbBalance.isChecked() && editCardNumber.getText().toString().isEmpty() && creditCards.size() > 0) {
+                            Toast.makeText(getBaseContext(), "Please select payment method.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(!rdbCash.isChecked() && !rdbBalance.isChecked() && !editCardNumber.getText().toString().isEmpty()) {
                             createCard();
+                            return;
+                        }
+
+                        checkout();
+
+
                         dialog.dismiss();
                     }
                 });
@@ -289,6 +304,8 @@ public class StripePayment extends AppCompatActivity {
         tvEstTime = findViewById(R.id.invoice_est_time);
         tvEstDistance = findViewById(R.id.invoice_est_distance);
 
+        tvBalance = findViewById(R.id.tv_balance);
+
 
         tvCardDate = findViewById(R.id.tv_card_date);
         tvCardNo = findViewById(R.id.tv_card_no);
@@ -304,6 +321,8 @@ public class StripePayment extends AppCompatActivity {
 
         cardFormLayout = findViewById(R.id.card_layout);
         cardViewLayout = findViewById(R.id.card_view);
+        balanceLayout = findViewById(R.id.balance_layout);
+        cashLayout = findViewById(R.id.cash_layout);
 
         if(service.equals("buy")) {
             bookInvoiceLayout.setVisibility(View.GONE);
@@ -314,6 +333,12 @@ public class StripePayment extends AppCompatActivity {
             bookInvoiceLayout.setVisibility(View.GONE);
         }
 
+//        rdgService = findViewById(R.id.rdg_service);
+        rdbCard = findViewById(R.id.rdb_card);
+        rdbBalance = findViewById(R.id.rdb_balance);
+        rdbCash = findViewById(R.id.rdb_cash);
+
+        rdgService = new GRadioGroup(this, R.id.rdb_card, R.id.rdb_balance, R.id.rdb_cash);
 
     }
 
@@ -356,15 +381,16 @@ public class StripePayment extends AppCompatActivity {
                             if (response.getBoolean("success")) {
 
                                 JSONObject data = response.getJSONObject("data");
+                                String currency = data.getString("currency");
 
-                                tvUnitPrice.setText("$ " +  String.format("%.2f", data.getDouble("unit_price")));
+                                tvUnitPrice.setText(currency +  String.format("%.2f", data.getDouble("unit_price")));
                                 duration = data.getString("duration");
 
                                 tvDuration.setText(duration);
-                                tvTax.setText("$ " + data.getString("tax"));
-                                tvCommission.setText("$ " + data.getString("commission"));
+                                tvTax.setText(currency + data.getString("tax"));
+                                tvCommission.setText(currency + data.getString("commission"));
                                 totalcost = data.getString("total");
-                                tvTotal.setText("$ " + totalcost);
+                                tvTotal.setText(currency + totalcost);
 
                                 initCards(response.getJSONArray("cards"));
 
@@ -373,6 +399,16 @@ public class StripePayment extends AppCompatActivity {
                                     estTime = data.optString("time");
                                     tvEstDistance.setText(estDistance);
                                     tvEstTime.setText(estTime);
+                                }
+
+                                if(!response.getBoolean("isCard")) {
+                                    cardViewLayout.setVisibility(View.GONE);
+                                    cardFormLayout.setVisibility(View.GONE);
+                                }
+                                if(!response.getBoolean("isBalance")) {
+                                    balanceLayout.setVisibility(View.GONE);
+                                } else {
+                                    tvBalance.setText("$"+response.getString("balance"));
                                 }
 
                             } else {
@@ -442,8 +478,18 @@ public class StripePayment extends AppCompatActivity {
 
             JsonObject params = new JsonObject();
             params.addProperty("car_id", id);
-            if(cardId != null && !cardId.isEmpty())
+            if(cardId != null && !cardId.isEmpty()) {
                 params.addProperty("card_id", cardId);
+                if(!rdbCash.isChecked() && !rdbBalance.isChecked())
+                params.addProperty("source", "Card");
+            }
+
+            if(rdbCash.isChecked())
+                params.addProperty("source", "Cash");
+            if(rdbBalance.isChecked())
+                params.addProperty("source", "Balance");
+            if(rdbCard.isChecked())
+                params.addProperty("source", "Card");
 
             if(bookingId != null){
                 params.addProperty("booking_id", bookingId);

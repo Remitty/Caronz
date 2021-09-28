@@ -131,7 +131,7 @@ import com.remitty.caronz.utills.UrlController;
 
 
 public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnMyLocationButtonClickListener,
+         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener, AdapterView.OnItemClickListener,  AdapterView.OnItemSelectedListener,
         RuntimePermissionHelper.permissionInterface {
 
@@ -158,12 +158,12 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     EditText editPostTitle, editPostDescription,
             editTextUserLat, editTextuserLong, editPostRentPrice, editYear, editPostSpeed;
 
-    TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice;
+    TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice, tvYear;
 
     ImageView imageViewBack2, imageViewBack3;
     Button btnNext1, btnNext2, btnPostAd;
     CheckBox featureAdChkBox;
-    Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner;
+    Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner, currencySpinner;
     RadioGroup RdgTransmission, rdgService;
     RadioButton rdbAuto, rdbManual, rdbRent, rdbSell, rdbDrive;
 
@@ -278,10 +278,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         transmissionSpinner.setAdapter(adapter1);
         transmissionSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, units);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unitsSpinner.setAdapter(adapter3);
-        unitsSpinner.setOnItemSelectedListener(this);
+//        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, units);
+//        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        unitsSpinner.setAdapter(adapter3);
+//        unitsSpinner.setOnItemSelectedListener(this);
 
         String[] seats = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, seats);
@@ -355,6 +355,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         transmissionSpinner = findViewById(R.id.transmission_spinner);
         seatSpinner = findViewById(R.id.seat_spinner);
         unitsSpinner = findViewById(R.id.units_spinner);
+        currencySpinner = findViewById(R.id.currency_spinner);
 
 
         rdgService = findViewById(R.id.rdg_service);
@@ -383,6 +384,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         tvSpeed = findViewById(R.id.tv_car_speed);
         tvSeats = findViewById(R.id.tv_car_seat);
         tvName = findViewById(R.id.tv_car_name);
+        tvYear = findViewById(R.id.tv_car_year);
         tvService = findViewById(R.id.tv_car_service);
         tvDescription = findViewById(R.id.tv_car_description);
         tvPrice = findViewById(R.id.tv_car_price);
@@ -447,21 +449,22 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 switch(selectedId1) {
                     case R.id.rdb_rent:
                         tvService.setText("Rent");
-                        tvPrice.setText("$" + editPostRentPrice.getText().toString() + " /day");
+                        tvPrice.setText(getCurrency() + editPostRentPrice.getText().toString() + " /day");
                         break;
                     case R.id.rdb_sell:
                         tvService.setText("Sell");
-                        tvPrice.setText("$" + editPostRentPrice.getText().toString());
+                        tvPrice.setText(getCurrency() + editPostRentPrice.getText().toString());
                         break;
                     case R.id.rdb_drive:
                         tvService.setText("Drive");
-                        tvPrice.setText("$" + editPostRentPrice.getText().toString() + " /" + getUnit());
+                        tvPrice.setText(getCurrency() + editPostRentPrice.getText().toString() + " /" + getUnit());
                         break;
                 }
 
                 tvSpeed.setText(editPostSpeed.getText().toString() + " " + getUnit());
                 tvSeats.setText(String.valueOf(seatSpinner.getSelectedItemPosition() + 1));
                 tvName.setText(editPostTitle.getText().toString());
+                tvYear.setText(editYear.getText().toString());
                 tvDescription.setText(editPostDescription.getText().toString());
                 tvBrand.setText(settingsMain.getCategory(catSpinner.getSelectedItemPosition()));
             }
@@ -523,6 +526,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     private String getUnit() {
         return units[unitsSpinner.getSelectedItemPosition()];
     }
+
+    private String getCurrency() {return currencySpinner.getSelectedItem().toString();}
 
     private void getCategories() {
         if (SettingsMain.isConnectingToInternet(this)) {
@@ -887,11 +892,15 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         params.addProperty("title", editPostTitle.getText().toString());
         params.addProperty("description", editPostDescription.getText().toString());
         params.addProperty("price", editPostRentPrice.getText().toString());
+        params.addProperty("currency", getCurrency());
+        params.addProperty("unit", getUnit());
         params.addProperty("seat", (seatSpinner.getSelectedItemPosition() + 1));
         params.addProperty("transmission", getTransmission());
-        params.addProperty("speed", editPostSpeed.getText().toString());
+        params.addProperty("distance", editPostSpeed.getText().toString());
         params.addProperty("cat_id", catSpinner.getSelectedItemPosition());
         params.addProperty("location", mLocationAutoTextView.getText().toString());
+        params.addProperty("address", mAddressAutoTextView.getText().toString());
+        params.addProperty("year", editYear.getText().toString());
 //            try {
 //                String phoneNumber = editTextUserPhone.getText().toString();
 //                if (jsonObj.getBoolean("is_phone_verification_on")) {
@@ -927,10 +936,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 params.addProperty("service", "rent");
                 break;
             case R.id.rdb_sell:
-                params.addProperty("service", "sell");
+                params.addProperty("service", "buy");
                 break;
             case R.id.rdb_drive:
-                params.addProperty("service", "drive");
+                params.addProperty("service", "hire");
                 break;
         }
 
@@ -950,9 +959,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                             if (response.getBoolean("success")) {
                                 Log.d("info AdPost object", response.toString());
 
-                                Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
                                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                                alert.setIcon(R.mipmap.ic_launcher_round)
+                                alert.setIcon(R.mipmap.ic_launcher)
                                         .setTitle("Congratulation!!!")
                                         .setMessage(response.getString("message"))
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -998,7 +1006,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
     private void alertMsg(String msg) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setIcon(R.mipmap.ic_launcher_round)
+        alert.setIcon(R.mipmap.ic_launcher)
                 .setTitle("Alert")
                 .setMessage(msg)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1274,17 +1282,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap Map) {
         mMap = Map;
 
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -1322,23 +1319,9 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
                 2000, null);
 
-        List<Address> addresses1 = new ArrayList<>();
+
         try {
-            addresses1 = new Geocoder(this, Locale.getDefault()).getFromLocation(gpsTracker.getLatitude(), gpsTracker.getLongitude(), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        StringBuilder result = new StringBuilder();
-        if (addresses1.size() > 0) {
-            Address address = addresses1.get(0);
-            int maxIndex = address.getMaxAddressLineIndex();
-            for (int x = 0; x <= maxIndex; x++) {
-                result.append(address.getAddressLine(x));
-                //result.append(",");
-            }
-        }
-        try {
-            mAddressAutoTextView.setText(result.toString());
+            mAddressAutoTextView.setText(gpsTracker.getAddress());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1436,22 +1419,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 //    }
     
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this,
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
-    }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
 
     @Override
     public void onStart() {

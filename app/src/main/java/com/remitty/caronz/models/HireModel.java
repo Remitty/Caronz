@@ -33,6 +33,10 @@ public class HireModel {
 
     private JSONObject data;
 
+    public HireModel(JSONObject data) {this.data = data;}
+
+    public HireModel(){}
+
     public void setData(JSONObject data) {
         this.data = data;
     }
@@ -55,12 +59,18 @@ public class HireModel {
     public String getEstTime(){return data.optString("est_time");}
 
     public String getBookTotal(){return data.optString("total");}
+    public String getSubTotal(){return data.optString("subtotal");}
+    public String getPayment(){return data.optString("source");}
 
     public String getBookStatus(){return data.optString("status");}
 
     public String getCarId(){return data.optString("car_id");}
 
     public String getProcessDate() {return this.data.optString("updated_at").substring(0, 10);}
+
+    public Float getRate() {
+        return Float.parseFloat(data.optString("rate"));
+    }
 
     public CarModel getCar() {
         return new CarModel(data.optJSONObject("car"));

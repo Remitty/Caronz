@@ -259,7 +259,7 @@ public class PickupLocationActivity extends AppCompatActivity implements OnMapRe
     private void showDialogForGPSIntent() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PickupLocationActivity.this);
         builder.setTitle(getResources().getString(R.string.app_name))
-                .setIcon(R.mipmap.ic_launcher_round)
+                .setIcon(R.mipmap.ic_launcher)
                 .setMessage("GPS is disabled in your device. Enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Enable GPS",
@@ -498,6 +498,7 @@ public class PickupLocationActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         try {
+
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.map_style_json));
@@ -514,7 +515,7 @@ public class PickupLocationActivity extends AppCompatActivity implements OnMapRe
         mMap = googleMap;
 
         setupMap();
-
+        cmPosition = mMap.getCameraPosition();
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,

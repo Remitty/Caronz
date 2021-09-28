@@ -28,7 +28,9 @@ import com.jarklee.materialdatetimepicker.time.TimePickerDialog;
 import com.remitty.caronz.R;
 import com.remitty.caronz.gms.CustomGooglePlacesSearchActivity;
 import com.remitty.caronz.helper.GMSHelper;
+import com.remitty.caronz.home.AddNewAdPost;
 import com.remitty.caronz.models.PlacePredictions;
+import com.remitty.caronz.utills.GPSTracker;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +66,8 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
         editArriveDate = findViewById(R.id.edit_arrive_date);
         btnPay = findViewById(R.id.btn_pay);
 
+        checkGPS();
+
         if(getIntent() != null) {
             if(getIntent().hasExtra("car_id"))
                 carId = getIntent().getStringExtra("car_id");
@@ -92,6 +96,17 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
         }
 
         initListeners();
+    }
+
+    private void checkGPS() {
+        GPSTracker gpsTracker = new GPSTracker(HireBookingActivity.this);
+        if (!gpsTracker.canGetLocation())
+            gpsTracker.showSettingsAlert();
+
+        s_lati = gpsTracker.getLatitude() + "";
+        s_long = gpsTracker.getLongitude() + "";
+        pickupLocation = gpsTracker.getAddress();
+        txtaddressSource.setText(pickupLocation);
     }
 
     private void initListeners() {
@@ -161,7 +176,7 @@ public class HireBookingActivity extends AppCompatActivity implements TimePicker
                     AlertDialog.Builder builder = new AlertDialog.Builder(HireBookingActivity.this);
                     builder.setTitle("Confirm Info")
                             .setMessage("Are you sure you want to continue the checkout?")
-                            .setIcon(R.mipmap.ic_launcher_round)
+                            .setIcon(R.mipmap.ic_launcher)
                             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

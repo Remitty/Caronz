@@ -100,6 +100,8 @@ public class CarModel {
         return new DecimalFormat("#,###.##").format(data.optDouble("price"));
     }
 
+    public String getCurrency() {return data.optString("currency");}
+
     public boolean isRental() {
         String service = data.optString("service");
         if(service.equals("rent")) return true;

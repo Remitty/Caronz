@@ -9,6 +9,10 @@
     android:icon="@drawable/ic_mail_outline"
     android:title="Message" />
     <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_message_notification"
+        android:title="Notification" />
+    <item
         android:id="@+id/nav_post"
     android:icon="@drawable/ic_menu_camera"
     android:title="Post" />

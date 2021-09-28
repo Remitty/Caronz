@@ -9,12 +9,15 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by apple on 12/18/17.
@@ -94,6 +97,12 @@ public interface RestService {
         //Post New Ad
     Call<ResponseBody> getDetail(
             @Body JsonObject adPost,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("car/activate")
+    Call<ResponseBody> activateCar(
+            @Body JsonObject param,
             @HeaderMap Map<String, String> headers
     );
 
@@ -498,13 +507,25 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
+    @POST("buy/confirm")
+    Call<ResponseBody> confirmBuy(
+            @Body JsonObject updateStatus,
+            @HeaderMap Map<String, String> headers
+    );
+
     @GET("booking/list")
     Call<ResponseBody> bookinglist(
             @HeaderMap Map<String, String> headers
     );
 
     @POST("booking/confirm")
-    Call<ResponseBody> bookingconfirm(
+    Call<ResponseBody> bookingConfirm(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("booking/decline")
+    Call<ResponseBody> bookingDecline(
             @Body JsonObject jsonObject,
             @HeaderMap Map<String, String> headers
     );
@@ -538,6 +559,12 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
+    @POST("hire/decline")
+    Call<ResponseBody>hireDecline(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
     @POST("hire/complete")
     Call<ResponseBody>hireComplete(
             @Body JsonObject jsonObject,
@@ -552,6 +579,12 @@ public interface RestService {
 
     @POST("hire/cancel/info")
     Call<ResponseBody> hireCancelInfo(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("hire/delete")
+    Call<ResponseBody> hireDelete(
             @Body JsonObject jsonObject,
             @HeaderMap Map<String, String> headers
     );
@@ -782,4 +815,55 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
     //endregion
+    @GET("notification")
+    Call<ResponseBody> notifications(
+            @HeaderMap Map<String, String> headers
+    );
+//    @HTTP(method = "DELETE", path = "notification", hasBody = false)
+    @DELETE("notification/{id}")
+    Call<ResponseBody> deleteNotification(
+            @Path("id") String id,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("coins/")
+    Call<ResponseBody> getCoins(
+            @HeaderMap Map<String, String> headers
+    );
+
+    //Get more Sellers
+    @POST("coin/deposit")
+    Call<ResponseBody> deposit(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @GET("coin/deposit")
+    Call<ResponseBody> getActivities(
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("coin/delete")
+    Call<ResponseBody> deleteCoin(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("avis/locations")
+    Call<ResponseBody> locationsAvis(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("avis/cars")
+    Call<ResponseBody> searchAvis(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
+
+    @POST("avis/create")
+    Call<ResponseBody> bookAvis(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
 }

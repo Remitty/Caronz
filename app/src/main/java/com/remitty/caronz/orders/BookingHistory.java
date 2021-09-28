@@ -60,7 +60,7 @@ public class BookingHistory extends Fragment {
             recyclerHistory.setVisibility(View.GONE);
         }
 
-        mAdapter = new RentalAdapter(getActivity(), bookingRealtyList, 0);
+        mAdapter = new RentalAdapter(getActivity(), bookingRealtyList);
         recyclerHistory.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new RentalAdapter.Listener(){

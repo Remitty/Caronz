@@ -56,18 +56,22 @@
         android:paddingStart="5dp"
         android:text="" />
     <LinearLayout
-            android:layout_below="@+id/useremail"
+        android:layout_below="@+id/useremail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
         android:gravity="center_horizontal">
         <TextView
             android:id="@+id/tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:textSize="15dp"
-            android:drawableStart="@drawable/ic_pencil_white_edit_button"
-            android:text="Edit Profile" />
-
+            android:text="View Profile" />
+        <View
+            android:layout_width="90dp"
+            android:layout_height=".5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/white"/>
     </LinearLayout>
 </RelativeLayout>
