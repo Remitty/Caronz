@@ -17,8 +17,8 @@
         <LinearLayout
             android:id="@+id/owner_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/border_red_dark"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_corner_blue_rectangle"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <LinearLayout
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="30dp"
                     android:text="@string/app_name"/>
 
@@ -51,9 +51,9 @@
         <LinearLayout
             android:id="@+id/avis_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_red_dark"
+            android:background="@drawable/rounded_corner_blue_rectangle"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -81,7 +81,7 @@
                     android:layout_marginLeft="30dp"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="30dp"
                     android:text="Avis"/>
 
@@ -90,9 +90,9 @@
         <LinearLayout
             android:id="@+id/budget_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_red_dark"
+            android:background="@drawable/rounded_corner_blue_rectangle"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="30dp"
                     android:textAllCaps="true"
                     android:text="budget"/>
@@ -129,9 +129,9 @@
         <LinearLayout
             android:id="@+id/payless_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_red_dark"
+            android:background="@drawable/rounded_corner_blue_rectangle"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="30dp"
                     android:textAllCaps="true"
                     android:text="Payless"/>

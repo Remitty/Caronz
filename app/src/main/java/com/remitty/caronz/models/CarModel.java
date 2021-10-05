@@ -101,6 +101,7 @@ public class CarModel {
     }
 
     public String getCurrency() {return data.optString("currency");}
+    public String getBody() {return data.optString("body");}
 
     public boolean isRental() {
         String service = data.optString("service");
@@ -148,7 +149,7 @@ public class CarModel {
         try {
             String img = "";
             JSONArray images = data.getJSONArray("images");
-            if(images.length() > 0) {
+            if(images != null && images.length() > 0) {
                 JSONObject image = images.getJSONObject(0);
                 img = image.optString("thumb");
                 if (!img.startsWith("http")) {

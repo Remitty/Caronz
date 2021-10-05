@@ -110,4 +110,12 @@
         <item>R$</item>
     </string-array>
 
+    <string-array name="car_type_array">
+        <item>Sedan</item>
+        <item>Truck</item>
+        <item>Coupe</item>
+        <item>Limo</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>

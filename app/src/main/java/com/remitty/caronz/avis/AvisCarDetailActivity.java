@@ -65,6 +65,8 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
     private LinearLayout callLayout;
     private TextView tvSpeed;
 
+    private String bookId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,38 +79,45 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
         runtimePermissionHelper = new RuntimePermissionHelper(AvisCarDetailActivity.this, this);
 
+        initComponents();
+
         if (getIntent() != null) {
-            if (getIntent().hasExtra("car")) {
-                car = (AvisCar) getIntent().getSerializableExtra("car");
-                try {
-                    car.setData(new JSONObject(car.jsonData));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            if(getIntent().hasExtra("bookId")) {
+                bookId = getIntent().getStringExtra("bookId");
+                requestReservation();
+                btnBook.setVisibility(View.GONE);
+            } else {
+                if (getIntent().hasExtra("car")) {
+                    car = (AvisCar) getIntent().getSerializableExtra("car");
+                    try {
+                        car.setData(new JSONObject(car.jsonData));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            if(getIntent().hasExtra("pickup")) {
-                pickupLocation = (AvisLocation) getIntent().getSerializableExtra("pickup");
-                try {
-                    pickupLocation.setData(new JSONObject(pickupLocation.jsonData));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(getIntent().hasExtra("pickup")) {
+                    pickupLocation = (AvisLocation) getIntent().getSerializableExtra("pickup");
+                    try {
+                        pickupLocation.setData(new JSONObject(pickupLocation.jsonData));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            if(getIntent().hasExtra("dropoff")) {
-                dropoffLocation = (AvisLocation) getIntent().getSerializableExtra("dropoff");
-                try {
-                    dropoffLocation.setData(new JSONObject(dropoffLocation.jsonData));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(getIntent().hasExtra("dropoff")) {
+                    dropoffLocation = (AvisLocation) getIntent().getSerializableExtra("dropoff");
+                    try {
+                        dropoffLocation.setData(new JSONObject(dropoffLocation.jsonData));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+                setViews();
             }
         }
 
-        initComponents();
-
         initListeners();
 
-        setViews();
 
     }
 
@@ -186,40 +195,30 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(AvisCarDetailActivity.this);
-                alert.setIcon(R.mipmap.ic_launcher)
-                        .setTitle("Confirm Booking")
-                        .setMessage("Are you sure you want to book this car?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                bookCar();
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
+                Intent intent = new Intent(AvisCarDetailActivity.this, AvisReserveActivity.class);
+                intent.putExtra("car", car);
+                intent.putExtra("pickup", pickupLocation);
+                intent.putExtra("dropoff", pickupLocation);
+                intent.putExtra("dropoff_time", getIntent().getStringExtra("dropoff_time"));
+                intent.putExtra("pickup_time", getIntent().getStringExtra("pickup_time"));
+                intent.putExtra("brand", getIntent().getStringExtra("brand"));
+                startActivity(intent);
             }
         });
     }
 
-    private void bookCar() {
+
+    private void requestReservation() {
         settingsMain.showDilog(this);
 
         if (SettingsMain.isConnectingToInternet(this)) {
 
             JsonObject params = new JsonObject();
-            params.addProperty("brand", getIntent().getStringExtra("brand"));
-            params.addProperty("pickup_date", getIntent().getStringExtra("pickup_time"));
-            params.addProperty("pickup_location_code", pickupLocation.getCode());
-            params.addProperty("dropoff_date", getIntent().getStringExtra("dropoff_time"));
-            params.addProperty("dropoff_location_code", dropoffLocation.getCode());
-            params.addProperty("vehicle_class_code", car.getVehicleClassCode());
-            params.addProperty("rate_code", car.getRateCode());
-            params.addProperty("country_code", pickupLocation.getCountry());
+            params.addProperty("book_id", bookId);
 
-            Log.e("avis book params", params.toString());
+            Log.e("avis search params", params.toString());
 
-            Call<ResponseBody> myCall = restService.bookAvis(params, UrlController.AddHeaders(this));
+            Call<ResponseBody> myCall = restService.getAvis(params, UrlController.AddHeaders(this));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
@@ -229,11 +228,17 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
                         if (responseObj.isSuccessful()) {
 
                             JSONObject response = new JSONObject(responseObj.body().string());
-                            Toast.makeText(getBaseContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
-                            thankYou();
+                            JSONObject data = response.getJSONObject("data");
+                            car = new AvisCar();
+                            car.setCar(data.getJSONObject("vehicle"));
+                            car.setRate(data.getJSONObject("rate_totals"));
+                            pickupLocation = new AvisLocation();
+                            pickupLocation.setData(data.getJSONObject("pickup_location"));
+                            pickupLocation.setLocation(data.getJSONObject("pickup_location").getJSONObject("location"));
 
+                            setViews();
                         } else {
-                            Log.e("avis search issue: ", responseObj.errorBody().string());
+                            Log.e("avis search issue: " , responseObj.errorBody().string());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -254,7 +259,8 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
                     }
                     if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
                         Log.d("info Checkout ", "NullPointert Exception" + t.getLocalizedMessage());
-                    } else {
+                    }
+                    else {
                         Toast.makeText(getBaseContext(), "Something error", Toast.LENGTH_SHORT).show();
                         Log.d("info Checkout err", String.valueOf(t));
                         Log.d("info Checkout err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
@@ -265,13 +271,6 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
             settingsMain.hideDilog();
             Toast.makeText(this, settingsMain.getAlertDialogTitle("error"), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void thankYou() {
-        Intent intent = new Intent(AvisCarDetailActivity.this, Thankyou.class);
-        intent.putExtra("order_thankyou_title", "Congratulation");
-        intent.putExtra("order_thankyou_btn", "Home");
-        startActivity(intent);
     }
 
     public void Call() {

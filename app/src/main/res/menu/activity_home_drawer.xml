@@ -6,16 +6,16 @@
         <item
             android:id="@+id/nav_rent"
             android:icon="@drawable/ic_categories"
-            android:title="Rent a Car" />
+            android:title="Rent-A-Car" />
 
         <item
             android:id="@+id/nav_sale"
             android:icon="@drawable/ic_categories"
-            android:title="Buy a Car" />
+            android:title="Buy-A-Car" />
         <item
             android:id="@+id/nav_hire"
             android:icon="@drawable/ic_categories"
-            android:title="Hire a Ride" />
+            android:title="Hire-A-Ride" />
         <item
             android:id="@+id/nav_account"
             android:title="My Account">
@@ -63,7 +63,7 @@
         <item
             android:id="@+id/nav_myOrders"
             android:icon="@drawable/ic_calendar"
-            android:title="My Bookings" />
+            android:title="My Rental" />
         <item
             android:id="@+id/nav_myHire"
             android:icon="@drawable/ic_calendar"

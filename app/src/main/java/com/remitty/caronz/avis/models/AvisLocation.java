@@ -15,6 +15,10 @@ public class AvisLocation implements Serializable {
         jsonData = data.toString();
     }
 
+    public void setLocation(JSONObject data) {
+        this.data= data;
+    }
+
     public String getAddress() {
         return getAddress1() + ", " + getCity() + ", " + getState() + ", " + getCountry();
     }

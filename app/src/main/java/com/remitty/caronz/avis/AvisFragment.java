@@ -78,7 +78,7 @@ public class AvisFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AvisPickupActivity.class);
-                intent.putExtra("brand", "Avis");
+                intent.putExtra("brand", "Payless");
                 startActivity(intent);
             }
         });
@@ -87,7 +87,7 @@ public class AvisFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AvisPickupActivity.class);
-                intent.putExtra("brand", "Avis");
+                intent.putExtra("brand", "Budget");
                 startActivity(intent);
             }
         });

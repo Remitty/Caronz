@@ -127,7 +127,7 @@
                         <Button
                             android:id="@+id/loginBtn"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="55dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginHorizontal="20dp"
                             android:backgroundTint="@color/colorPrimary"
@@ -136,7 +136,7 @@
                         <Button
                             android:id="@+id/startExplore"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="55dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginHorizontal="20dp"
                             android:backgroundTint="@color/colorAccent"

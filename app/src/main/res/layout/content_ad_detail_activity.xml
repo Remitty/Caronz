@@ -69,6 +69,7 @@
             android:gravity="center"
             android:background="@color/colorRedCrayon"
             android:layout_weight="1">
+
             <TextView
                 android:id="@+id/call"
                 android:layout_width="wrap_content"
@@ -76,17 +77,17 @@
                 android:layout_gravity="center"
                 android:background="@color/colorRedCrayon"
                 android:clickable="true"
-                android:drawablePadding="10dp"
                 android:drawableStart="@drawable/book_calendar"
+                android:drawablePadding="10dp"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingEnd="30dp"
                 android:paddingStart="30dp"
                 android:paddingTop="10dp"
+                android:paddingEnd="30dp"
+                android:paddingBottom="10dp"
                 android:text="Offer Now"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

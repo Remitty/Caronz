@@ -60,19 +60,31 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
         final RentalModel feedItem = realtyList.get(i);
 
         customViewHolder.tvDate.setText(feedItem.getProcessdate());
-        customViewHolder.tvPrice.setText(feedItem.getCar().getCurrency() + feedItem.getBookTotal());
-        customViewHolder.tvTitle.setText(feedItem.getCar().getCatName() + " " + feedItem.getCar().getName());
+        customViewHolder.tvPrice.setText(feedItem.getCurrency() + feedItem.getBookTotal());
+        if(feedItem.getPayment().equals("Cash") || feedItem.getPayment().equals("Balance")  || feedItem.getPayment().equals("Card")) {
+            customViewHolder.tvTitle.setText(feedItem.getCar().getName());
+            customViewHolder.avisLayout.setVisibility(View.GONE);
+            Picasso.with(mContext).load(feedItem.getCar().getFirstImage())
+                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.placeholder)
+                    .into(customViewHolder.imageView);
+        }
+        else {
+            customViewHolder.tvTitle.setText(feedItem.getCarId());
+            customViewHolder.tvDropoffLocation.setText(feedItem.getDropoffLocation());
+            customViewHolder.tvPickupLocation.setText(feedItem.getPickupLocation());
+            customViewHolder.tvConfirmationNo.setText(feedItem.getConfirmationNumber());
+            if(feedItem.getCarImage() != null)
+                Picasso.with(mContext).load(feedItem.getCarImage())
+                        .error(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .into(customViewHolder.imageView);
+        }
+
         customViewHolder.tvStatus.setText(feedItem.getBookStatus());
         customViewHolder.tvStart.setText(feedItem.getBookFrom());
         customViewHolder.tvEnd.setText(feedItem.getBookTo());
         customViewHolder.tvSource.setText(feedItem.getPayment());
-
-
-
-        Picasso.with(mContext).load(feedItem.getCar().getFirstImage())
-                .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
-                .into(customViewHolder.imageView);
 
         if(show) {
             if(feedItem.getBookStatus().equals("Booked"))
@@ -148,7 +160,8 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
         ImageView imageView;
         TextView tvTitle, tvDate, tvStart, tvEnd, tvPrice, tvStatus, tvSource;
         Button btnBookEdit, btnBookCancel, btnBookConfirm;
-        LinearLayout btnGroupLayout;
+        LinearLayout btnGroupLayout, avisLayout;
+        TextView tvPickupLocation, tvDropoffLocation, tvConfirmationNo;
 
         CustomViewHolder(View view) {
             super(view);
@@ -166,6 +179,11 @@ public class RentalAdapter extends RecyclerView.Adapter<RentalAdapter.CustomView
             this.btnBookConfirm = view.findViewById(R.id.btn_book_confirm);
             this.btnGroupLayout = view.findViewById(R.id.btn_group_layout);
             this.ratingBar = view.findViewById(R.id.ratingBar);
+
+            this.avisLayout = view.findViewById(R.id.avis_layout);
+            this.tvPickupLocation = view.findViewById(R.id.pickup_location);
+            this.tvDropoffLocation = view.findViewById(R.id.dropoff_location);
+            this.tvConfirmationNo = view.findViewById(R.id.confirm_no);
         }
     }
 

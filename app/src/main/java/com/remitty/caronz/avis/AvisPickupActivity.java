@@ -290,6 +290,7 @@ public class AvisPickupActivity extends AppCompatActivity implements TimePickerD
     private void searchLocations(String keyword) {
         JsonObject params = new JsonObject();
         params.addProperty("location", keyword);
+        params.addProperty("brand", getIntent().getStringExtra("brand"));
 
         Log.d("avis locations", params.toString());
 

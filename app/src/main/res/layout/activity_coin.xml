@@ -42,13 +42,15 @@
             <TextView
                 android:id="@+id/tv_view_activities"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_height="25dp"
                 android:layout_gravity="bottom"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:paddingHorizontal="20dp"
+                android:background="@drawable/rounded_corner_blue_rectangle"
                 android:text="View activities"
-                android:textSize="16dp"
-                android:textColor="@color/blue"
-                 />
+                android:textColor="@color/white"
+                android:textSize="12dp" />
 
         </LinearLayout>
 

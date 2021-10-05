@@ -17,20 +17,32 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginVertical="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <LinearLayout
                 android:padding="5dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/realty_image"
                     android:layout_gravity="center"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/profileimg"
+                    android:src="@drawable/placeholder"
                     android:adjustViewBounds="true"
                     android:contentDescription="@null"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:id="@+id/realty_title"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:text="Car name"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"
@@ -38,17 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/realty_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Car name"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,6 +125,85 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/avis_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Pickup Location"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:textSize="12dp"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/pickup_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="end"
+                            android:textStyle="bold"
+                            android:text="location"
+                            android:textColor="@color/black"
+                            android:textSize="13dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Dropoff Location"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:textSize="12dp"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/dropoff_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="end"
+                            android:textStyle="bold"
+                            android:text="location"
+                            android:textColor="@color/black"
+                            android:textSize="13dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Confirmation Number"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:textSize="12dp"/>
+                        <TextView
+                            android:id="@+id/confirm_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="end"
+                            android:textStyle="bold"
+                            android:text="12445"
+                            android:textColor="@color/black"
+                            android:textSize="13dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -127,7 +211,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment"
+                        android:text="Source"
                         android:textColor="@color/black"
                         android:textSize="12dp"/>
                     <TextView

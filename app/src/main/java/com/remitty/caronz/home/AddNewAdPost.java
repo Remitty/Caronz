@@ -163,7 +163,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     ImageView imageViewBack2, imageViewBack3;
     Button btnNext1, btnNext2, btnPostAd;
     CheckBox featureAdChkBox;
-    Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner, currencySpinner;
+    Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner, currencySpinner, bodySpinner;
     RadioGroup RdgTransmission, rdgService;
     RadioButton rdbAuto, rdbManual, rdbRent, rdbSell, rdbDrive;
 
@@ -294,8 +294,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
-
     private void initComponents() {
         mScrollView = (NestedScrollView) findViewById(R.id.scrollView);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.editorToolbar);
@@ -356,6 +354,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         seatSpinner = findViewById(R.id.seat_spinner);
         unitsSpinner = findViewById(R.id.units_spinner);
         currencySpinner = findViewById(R.id.currency_spinner);
+        bodySpinner = findViewById(R.id.body_spinner);
 
 
         rdgService = findViewById(R.id.rdg_service);
@@ -528,6 +527,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private String getCurrency() {return currencySpinner.getSelectedItem().toString();}
+
+    private String getBody() {return bodySpinner.getSelectedItem().toString();}
 
     private void getCategories() {
         if (SettingsMain.isConnectingToInternet(this)) {
@@ -718,10 +719,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     private boolean page1Validation() {
         boolean validate = true;
 
-        if(editPostSpeed.getText().toString().isEmpty()) {
-            editPostSpeed.setError("!");
-            validate = false;
-        }
+//        if(editPostSpeed.getText().toString().isEmpty()) {
+//            editPostSpeed.setError("!");
+//            validate = false;
+//        }
 
         if(mLocationAutoTextView.getText().toString().isEmpty()) {
             mLocationAutoTextView.setError("!");
@@ -893,6 +894,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         params.addProperty("description", editPostDescription.getText().toString());
         params.addProperty("price", editPostRentPrice.getText().toString());
         params.addProperty("currency", getCurrency());
+        params.addProperty("body", getBody());
         params.addProperty("unit", getUnit());
         params.addProperty("seat", (seatSpinner.getSelectedItemPosition() + 1));
         params.addProperty("transmission", getTransmission());

@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.remitty.caronz"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 01
+        targetSdkVersion 30
+        versionCode 05
         multiDexEnabled true
-        versionName "0.1"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         resValue "string", "places_api_key", (project.findProperty("AIzaSyDKx1mMTdQq6AYx1i0xl2shnAxNIrcjAoQ") ?: "AIzaSyDKx1mMTdQq6AYx1i0xl2shnAxNIrcjAoQ")

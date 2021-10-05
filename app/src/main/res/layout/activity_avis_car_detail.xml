@@ -278,7 +278,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/colorRedCrayon"
-            android:text="Book Now"
+            android:text="Reserve Now"
             android:textColor="@color/white"
             android:layout_marginTop="30dp"/>
 

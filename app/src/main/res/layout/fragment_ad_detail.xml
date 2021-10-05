@@ -11,17 +11,29 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-
-            <ss.com.bannerslider.views.BannerSlider
-                android:id="@+id/banner_slider1"
+            <FrameLayout
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="10dp"
-                app:animateIndicators="true"
-                app:defaultBanner="1"
-                app:defaultIndicators="circle"
-                app:loopSlides="true" />
+                android:layout_height="wrap_content">
+
+                <ss.com.bannerslider.views.BannerSlider
+                    android:id="@+id/banner_slider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:animateIndicators="true"
+                    app:defaultBanner="1"
+                    app:defaultIndicators="circle"
+                    app:loopSlides="true" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/owner_profile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/ic_register_user"/>
+            </FrameLayout>
 
             <RatingBar
                 android:id="@+id/car_rate"
@@ -61,16 +73,12 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/owner_profile"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/ic_register_user"/>
+
                             <LinearLayout
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="15dp"
+                                android:layout_marginLeft="0dp"
                                 android:minWidth="200dp"
                                 android:orientation="vertical">
                                 <TextView

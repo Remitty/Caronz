@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.remitty.caronz.avis.AvisCarDetailActivity;
 import com.remitty.caronz.car_detail.CarDetailActivity;
 import com.remitty.caronz.models.RentalModel;
 import com.google.gson.JsonObject;
@@ -112,17 +113,25 @@ public class Upcoming extends Fragment {
             public void onItemCancel(int position) {
                 selected = position;
                 RentalModel item = bookingRealtyList.get(position);
-                getCancelInfo(item.getId());
+                if(item.getPayment().equals("Cash") || item.getPayment().equals("Balance")  || item.getPayment().equals("Card"))
+                    getCancelInfo(item.getId());
+                else showCancelAlert(item.getId(), "0");
 
             }
 
             @Override
             public void onItemClick(int position) {
                 RentalModel item = bookingRealtyList.get(position);
-                Intent intent = new Intent(getActivity(), CarDetailActivity.class);
-                intent.putExtra("carId", item.getCarId());
-                intent.putExtra("method", "rental");
-                startActivity(intent);
+                if(item.getPayment().equals("Cash") || item.getPayment().equals("Balance")  || item.getPayment().equals("Card")) {
+                    Intent intent = new Intent(getActivity(), CarDetailActivity.class);
+                    intent.putExtra("carId", item.getCarId());
+                    intent.putExtra("method", "rental");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), AvisCarDetailActivity.class);
+                    intent.putExtra("bookId", item.getId());
+                    startActivity(intent);
+                }
             }
 
             @Override
@@ -365,6 +374,8 @@ public class Upcoming extends Fragment {
                                 Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                 bookingRealtyList.remove(selected);
                                 mAdapter.notifyDataSetChanged();
+                                if (bookingRealtyList.size() == 0)
+                                    emptyLayout.setVisibility(View.VISIBLE);
                             }
                             else {
 //                                Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();

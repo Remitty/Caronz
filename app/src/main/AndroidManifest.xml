@@ -35,7 +35,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".avis.AvisCarDetailActivity"></activity>
+        <activity android:name=".avis.AvisReserveActivity"></activity>
+        <activity android:name=".avis.AvisCarDetailActivity" />
         <activity android:name=".avis.AvisSearchActivity" />
         <activity android:name=".avis.AvisPickupActivity" />
         <activity android:name=".coins.CoinHistoryActivity" />

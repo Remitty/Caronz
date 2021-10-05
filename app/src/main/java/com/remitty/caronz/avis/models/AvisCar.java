@@ -30,6 +30,17 @@ public class AvisCar implements Serializable {
         jsonData = data.toString();
     }
 
+    public void setCar(JSONObject data) {
+        category = data.optJSONObject("category");
+        features = data.optJSONObject("features");
+        capacity = data.optJSONObject("capacity");
+    }
+
+    public void setRate(JSONObject data) {
+        rate = data.optJSONObject("rate");
+        pay = data.optJSONObject("totals");
+    }
+
 
     public String getCatName() {
         return category.optString("name");

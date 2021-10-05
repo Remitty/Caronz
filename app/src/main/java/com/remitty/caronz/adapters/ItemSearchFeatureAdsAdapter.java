@@ -54,7 +54,7 @@ public class ItemSearchFeatureAdsAdapter extends RecyclerView.Adapter<ItemSearch
         holder.titleTextView.setText(list.get(position).getCardName());
         holder.priceTV.setText("$ "+list.get(position).getPrice());
         holder.locationTV.setText(list.get(position).getLocation());
-        holder.featureText.setText(list.get(position).getAddTypeFeature());
+//        holder.featureText.setText(list.get(position).getAddTypeFeature());
         holder.featureText.setBackgroundColor(Color.parseColor("#E52D27"));
 //        setScaleAnimation(holder.itemView);
 

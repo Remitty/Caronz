@@ -182,7 +182,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
                 }
             });
 
-        offerLayout.setOnClickListener(view13 -> {
+        btnCall.setOnClickListener(view13 -> {
             if (!settingsMain.getAppOpen()) {
                 Toast.makeText(getActivity(), settingsMain.getNoLoginMessage(), Toast.LENGTH_SHORT).show();
 
@@ -379,7 +379,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
             tvYear.setText(item.getYear());
             textViewDescrition.setText(item.getDescription());
             tvSeat.setText(item.getSeats() + " Seats");
-            tvSpeed.setText(item.getDistance() + " " + item.getUnit());
+            tvSpeed.setText(item.getBody());
             tvCarLocation.setText(item.getAddress());
             tvPrice.setText(item.getPrice());
             tvCurrency.setText(item.getCurrency());

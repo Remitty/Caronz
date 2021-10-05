@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_find"
     android:icon="@drawable/ic_search"
@@ -14,6 +15,6 @@
         android:title="Notification" />
     <item
         android:id="@+id/nav_post"
-    android:icon="@drawable/ic_menu_camera"
-    android:title="Post" />
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Post" />
 </menu>

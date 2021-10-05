@@ -92,10 +92,10 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if(!item.isBuy()) {
             if(item.isRental()) {
-                holder.tvPriceView.setText("per day");
+                holder.tvPriceView.setText("/day");
             }
             else {
-                holder.tvPriceView.setText("per" + " " + item.getUnit());
+                holder.tvPriceView.setText("/" + " " + item.getUnit());
             }
         }
         else {
@@ -105,7 +105,7 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         holder.tvPrice.setText(item.getPrice());
         holder.tvCurrency.setText(item.getCurrency());
         holder.tvName.setText(item.getName());
-
+        holder.ratingBar.setVisibility(View.GONE);
     }
 
     /**

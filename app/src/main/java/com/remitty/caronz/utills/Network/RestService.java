@@ -866,4 +866,10 @@ public interface RestService {
             @Body JsonObject jsonObject,
             @HeaderMap Map<String, String> headers
     );
+
+    @POST("avis/reservation")
+    Call<ResponseBody> getAvis(
+            @Body JsonObject jsonObject,
+            @HeaderMap Map<String, String> headers
+    );
 }
