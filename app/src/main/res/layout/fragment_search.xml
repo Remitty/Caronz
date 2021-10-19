@@ -13,6 +13,11 @@
             android:layout_marginVertical="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_black_24dp"/>
         <AutoCompleteTextView
             android:id="@+id/et_location"
             android:layout_weight="1"
@@ -76,13 +81,6 @@
             android:textStyle="bold"
             android:textSize="30dp"
             android:textColor="@color/black"/>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:background="@color/bg_gray"
-            android:src="@drawable/ic_search"/>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"

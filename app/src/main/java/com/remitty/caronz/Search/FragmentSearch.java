@@ -56,6 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.remitty.caronz.R;
+import com.remitty.caronz.avis.AvisFragment;
 import com.remitty.caronz.car_detail.CarDetailActivity;
 import com.remitty.caronz.adapters.CarAdapter;
 import com.remitty.caronz.helper.EndlessNestedScrollViewListener;
@@ -95,6 +96,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
     private CarAdapter carAdapter;
 
     ImageButton btnCat;
+    ImageButton btnBack;
 
     AutoCompleteTextView currentLocationText;
     RuntimePermissionHelper runtimePermissionHelper;
@@ -161,7 +163,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                 getActivity().setTitle(catName);
             } else {
 //                getActivity().setTitle(R.string.app_name);
-                getActivity().setTitle(getResources().getString(R.string.app_name) + " Private User");
+                getActivity().setTitle(getResources().getString(R.string.app_name));
             }
         }
 
@@ -200,6 +202,15 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                 bundle.putString("method", method);
                 fragment_cat.setArguments(bundle);
                 replaceFragment(fragment_cat, "FragmentAllCategories");
+            }
+        });
+
+        btnBack = mView.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AvisFragment fragment_avis = new AvisFragment();
+                replaceFragment(fragment_avis, "AvisFragment");
             }
         });
 

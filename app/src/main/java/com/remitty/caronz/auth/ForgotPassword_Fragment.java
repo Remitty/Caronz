@@ -156,8 +156,8 @@ public class ForgotPassword_Fragment extends Fragment implements
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
                     try {
-                        if (responseObj.isSuccessful()) {
                             Log.d("info LoginPost responce", "" + responseObj.toString());
+                        if (responseObj.isSuccessful()) {
                             Log.d("info LoginPost", "" + responseObj.body().toString());
 
                             JSONObject response = new JSONObject(responseObj.body().string());
@@ -175,6 +175,8 @@ public class ForgotPassword_Fragment extends Fragment implements
                                             new ResetPasswordFragment(otp, id),
                                             Utils.ForgotPassword_Fragment).commit();
 
+                        } else {
+                            settingsMain.showAlertDialog(getActivity(), responseObj.errorBody().string());
                         }
                         SettingsMain.hideDilog();
                     } catch (JSONException e) {

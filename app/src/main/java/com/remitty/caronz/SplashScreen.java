@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
@@ -30,8 +31,6 @@ import com.google.firebase.iid.InstanceIdResult;
 public class SplashScreen extends AppCompatActivity {
 
     public static JSONObject jsonObjectAppRating;
-    public static boolean gmap_has_countries = false;
-    public static String gmap_countries;
     Activity activity;
     SettingsMain setting;
     SharedPreferences prefs;
@@ -57,6 +56,16 @@ public class SplashScreen extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNext();
+            }
+        }, 5000);
+
+    }
+
+    private void checkNext() {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -104,8 +113,6 @@ public class SplashScreen extends AppCompatActivity {
             });
             alert.show();
         }
-
-
     }
 
 //    @Override

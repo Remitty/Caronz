@@ -9,11 +9,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.remitty.caronz.R;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.home.HomeFragment;
 
 
 public class AvisFragment extends Fragment {
@@ -21,6 +24,7 @@ public class AvisFragment extends Fragment {
     LinearLayout ownerLayout, avisLayout, budgetLayout, paylessLayout;
 
     public String method="";
+    private ImageButton btnBack;
 
 
     public AvisFragment() {
@@ -89,6 +93,15 @@ public class AvisFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), AvisPickupActivity.class);
                 intent.putExtra("brand", "Budget");
                 startActivity(intent);
+            }
+        });
+
+        btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeFragment fragment_home = new HomeFragment();
+                replaceFragment(fragment_home, "HomeFragment");
             }
         });
 
