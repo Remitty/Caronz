@@ -141,7 +141,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener{
             case R.id.already_user:
 
                 // Replace login fragment
-                new MainActivity().replaceLoginFragment();
+                new AuthActivity().replaceLoginFragment();
                 break;
         }
 
@@ -274,7 +274,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener{
 
                                 } else {
                                     Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
-                                    new MainActivity().replaceLoginFragment();
+                                    new AuthActivity().replaceLoginFragment();
 
                                 }
                             } else {

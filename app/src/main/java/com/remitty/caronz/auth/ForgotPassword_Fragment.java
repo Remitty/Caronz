@@ -107,7 +107,7 @@ public class ForgotPassword_Fragment extends Fragment implements
             case R.id.backToLoginBtn:
 
                 // Replace Login Fragment on Back Presses
-                new MainActivity().replaceLoginFragment();
+                new AuthActivity().replaceLoginFragment();
                 break;
 
             case R.id.forgot_button:

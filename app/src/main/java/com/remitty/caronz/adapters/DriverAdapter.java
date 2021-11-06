@@ -70,8 +70,11 @@ public class DriverAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         final CarModel item = carList.get(position);
         UserModel owner = item.getOwner();
-        if(!item.getFirstImage().isEmpty())
+        if(!owner.getPicture().isEmpty())
             Picasso.with(mContext).load(owner.getPicture()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
+        else
+            Picasso.with(mContext).load(item.getFirstImage()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.image);
+
         holder.btnHire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +100,9 @@ public class DriverAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         holder.tvPriceView.setText(" /" + item.getUnit());
         holder.tvPrice.setText("$ " + item.getPrice());
-        holder.tvName.setText(owner.getUserName());
-
+        if(owner != null)
+            holder.tvName.setText(owner.getUserName());
+        else holder.tvName.setText("");
 
     }
 

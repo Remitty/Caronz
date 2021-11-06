@@ -1,7 +1,6 @@
 package com.remitty.caronz;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -19,9 +18,9 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import com.remitty.caronz.auth.ProfileCompleteActivity;
-import com.remitty.caronz.helper.LocaleHelper;
 import com.remitty.caronz.home.HomeActivity;
-import com.remitty.caronz.auth.MainActivity;
+import com.remitty.caronz.auth.AuthActivity;
+import com.remitty.caronz.main.MainActivity;
 import com.remitty.caronz.utills.SettingsMain;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,17 +50,10 @@ public class SplashScreen extends AppCompatActivity {
         setting = new SettingsMain(this);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+//        setting.setMainColor("auth_background_color");
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        checkNext();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkNext();
-            }
-        }, 5000);
 
     }
 
@@ -91,16 +83,22 @@ public class SplashScreen extends AppCompatActivity {
                     activity.finish();
                     return;
                 }
-                Intent intent = new Intent(activity, HomeActivity.class);
+                Intent intent = new Intent(activity, MainActivity.class);
                 startActivity(intent);
                 activity.overridePendingTransition(R.anim.right_enter, R.anim.left_out);
                 activity.finish();
             } else {
-                SplashScreen.this.finish();
-                setting.setUser("");
-                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SplashScreen.this.finish();
+                        setting.setUser("");
+                        Intent intent = new Intent(SplashScreen.this, AuthActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                    }
+                }, 5000);
+
             }
         } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(SplashScreen.this);

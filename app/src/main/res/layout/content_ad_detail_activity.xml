@@ -4,13 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <RelativeLayout
-        android:id="@+id/adDetailsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/AdDetailsAdmob">
 
 
     <FrameLayout
@@ -26,95 +21,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true">
 
-        <LinearLayout
-            android:id="@+id/ll_message"
+        <Button
+            android:id="@+id/btn_offer"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:background="@drawable/bottmbar"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bottmbar"
-                android:clickable="true"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_menu_send"
-                android:gravity="center"
-                android:paddingBottom="12dp"
-                android:paddingEnd="30dp"
-                android:paddingStart="30dp"
-                android:paddingTop="10dp"
-                android:textAlignment="center"
-                android:text="Send Offer"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/temphide"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            android:background="@color/white" />
-
-        <LinearLayout
-            android:id="@+id/ll_offer"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:background="@color/colorRedCrayon"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/colorRedCrayon"
-                android:clickable="true"
-                android:drawableStart="@drawable/book_calendar"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:paddingStart="30dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="10dp"
-                android:text="Offer Now"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
+            android:layout_height="50dp"
+            android:layout_marginRight="20dp"
+            android:text="Book"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:background="@drawable/rounded_fill_primary_button"/>
+        <ImageButton
+            android:id="@+id/btn_chat"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_chat"
+            android:background="@drawable/rounded_white_rectangle"/>
 
     </LinearLayout>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/AdDetailsAdmob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="#ddd"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/AdDetailsAdmobBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone" />
-
-
 </RelativeLayout>

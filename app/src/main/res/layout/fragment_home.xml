@@ -3,39 +3,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".home.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-            android:layout_marginHorizontal="20dp"
+        android:layout_height="430dp"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="40dp"
+        android:background="@drawable/search_car_bg"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good morning Hri"
+            android:textSize="16dp"
+            android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="I want to "
-            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:text="What service are you looking for?"
+            android:textSize="25dp"
             android:textStyle="bold"
-            android:textSize="30dp"/>
+            android:textColor="@color/white"/>
         <LinearLayout
-            android:id="@+id/rent_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_corner_blue_rectangle"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:padding="15dp"
+            android:background="@drawable/border_transparent_selector"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_search"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/white"
+                android:text="Search car"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/top_rounded_white_backgournd"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+        <LinearLayout
+                android:id="@+id/rent_layout"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@drawable/rounded_gray_rectangle"
+                android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/ic_launcher"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        android:text="Rent - A - Car"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:textSize="14dp"
+                        android:text="Find hundreds of rent a car"/>
+
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_right_arrow_angle"/>
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buy_layout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/rounded_gray_rectangle"
             android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <LinearLayout
-                android:layout_weight="2"
-                android:gravity="center"
-                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@mipmap/ic_launcher"/>
 
             </LinearLayout>
@@ -43,94 +130,72 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="30dp"
-                    android:text="Rent-A-Car"/>
-
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/buy_layout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_corner_blue_rectangle"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="Buy-A-Car"
-                    android:textColor="@color/white"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:text="Buy - A - Car"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp"
+                    android:text="Buy your dearm car"/>
 
             </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right_arrow_angle"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/hire_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_corner_blue_rectangle"
+            android:layout_height="65dp"
+            android:background="@drawable/rounded_gray_rectangle"
             android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center">
-
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_launcher"/>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="30dp"
-                    android:text="Hire-A-Ride"/>
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:text="Hire - A - Car"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp"
+                    android:text="Let's hire a ride with us"/>
 
             </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right_arrow_angle"/>
         </LinearLayout>
     </LinearLayout>
 

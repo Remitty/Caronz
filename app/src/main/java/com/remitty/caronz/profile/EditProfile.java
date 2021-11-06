@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +48,6 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.remitty.caronz.home.AddNewAdPost;
 import com.remitty.caronz.models.DocumentModel;
 import com.remitty.caronz.models.UserModel;
 import com.google.gson.JsonObject;
@@ -80,8 +78,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.remitty.caronz.R;
-import com.remitty.caronz.home.HomeActivity;
-import com.remitty.caronz.auth.MainActivity;
+import com.remitty.caronz.auth.AuthActivity;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
 import com.remitty.caronz.utills.SettingsMain;
@@ -492,63 +489,63 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                 Toast.makeText(getContext(), "Invalid URL specified", Toast.LENGTH_SHORT).show();
             } else {
                 SettingsMain.showDilog(getActivity());
-                Call<ResponseBody> req = restService.postUpdateProfile(params, UrlController.UploadImageAddHeaders(getActivity()));
-                req.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseobj) {
-                        try {
-                            Log.d("info UpdateProfile Resp", "" + responseobj.toString());
-                            if (responseobj.isSuccessful()) {
-
-                                JSONObject response = new JSONObject(responseobj.body().string());
-                                if (response.getBoolean("success")) {
-                                    Log.d("info UpdateProfile obj", "" + response.toString());
-                                    JSONObject data = response.getJSONObject("data");
-                                    settingsMain.setUser(data.toString());  
-                                    ((HomeActivity) getActivity()).changeImage();
-
-                                    Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
-//                                    if(!verify)
-//                                        SettingsMain.reload(getActivity(), "EditProfile");
-//                                    else{
-                                        startActivity(new Intent(getActivity(), HomeActivity.class));
-//                                    }
-                                } else {
-                                    Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            SettingsMain.hideDilog();
-                        } catch (JSONException e) {
-                            SettingsMain.hideDilog();
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            SettingsMain.hideDilog();
-                            e.printStackTrace();
-                        }
-                        SettingsMain.hideDilog();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        if (t instanceof TimeoutException) {
-                            Toast.makeText(getActivity(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
-                            SettingsMain.hideDilog();
-                        }
-                        if (t instanceof SocketTimeoutException || t instanceof NullPointerException) {
-
-                            Toast.makeText(getActivity(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
-                            SettingsMain.hideDilog();
-                        }
-                        if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
-                            Log.d("info UpdateProfile", "NullPointert Exception" + t.getLocalizedMessage());
-                            SettingsMain.hideDilog();
-                        } else {
-                            SettingsMain.hideDilog();
-                            Log.d("info UpdateProfile err", String.valueOf(t));
-                            Log.d("info UpdateProfile err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
-                        }
-                    }
-                });
+//                Call<ResponseBody> req = restService.postUpdateProfile(params, null, UrlController.UploadImageAddHeaders(getActivity()));
+//                req.enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseobj) {
+//                        try {
+//                            Log.d("info UpdateProfile Resp", "" + responseobj.toString());
+//                            if (responseobj.isSuccessful()) {
+//
+//                                JSONObject response = new JSONObject(responseobj.body().string());
+//                                if (response.getBoolean("success")) {
+//                                    Log.d("info UpdateProfile obj", "" + response.toString());
+//                                    JSONObject data = response.getJSONObject("data");
+//                                    settingsMain.setUser(data.toString());
+//                                    ((HomeActivity) getActivity()).changeImage();
+//
+//                                    Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
+////                                    if(!verify)
+////                                        SettingsMain.reload(getActivity(), "EditProfile");
+////                                    else{
+//                                        startActivity(new Intent(getActivity(), HomeActivity.class));
+////                                    }
+//                                } else {
+//                                    Toast.makeText(getActivity(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                            SettingsMain.hideDilog();
+//                        } catch (JSONException e) {
+//                            SettingsMain.hideDilog();
+//                            e.printStackTrace();
+//                        } catch (IOException e) {
+//                            SettingsMain.hideDilog();
+//                            e.printStackTrace();
+//                        }
+//                        SettingsMain.hideDilog();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                        if (t instanceof TimeoutException) {
+//                            Toast.makeText(getActivity(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+//                            SettingsMain.hideDilog();
+//                        }
+//                        if (t instanceof SocketTimeoutException || t instanceof NullPointerException) {
+//
+//                            Toast.makeText(getActivity(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+//                            SettingsMain.hideDilog();
+//                        }
+//                        if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
+//                            Log.d("info UpdateProfile", "NullPointert Exception" + t.getLocalizedMessage());
+//                            SettingsMain.hideDilog();
+//                        } else {
+//                            SettingsMain.hideDilog();
+//                            Log.d("info UpdateProfile err", String.valueOf(t));
+//                            Log.d("info UpdateProfile err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
+//                        }
+//                    }
+//                });
             }
 
         } else {
@@ -718,7 +715,7 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                     break;
             }
 
-            Call<ResponseBody> req = restService.postUploadProfileImage(body, UrlController.UploadImageAddHeaders(getActivity()));
+            Call<ResponseBody> req = restService.postUploadProfileDocument(body, null, null, null,  UrlController.UploadImageAddHeaders(getActivity()));
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -958,7 +955,7 @@ public class EditProfile extends Fragment implements RuntimePermissionHelper.per
                                 editor.putString("isSocial", "false");
                                 editor.apply();
                                 getActivity().finish();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                Intent intent = new Intent(getActivity(), AuthActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 getActivity().overridePendingTransition(R.anim.right_enter, R.anim.left_out);

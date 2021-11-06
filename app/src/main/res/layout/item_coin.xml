@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_cardview"
-    android:paddingHorizontal="5dp"
-    android:paddingVertical="8dp"
-    android:layout_marginVertical="2dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-         />
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginVertical="5dp"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="10dp">
     <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="5dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_symbol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Symbol"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            />
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textStyle="bold"
-            android:textSize="13dp"
-            />
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv_rate"
-        android:layout_weight="1"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="rate"
-        android:textStyle="bold"
-        android:textSize="14dp"
-        android:layout_marginHorizontal="5dp"/>
-    <Button
-        android:id="@+id/btn_deposit"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:background="@color/green"
-        android:textColor="@color/white"
-        android:text="Deposit"/>
-</LinearLayout>
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/placeholder"
+            />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_symbol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Symbol"
+                android:textColor="@color/gray"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:text="Name"
+                android:textColor="@color/gray"
+                android:textSize="12dp"
+                />
+            <TextView
+                android:id="@+id/tv_rate"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="rate"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18dp"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_deposit"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@drawable/rounded_white_rectangle_border_grey"
+            android:textColor="@color/colorPrimary"
+            android:text="Deposit"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

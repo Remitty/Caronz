@@ -9,18 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.remitty.caronz.R;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
 import com.remitty.caronz.avis.AvisFragment;
+import com.remitty.caronz.utills.SettingsMain;
 
 
 public class HomeFragment extends Fragment {
 
     LinearLayout buyLayout, rentLayout, hireLayout;
+    TextView tvGreeting;
 
     public String method="";
+    private SettingsMain settingsMain;
 
 
     public HomeFragment() {
@@ -47,9 +51,12 @@ public class HomeFragment extends Fragment {
 
         getActivity().setTitle(R.string.app_name);
 
+        settingsMain = new SettingsMain(getActivity());
+
         buyLayout = view.findViewById(R.id.buy_layout);
         rentLayout = view.findViewById(R.id.rent_layout);
         hireLayout = view.findViewById(R.id.hire_layout);
+        tvGreeting = view.findViewById(R.id.tv_greeting);
 
 
         buyLayout.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +88,8 @@ public class HomeFragment extends Fragment {
                 replaceFragment(fragment_cat, "HireSearchMapFragment");
             }
         });
+
+        tvGreeting.setText("Good morning " + settingsMain.getUserFirstName());
 
         return view;
     }

@@ -74,27 +74,19 @@ public class UrlController {
 
     public static Map<String, String> AddHeaders(Context context) {
         Map<String, String> map = new HashMap<>();
-//        if (SettingsMain.isSocial(context)) {
-//            map.put("AdForest-Login-Type", "social");
-//        }
-//        map.put("Purchase-Code", Purchase_code);
-//        map.put("custom-security", Custom_Security);
-//        map.put("Adforest-Lang-Locale", SettingsMain.getLanguageCode());
-//        map.put("Adforest-Request-From", "android");
         map.put("Content-Type", "application/json");
-//        map.put("Cache-Control", "max-age=640000");
+        return map;
+    }
+
+    public static Map<String, String> WithImageAddHeaders(Context context) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Content-Type", "multipart/form-data");
+        map.put("Cache-Control", "max-age=640000");
         return map;
     }
 
     public static Map<String, String> UploadImageAddHeaders(Context context) {
         Map<String, String> map = new HashMap<>();
-//        if (SettingsMain.isSocial(context)) {
-//            map.put("AdForest-Login-Type", "social");
-//        }
-//        map.put("Purchase-Code", Purchase_code);
-//        map.put("custom-security", Custom_Security);
-//        map.put("Adforest-Lang-Locale", SettingsMain.getLanguageCode());
-        map.put("Adforest-Request-From", "android");
         map.put("Cache-Control", "max-age=640000");
 
         return map;

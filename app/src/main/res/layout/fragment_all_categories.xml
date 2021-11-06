@@ -8,36 +8,44 @@
     android:focusableInTouchMode="true"
     tools:context=".home.FragmentAllCategories">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
         <EditText
             android:id="@+id/et_model"
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/edittext_background"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_edittext_search"
             android:inputType="text"
             android:maxLines="1"
-            android:drawableEnd="@drawable/places_ic_search"
+            android:drawableStart="@drawable/places_ic_search"
+            android:drawablePadding="10dp"
             android:imeOptions="actionSearch"
-            android:hint="Search model"
-            android:paddingStart="5dp"
+            android:hint="Search brand"
+            android:paddingStart="15dp"
             android:paddingEnd="5dp"
-            android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:text="Select Brand"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categoriesRecycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="3dp"
-            android:layout_below="@+id/et_model"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:paddingBottom="20dp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

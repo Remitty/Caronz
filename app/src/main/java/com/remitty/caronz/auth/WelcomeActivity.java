@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.remitty.caronz.R;
 import com.remitty.caronz.home.HomeActivity;
+import com.remitty.caronz.main.MainActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
     private ImageView closeImage;
@@ -24,19 +25,17 @@ public class WelcomeActivity extends AppCompatActivity {
         closeImage = findViewById(R.id.closeIcon);
         btnHome = findViewById(R.id.contineBuyPackage);
 
-
-
         closeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             }
         });
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             }
         });
     }

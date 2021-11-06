@@ -42,19 +42,21 @@
     <string name="signin">Log in</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password">Forgot password</string>
     <string name="login">Log in</string>
     <string name="explore">Find</string>
-    <string name="have_not_account">Don\'t have an account</string>
+    <string name="have_not_account">Don\'t have an account?</string>
     <string name="signup">Sign up</string>
-    <string name="welcome">Welcome</string>
-    <string name="have_account">Have an account?</string>
+    <string name="welcome">Hello Again!</string>
+    <string name="have_account">Already have an account?</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="source_location">Your location</string>
     <string name="where_to_go">Where are you going to?</string>
     <string name="pin_location">Set pin location</string>
+    <string name="save">Save</string>
+    <string name="next">Next</string>
     <string-array name="year_array">
         <item>21</item>
         <item>22</item>

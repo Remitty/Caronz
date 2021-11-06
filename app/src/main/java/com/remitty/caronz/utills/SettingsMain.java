@@ -381,7 +381,7 @@ public static String getlocationId(){ return pref.getString("locationId", "");}
     }
 
     public static String getMainColor() {
-        return pref.getString("mainColor", "#008f00");
+        return pref.getString("mainColor", "#2C8838");
     }
 
     public void setMainColor(String mainColor) {

@@ -60,7 +60,7 @@ public class CardsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        this.setTitle("Payment Card");
 
         loadCardList();
 

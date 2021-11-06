@@ -126,7 +126,7 @@ public class ResetPasswordFragment extends Fragment {
 
                             Toast.makeText(getActivity(), "Password Updated", Toast.LENGTH_LONG).show();
                             SettingsMain.hideDilog();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            startActivity(new Intent(getActivity(), AuthActivity.class));
                         }
                         SettingsMain.hideDilog();
                     } catch (IOException e) {

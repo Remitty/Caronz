@@ -191,8 +191,6 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         ViewCompat.setNestedScrollingEnabled(mRecyclerView, true);
 
-        ((HomeActivity) getActivity()).changeImage();
-
         btnCat = mView.findViewById(R.id.btn_cat);
         btnCat.setOnClickListener(new View.OnClickListener() {
             @Override

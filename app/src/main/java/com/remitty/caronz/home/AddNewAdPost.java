@@ -152,16 +152,19 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     LinearLayout  linearLayoutMapView;
 
 
-    LinearLayout page1, page2, page3, linearLayoutImageSection, showHideLocation;
+    LinearLayout page1, page2, page3, page4, linearLayoutImageSection, showHideLocation;
 
-    TextView btnSelectPix, Gallary, tv_done, tvServiceStatement;
+    TextView Gallary, tvServiceStatement;
     EditText editPostTitle, editPostDescription,
-            editTextUserLat, editTextuserLong, editPostRentPrice, editYear, editPostSpeed;
+            editTextUserLat, editTextuserLong, editPostRentPrice, editYear;
 
-    TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvSpeed, tvSeats, tvName, tvService, tvDescription, tvPrice, tvYear;
+    TextView tvLocation, tvAddress, tvBrand, tvTransmission, tvBody, tvSeats, tvName, tvService, tvDescription, tvPrice, tvYear;
 
-    ImageView imageViewBack2, imageViewBack3;
-    Button btnNext1, btnNext2, btnPostAd;
+    private ImageView btnSelectImg;
+
+    Button btnNext1, btnNext2, btnNext3, btnPostAd;
+    TextView tvBack2, tvCancel3, tvCancel4;
+
     CheckBox featureAdChkBox;
     Spinner catSpinner, transmissionSpinner, seatSpinner, unitsSpinner, currencySpinner, bodySpinner;
     RadioGroup RdgTransmission, rdgService;
@@ -216,6 +219,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     String[] trans = {"Automatic", "Manual"};
     String[] units = {"Mi", "Km"};
 
+
+
     //    PackagesFragment packagesFragment;
     public static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
@@ -230,9 +235,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_add_new_ad_post);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -241,8 +243,8 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.parseColor(settingsMain.getMainColor()));
         }
-
-        toolbar.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
+        
+        setTitle("Create Post");
 
         context = AddNewAdPost.this;
         myId = getIntent().getStringExtra("post_id");
@@ -306,11 +308,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         frameLayout = (FrameLayout) findViewById(R.id.frame);
 
-        btnSelectPix = (TextView) findViewById(R.id.selectPix);
+        btnSelectImg = findViewById(R.id.img_upload);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
 //        progress_bar1 = (ProgressBar) findViewById(R.id.progress_bar1);
         Gallary = (TextView) findViewById(R.id.Gallary);
-        tv_done = (TextView) findViewById(R.id.tv_done);
         loadingLayout = (FrameLayout) findViewById(R.id.loadingLayout);
         placesContainer = findViewById(R.id.placeContainer);
         latlongLayout = findViewById(R.id.latlongLayout);
@@ -323,10 +324,12 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         page1 = (LinearLayout) findViewById(R.id.line1);
         page2 = (LinearLayout) findViewById(R.id.line2);
         page3 = (LinearLayout) findViewById(R.id.line3);
+        page4 = (LinearLayout) findViewById(R.id.line4);
 
         page1.setVisibility(View.VISIBLE);
         page2.setVisibility(View.GONE);
         page3.setVisibility(View.GONE);
+        page4.setVisibility(View.GONE);
 
         recyclerView = (DragRecyclerView) findViewById(R.id.cardView);
         recyclerView.setHasFixedSize(true);
@@ -343,7 +346,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         editPostTitle.setFocusable(true);
         editPostDescription = findViewById(R.id.postDescriptionET);
         editPostRentPrice = findViewById(R.id.postRentPriceET);
-        editPostSpeed = findViewById(R.id.postSpeedET);
         editYear = findViewById(R.id.postYearET);
         tvServiceStatement = findViewById(R.id.tv_service_statement);
 
@@ -362,14 +364,13 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         rdbSell = findViewById(R.id.rdb_sell);
         rdbDrive = findViewById(R.id.rdb_drive);
 
-//        shakeAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
-//                R.anim.shake);
-
-        imageViewBack3 = (ImageView) findViewById(R.id.back3);
-        imageViewBack2 = (ImageView) findViewById(R.id.back2);
+        tvBack2 = findViewById(R.id.tv_back);
+        tvCancel3 = findViewById(R.id.tv_cancel_3);
+        tvCancel4 = findViewById(R.id.tv_cancel_4);
         btnNext2 = findViewById(R.id.next2);
         btnNext1 = findViewById(R.id.next1);
-        btnPostAd = findViewById(R.id.btnPost);
+        btnNext3 = findViewById(R.id.next3);
+        btnPostAd = findViewById(R.id.btn_post_now);
 
         mLocationAutoTextView = (AutoCompleteTextView) findViewById(R.id
                 .location_autoCompleteTextView);
@@ -380,7 +381,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         tvAddress = findViewById(R.id.tv_car_address);
         tvBrand = findViewById(R.id.tv_car_cat);
         tvTransmission = findViewById(R.id.tv_car_transmission);
-        tvSpeed = findViewById(R.id.tv_car_speed);
+        tvBody = findViewById(R.id.tv_car_body);
         tvSeats = findViewById(R.id.tv_car_seat);
         tvName = findViewById(R.id.tv_car_name);
         tvYear = findViewById(R.id.tv_car_year);
@@ -416,6 +417,18 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 page1.setVisibility(View.GONE);
                 page2.setVisibility(View.VISIBLE);
                 page3.setVisibility(View.GONE);
+                page4.setVisibility(View.GONE);
+                frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.right_enter));
+
+            }
+        });
+
+        btnNext2.setOnClickListener(view -> {
+            if (page2Validation()) {
+                page1.setVisibility(View.GONE);
+                page2.setVisibility(View.GONE);
+                page3.setVisibility(View.VISIBLE);
+                page4.setVisibility(View.GONE);
                 frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.right_enter));
                 int selectedId=rdgService.getCheckedRadioButtonId();
                 switch(selectedId) {
@@ -432,12 +445,12 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        btnNext2.setOnClickListener(view -> {
-            if (page2Validation()) {
-                page2.setVisibility(View.GONE);
-                page3.setVisibility(View.VISIBLE);
+        btnNext3.setOnClickListener(view -> {
+            if (page3Validation()) {
                 page1.setVisibility(View.GONE);
-                page3.setFocusable(true);
+                page2.setVisibility(View.GONE);
+                page3.setVisibility(View.GONE);
+                page4.setVisibility(View.VISIBLE);
                 frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.right_enter));
 
                 tvLocation.setText(mLocationAutoTextView.getText().toString());
@@ -460,7 +473,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                         break;
                 }
 
-                tvSpeed.setText(editPostSpeed.getText().toString() + " " + getUnit());
+                tvBody.setText(getBody());
                 tvSeats.setText(String.valueOf(seatSpinner.getSelectedItemPosition() + 1));
                 tvName.setText(editPostTitle.getText().toString());
                 tvYear.setText(editYear.getText().toString());
@@ -469,27 +482,26 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        imageViewBack2.setOnClickListener(view -> {
+        tvBack2.setOnClickListener(view -> {
             page2.setVisibility(View.GONE);
             page1.setVisibility(View.VISIBLE);
             page3.setVisibility(View.GONE);
+            page4.setVisibility(View.GONE);
             frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.left_enter));
         });
 
-        imageViewBack3.setOnClickListener(view -> {
-            page1.setVisibility(View.GONE);
-            page2.setVisibility(View.VISIBLE);
-            page3.setVisibility(View.GONE);
-            frameLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.left_enter));
+        tvCancel3.setOnClickListener(view -> {
+            onBackPressed();
+        });
+        tvCancel4.setOnClickListener(view -> {
+            onBackPressed();
         });
 
         btnPostAd.setOnClickListener(view -> {
-
                 submitQuery();
-
         });
 
-        btnSelectPix.setOnClickListener((View view) -> {
+        btnSelectImg.setOnClickListener((View view) -> {
             runtimePermissionHelper.requestStorageCameraPermission(1);
         });
 
@@ -648,7 +660,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                 }
 
-                                editPostSpeed.setText(car.getDistance());
                                 catSpinner.setSelection(car.getCatId());
                                 if(car.getTransmission().equals("Manual"))
                                     transmissionSpinner.setSelection(1);
@@ -690,7 +701,52 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private boolean page1Validation() {
+        boolean validate = true;
+
+        if(mLocationAutoTextView.getText().toString().isEmpty()) {
+            mLocationAutoTextView.setError("!");
+            validate = false;
+        }
+
+        if(mAddressAutoTextView.getText().toString().isEmpty()) {
+            mAddressAutoTextView.setError("!");
+            validate = false;
+        }
+
+        if (editTextuserLong.getText().toString().isEmpty()) {
+            editTextuserLong.setError("!");
+            validate = false;
+        }
+
+        if (editTextUserLat.getText().toString().isEmpty()) {
+            editTextUserLat.setError("!");
+            validate = false;
+        }
+
+        return validate;
+    }
     private boolean page2Validation() {
+        boolean validate = true;
+
+        if (editPostTitle.getText().toString().isEmpty()) {
+            editPostTitle.setError("!");
+            validate = false;
+        }
+
+        if (editYear.getText().toString().isEmpty()) {
+            editYear.setError("!");
+            validate = false;
+        }
+
+        if(catSpinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(getBaseContext(), "Please select brand.", Toast.LENGTH_SHORT).show();
+            validate = false;
+        }
+
+        return validate;
+    }
+    private boolean page3Validation() {
         boolean validate = true;
 
         if(editPostRentPrice.getText().toString().isEmpty()) {
@@ -710,52 +766,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         if(myImages.size() > 4) {
             Toast.makeText(getBaseContext(), "Image limit is 4.", Toast.LENGTH_SHORT).show();
-            validate = false;
-        }
-
-        return validate;
-    }
-
-    private boolean page1Validation() {
-        boolean validate = true;
-
-//        if(editPostSpeed.getText().toString().isEmpty()) {
-//            editPostSpeed.setError("!");
-//            validate = false;
-//        }
-
-        if(mLocationAutoTextView.getText().toString().isEmpty()) {
-            mLocationAutoTextView.setError("!");
-            validate = false;
-        }
-
-        if(mAddressAutoTextView.getText().toString().isEmpty()) {
-            mAddressAutoTextView.setError("!");
-            validate = false;
-        }
-
-        if (editPostTitle.getText().toString().isEmpty()) {
-            editPostTitle.setError("!");
-            validate = false;
-        }
-
-        if (editYear.getText().toString().isEmpty()) {
-            editYear.setError("!");
-            validate = false;
-        }
-
-        if (editTextuserLong.getText().toString().isEmpty()) {
-            editTextuserLong.setError("!");
-            validate = false;
-        }
-
-        if (editTextUserLat.getText().toString().isEmpty()) {
-            editTextUserLat.setError("!");
-            validate = false;
-        }
-
-        if(catSpinner.getSelectedItemPosition() == 0) {
-            Toast.makeText(getBaseContext(), "Please select brand.", Toast.LENGTH_SHORT).show();
             validate = false;
         }
 
@@ -898,7 +908,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         params.addProperty("unit", getUnit());
         params.addProperty("seat", (seatSpinner.getSelectedItemPosition() + 1));
         params.addProperty("transmission", getTransmission());
-        params.addProperty("distance", editPostSpeed.getText().toString());
+//        params.addProperty("distance", editPostSpeed.getText().toString());
         params.addProperty("cat_id", catSpinner.getSelectedItemPosition());
         params.addProperty("location", mLocationAutoTextView.getText().toString());
         params.addProperty("address", mAddressAutoTextView.getText().toString());
@@ -1030,13 +1040,13 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                 imagePaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 if (SettingsMain.isConnectingToInternet(context)) {
                     if (imagePaths.size() > 0) {
-                        btnSelectPix.setEnabled(false);
+                        btnSelectImg.setEnabled(false);
                         AsyncImageTask asyncImageTask = new AsyncImageTask();
                         asyncImageTask.execute(imagePaths);
                     }
                 }
             } else {
-                btnSelectPix.setEnabled(true);
+                btnSelectImg.setEnabled(true);
                 Toast.makeText(context, settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
             }
         }
@@ -1153,7 +1163,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-                    btnSelectPix.setEnabled(true);
+                    btnSelectImg.setEnabled(true);
 
                 } else {
                     UploadFailedImage();
@@ -1193,7 +1203,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     private void UploadFailedImage() {
         progress_bar.setVisibility(View.GONE);
         loadingLayout.setVisibility(View.GONE);
-        btnSelectPix.setEnabled(true);
+        btnSelectImg.setEnabled(true);
 //        Toast.makeText(context, progressModel.getFailMessage(), Toast.LENGTH_SHORT).show();
 
     }
@@ -1202,7 +1212,7 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         progress_bar.setVisibility(View.GONE);
         loadingLayout.setVisibility(View.GONE);
 //        Toast.makeText(context, progressModel.getSuccessMessage(), Toast.LENGTH_SHORT).show();
-        btnSelectPix.setEnabled(true);
+        btnSelectImg.setEnabled(true);
     }
 
     private MultipartBody.Part prepareFilePart(String fileName, Uri fileUri) {
@@ -1494,7 +1504,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
                                 itemEditImageAdapter.notifyDataSetChanged();
                                 Gallary.setVisibility(View.VISIBLE);
                                 Gallary.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_circle_black_24dp, 0, 0, 0);
-                                tv_done.setVisibility(View.GONE);
 
 //                                Toast.makeText(context, response.get("message").toString(), Toast.LENGTH_SHORT).show();
                             } else {

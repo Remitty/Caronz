@@ -284,6 +284,27 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
+    //Upload image in Edit page
+    @Multipart
+    @POST("profile/image/")
+    Call<ResponseBody> postUploadProfileImage(
+            @Part MultipartBody.Part file1,
+            @HeaderMap Map<String, String> headers
+    );
+
+    //Upload image in Edit page
+    @Multipart
+    @POST("profile/documents/")
+    Call<ResponseBody> postUploadProfileDocument(
+            @Part MultipartBody.Part file1,
+            @Part MultipartBody.Part file2,
+            @Part MultipartBody.Part file3,
+            @Part MultipartBody.Part file4,
+            @HeaderMap Map<String, String> headers
+    );
+
+
+
     @POST("seller/profile")
     Call<ResponseBody> getSellerProfile(
             @Body JsonObject editProfile,
@@ -313,13 +334,6 @@ public interface RestService {
             @HeaderMap Map<String, String> headers
     );
 
-    //Upload image in Edit page
-    @Multipart
-    @POST("profile/image/")
-    Call<ResponseBody> postUploadProfileImage(
-            @Part MultipartBody.Part file,
-            @HeaderMap Map<String, String> headers
-    );
 
     //Change password in Edit Profile
     @POST("profile/reset_pass")

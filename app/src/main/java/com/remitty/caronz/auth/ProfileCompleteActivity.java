@@ -32,8 +32,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -48,8 +50,11 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.remitty.caronz.R;
 import com.remitty.caronz.home.AddNewAdPost;
+import com.remitty.caronz.home.HomeActivity;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
 import com.remitty.caronz.utills.SettingsMain;
@@ -75,23 +80,19 @@ import static android.view.View.INVISIBLE;
 
 public class ProfileCompleteActivity extends AppCompatActivity implements RuntimePermissionHelper.permissionInterface{
     private SettingsMain settingsMain;
-    TextView verifyBtn, textViewUserName, textViewUserEmail,  textViewLastLogin;
-    TextView textViewAdsSold, textViewTotalList, textViewInactiveAds,textViewExppiry;
-    TextView textViewName, textViewLocation, textViewMainTitle, textViewImage,
-            textViewAccType, textViewIntroduction;
-    TextView btnCancel, btnSave, btnDeleteAccount;
-    ImageView photoImage, licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
-    EditText  editTextAddress1, editTextAddress2, editTextCity,
-            editTextState, editTextCountry, editTextPostalCode;
-    CircleImageView imageViewProfile;
-    Spinner spinnerACCType;
-    LinearLayout viewSocialIconsLayout;
-    RestService restService;
-    boolean checkValidation = true;
     RuntimePermissionHelper runtimePermissionHelper;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private CardView profileCard;
-    private FrameLayout frameLayout;
+    RestService restService;
+
+    FrameLayout page1, page2;
+    FrameLayout frameLayout;
+    TextView textViewUserName, textViewUserEmail;
+    TextView textViewName, textViewLocation, textViewMainTitle, textViewImage, textViewIntroduction;
+    ImageView photoImage, licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
+    EditText  editTextAddress1, editTextAddress2, editTextCity, editTextState, editTextCountry, editTextPostalCode;
+    CircleImageView imageViewProfile;
+    TextView btnSkip;
+    Button btnNext, btnSave;
+    Spinner spinnerACCType;
     private AppCompatEditText etCountryCode;
     private AppCompatEditText etPhoneNumber;
     private ImageView imgFlag;
@@ -102,11 +103,15 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
     AutoCompleteTextView mLocationAutoTextView;
     private PlacesClient placesClient;
 
+    boolean checkValidation = true;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     ArrayList<String> places = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
     private String firstName, lastName, email;
-    private String userChoosenTask;
     private int choosenImage;
+    private String userChoosenTask;
+
+    MultipartBody.Part profileImg, license, registration, insurance, other1, other2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,18 +206,27 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             }
         }
     }
+
     private void initListeners() {
         photoImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(1));
         licenseImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(2));
         registrationImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(3));
         insuranceImage.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(4));
         otherImage1.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(5));
-        otherImage2.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(6));
+//        otherImage2.setOnClickListener(view1 -> runtimePermissionHelper.requestStorageCameraPermission(6));
 
         btnSave.setOnClickListener(view12 -> {
+            if (license != null || registration != null || insurance != null || other1 != null) galleryImageUpload();
+            else Toast.makeText(getBaseContext(), "No image to upload.", Toast.LENGTH_SHORT).show();
+        });
+
+        btnNext.setOnClickListener(view15 -> {
             if (isCheckValidation()) sendData();
         });
-        btnCancel.setOnClickListener(view13 -> this.onBackPressed());
+
+        btnSkip.setOnClickListener(view14 -> {
+            startActivity(new Intent(ProfileCompleteActivity.this, WelcomeActivity.class));
+        });
 
         mLocationAutoTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -228,33 +242,25 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
     }
 
     private void initComponents() {
+        page1 = findViewById(R.id.content_profile_complete);
+        page2 = findViewById(R.id.content_document_upload);
+        page2.setVisibility(View.GONE);
         textViewName = findViewById(R.id.textViewName);
         textViewLocation = findViewById(R.id.textViewLocation);
         textViewMainTitle = findViewById(R.id.textView);
         textViewIntroduction = findViewById(R.id.textViewIntroduction);
         textViewImage = findViewById(R.id.textViewSetImage);
-        btnCancel = findViewById(R.id.textViewCancel);
         photoImage = findViewById(R.id.image_photo);
         licenseImage = findViewById(R.id.image_license);
         registrationImage = findViewById(R.id.image_register);
         insuranceImage = findViewById(R.id.image_insurance);
         otherImage1 = findViewById(R.id.image_other1);
-        otherImage2 = findViewById(R.id.image_other2);
-        btnDeleteAccount = findViewById(R.id.deleteAccount);
-        textViewLastLogin = findViewById(R.id.loginTime);
-        verifyBtn = findViewById(R.id.verified);
+//        otherImage2 = findViewById(R.id.image_other2);
         textViewUserName = findViewById(R.id.text_viewName);
         textViewUserEmail = findViewById(R.id.text_viewEmail);
         spinnerACCType = findViewById(R.id.spinner);
 
         imageViewProfile = findViewById(R.id.image_view);
-        viewSocialIconsLayout = findViewById(R.id.editProfileCustomLayout);
-        viewSocialIconsLayout.setVisibility(INVISIBLE);
-
-        textViewAdsSold = findViewById(R.id.share);
-        textViewTotalList = findViewById(R.id.addfav);
-        textViewInactiveAds = findViewById(R.id.report);
-        textViewExppiry = findViewById(R.id.expired);
 
         editTextPostalCode = findViewById(R.id.editTextPostalCode);
         editTextAddress1 = findViewById(R.id.editTextAddress1);
@@ -265,9 +271,10 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         mLocationAutoTextView = findViewById(R.id.editTextLocation);
 
 
-        profileCard = findViewById(R.id.profile_card);
         frameLayout = findViewById(R.id.frameLayout);
         btnSave = findViewById(R.id.btnSave);
+        btnNext = findViewById(R.id.btnNext);
+        btnSkip = findViewById(R.id.tv_skip);
 
         etCountryCode = findViewById(com.phonenumberui.R.id.etCountryCode);
         etPhoneNumber = findViewById(com.phonenumberui.R.id.etPhoneNumber);
@@ -325,18 +332,6 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             textViewLocation.setError("!");
             checkValidation = false;
         }
-//        if (editTextState.getText().toString().isEmpty()) {
-//            editTextState.setError("!");
-//            checkValidation = false;
-//        }
-//        if (editTextCountry.getText().toString().isEmpty()) {
-//            editTextCountry.setError("!");
-//            checkValidation = false;
-//        }
-//        if (editTextCity.getText().toString().isEmpty()) {
-//            editTextCity.setError("!");
-//            checkValidation = false;
-//        }
         if (editTextPostalCode.getText().toString().isEmpty()) {
             editTextPostalCode.setError("!");
             checkValidation = false;
@@ -365,9 +360,6 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             params.addProperty("address1", editTextAddress1.getText().toString());
             params.addProperty("address2", editTextAddress2.getText().toString());
             params.addProperty("location", mLocationAutoTextView.getText().toString());
-//            params.addProperty("city", editTextCity.getText().toString());
-//            params.addProperty("country", editTextCountry.getText().toString());
-//            params.addProperty("state", editTextState.getText().toString());
             params.addProperty("postalcode", editTextPostalCode.getText().toString());
 
             Log.d("info Send UpdatePofile", "" + params.toString());
@@ -375,11 +367,12 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                 Toast.makeText(getBaseContext(), "Invalid URL specified", Toast.LENGTH_SHORT).show();
             } else {
                 SettingsMain.showDilog(this);
-                Call<ResponseBody> req = restService.postUpdateProfile(params, UrlController.UploadImageAddHeaders(this));
+                Call<ResponseBody> req = restService.postUpdateProfile(params, UrlController.AddHeaders(this));
                 req.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseobj) {
                         try {
+
                             Log.d("info UpdateProfile Resp", "" + responseobj.toString());
                             if (responseobj.isSuccessful()) {
 
@@ -389,7 +382,12 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                                     Toast.makeText(getBaseContext(), "Completed profile successfully", Toast.LENGTH_SHORT).show();
                                     settingsMain.setUser(response.getString("data"));
                                     settingsMain.setProfileComplete(true);
-                                    startActivity(new Intent(ProfileCompleteActivity.this, WelcomeActivity.class));
+                                    page1.setVisibility(View.GONE);
+                                    page2.setVisibility(View.VISIBLE);
+                                    frameLayout.startAnimation(AnimationUtils.loadAnimation(getBaseContext(), R.anim.right_enter));
+                                    JSONObject data = response.getJSONObject("data");
+                                    settingsMain.setUser(data.toString());
+//                                    startActivity(new Intent(ProfileCompleteActivity.this, WelcomeActivity.class));
                                 } else {
                                     Toast.makeText(getBaseContext(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -480,7 +478,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         Uri tempUri = SettingsMain.getImageUri(this, thumbnail);
         File finalFile = new File(SettingsMain.getRealPathFromURI(this, tempUri));
-        galleryImageUpload(tempUri);
+        galleryPrepare(tempUri);
         switch (choosenImage) {
             case 1:
                 photoImage.setImageURI(tempUri);
@@ -511,7 +509,7 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                 bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
                 Uri tempUri = SettingsMain.getImageUri(this, bm);
 
-                galleryImageUpload(tempUri);
+                galleryPrepare(tempUri);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -539,42 +537,45 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
         }
     }
 
-    private void galleryImageUpload(final Uri absolutePath) {
+    private void galleryPrepare(final Uri absolutePath) {
+        final File finalFile = new File(SettingsMain.getRealPathFromURI(this, absolutePath));
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(getBaseContext().getContentResolver().getType(absolutePath)),
+                        finalFile
+                );
+
+        switch (choosenImage) {
+            case 1:
+                profileImg = MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
+                galleryProfileImageUpload();
+                break;
+            case 2:
+                license = MultipartBody.Part.createFormData("license_img", finalFile.getName(), requestFile);
+                break;
+            case 3:
+                registration = MultipartBody.Part.createFormData("registration_img", finalFile.getName(), requestFile);
+                break;
+            case 4:
+                insurance = MultipartBody.Part.createFormData("insurance_img", finalFile.getName(), requestFile);
+                break;
+            case 5:
+                other1 = MultipartBody.Part.createFormData("other1_img", finalFile.getName(), requestFile);
+                break;
+            case 6:
+                other2 = MultipartBody.Part.createFormData("other2_img", finalFile.getName(), requestFile);
+                break;
+        }
+    }
+
+    private void galleryImageUpload() {
 
         if (SettingsMain.isConnectingToInternet(this)) {
 
             SettingsMain.showDilog(this);
-            final File finalFile = new File(SettingsMain.getRealPathFromURI(this, absolutePath));
-            RequestBody requestFile =
-                    RequestBody.create(
-                            MediaType.parse(getBaseContext().getContentResolver().getType(absolutePath)),
-                            finalFile
-                    );
-            MultipartBody.Part body = null;
 
 
-            switch (choosenImage) {
-                case 1:
-                    body = MultipartBody.Part.createFormData("profile_img", finalFile.getName(), requestFile);
-                    break;
-                case 2:
-                    body = MultipartBody.Part.createFormData("license_img", finalFile.getName(), requestFile);
-                    break;
-                case 3:
-                    body = MultipartBody.Part.createFormData("registration_img", finalFile.getName(), requestFile);
-                    break;
-                case 4:
-                    body = MultipartBody.Part.createFormData("insurance_img", finalFile.getName(), requestFile);
-                    break;
-                case 5:
-                    body = MultipartBody.Part.createFormData("other1_img", finalFile.getName(), requestFile);
-                    break;
-                case 6:
-                    body = MultipartBody.Part.createFormData("other2_img", finalFile.getName(), requestFile);
-                    break;
-            }
-
-            Call<ResponseBody> req = restService.postUploadProfileImage(body, UrlController.UploadImageAddHeaders(this));
+            Call<ResponseBody> req = restService.postUploadProfileDocument(license, registration, insurance, other1, UrlController.UploadImageAddHeaders(this));
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -592,7 +593,8 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
                                     e.printStackTrace();
                                 }
                                 //noinspection ResultOfMethodCallIgnored
-                                finalFile.delete();
+//                                finalFile.delete();
+                                startActivity(new Intent(ProfileCompleteActivity.this, WelcomeActivity.class));
                             } else {
                                 Toast.makeText(getBaseContext(), responseobj.get("message").toString(), Toast.LENGTH_SHORT).show();
                             }
@@ -638,6 +640,71 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             Toast.makeText(this, "Internet error", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void galleryProfileImageUpload() {
+
+        if (SettingsMain.isConnectingToInternet(this)) {
+
+            SettingsMain.showDilog(this);
+
+            Call<ResponseBody> req = restService.postUploadProfileImage(profileImg, UrlController.UploadImageAddHeaders(this));
+            req.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    Log.v("info Upload Responce", response.toString());
+                    try {
+                        if (response.isSuccessful()) {
+                            JSONObject responseobj = null;
+
+                            responseobj = new JSONObject(response.body().string());
+
+                            try {
+                                Toast.makeText(getBaseContext(), responseobj.get("message").toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Log.e("update img error", response.errorBody().string());
+                            Toast.makeText(getBaseContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        }
+                        SettingsMain.hideDilog();
+                    } catch (JSONException e) {
+                        SettingsMain.hideDilog();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        SettingsMain.hideDilog();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    if (t instanceof TimeoutException) {
+                        Toast.makeText(getBaseContext(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                        SettingsMain.hideDilog();
+                    }
+                    if (t instanceof SocketTimeoutException || t instanceof NullPointerException) {
+
+                        Toast.makeText(getBaseContext(), settingsMain.getAlertDialogMessage("internetMessage"), Toast.LENGTH_SHORT).show();
+                        SettingsMain.hideDilog();
+                    }
+                    if (t instanceof NullPointerException || t instanceof UnknownError || t instanceof NumberFormatException) {
+                        Log.d("info Upload profile", "NullPointert Exception" + t.getLocalizedMessage());
+                        SettingsMain.hideDilog();
+                    } else {
+                        SettingsMain.hideDilog();
+                        Log.d("info Upload profile err", String.valueOf(t));
+                        Log.d("info Upload profile err", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
+                    }
+                }
+            });
+        } else {
+            SettingsMain.hideDilog();
+            Toast.makeText(this, "Internet error", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -683,7 +750,6 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
             }
         }
 
-
     }
 
     @Override
@@ -695,24 +761,5 @@ public class ProfileCompleteActivity extends AppCompatActivity implements Runtim
     public void onStop() {
         super.onStop();
     }
-    @Override
-    public void onBackPressed() {
-//        return;
-//        super.onBackPressed();
-        settingsMain.setUser("");
-        settingsMain.setFireBaseId("");
-        settingsMain.setAppOpen(false);
-        ProfileCompleteActivity.this.finish();
-        Intent intent = new Intent(ProfileCompleteActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-    }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        return false;
-//        onBackPressed();
-//        return true;
-    }
 }

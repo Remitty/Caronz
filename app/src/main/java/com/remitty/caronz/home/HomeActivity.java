@@ -68,7 +68,6 @@ import com.google.gson.JsonObject;
 
 import com.remitty.caronz.orders.MyBookingActivity;
 import com.remitty.caronz.others.ActivityHelp;
-import com.remitty.caronz.others.NotificationActivity;
 import com.remitty.caronz.others.NotificationFragment;
 import com.remitty.caronz.payment.CardsActivity;
 import com.remitty.caronz.withdraw.WithdrawActivity;
@@ -92,7 +91,7 @@ import com.remitty.caronz.Settings.Settings;
 import com.remitty.caronz.SplashScreen;
 import com.remitty.caronz.helper.LocaleHelper;
 import com.remitty.caronz.profile.FragmentProfile;
-import com.remitty.caronz.auth.MainActivity;
+import com.remitty.caronz.auth.AuthActivity;
 import com.remitty.caronz.utills.CircleTransform;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
@@ -103,26 +102,27 @@ import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
 public class
 HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RuntimePermissionHelper.permissionInterface, BottomNavigationView.OnNavigationItemSelectedListener,
+        implements RuntimePermissionHelper.permissionInterface, BottomNavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
         AdapterView.OnItemClickListener, MenuItem.OnMenuItemClickListener {
 
     public static Activity activity;
-    public static Boolean checkLoading = false;
+    SettingsMain settingsMain;
+    RestService restService;
     boolean back_pressed = false;
     private MyReceiver receiver;
     MenuItem action_notification;
 
-    SettingsMain settingsMain;
-    ImageView imageViewProfile;
     UpdateFragment updatfrag;
-    TextView textViewUserName;
-    RestService restService;
+
     AutoCompleteTextView currentLocationText;
     RuntimePermissionHelper runtimePermissionHelper;
+
     private PlacesClient placesClient;
     ArrayList<String> places = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
+    public static Boolean checkLoading = false;
+    private String method;
 
     public void updateApi(UpdateFragment listener) {
         updatfrag = listener;
@@ -133,6 +133,9 @@ HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         System.gc();
         settingsMain = new SettingsMain(this);
@@ -145,21 +148,19 @@ HomeActivity extends AppCompatActivity
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //noinspection deprecation
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        if(getIntent() != null) {
+            method = getIntent().getStringExtra("method");
+        }
 
         initNavigation();
 
         if (savedInstanceState == null) {
+            FragmentAllCategories fragment_cat = new FragmentAllCategories();
+                Bundle bundle = new Bundle();
+                bundle.putString("method", method);
+                fragment_cat.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.frameContainer,
-                    new HomeFragment()).commit();
+                    fragment_cat).commit();
         }
 
         restService = UrlController.createService(RestService.class);// for test
@@ -188,77 +189,7 @@ HomeActivity extends AppCompatActivity
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(this);
-        
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        Menu menu = navigationView.getMenu();
-
-        if (!settingsMain.getAppOpen()) {
-//                                    menu.findItem(R.id.message).setVisible(false);
-            menu.findItem(R.id.nav_profile).setVisible(false);
-            menu.findItem(R.id.nav_withdraw).setVisible(false);
-            menu.findItem(R.id.nav_myOrders).setVisible(false);
-            menu.findItem(R.id.nav_myHire).setVisible(false);
-            menu.findItem(R.id.nav_myCars).setVisible(false);
-            menu.findItem(R.id.nav_cards).setVisible(false);
-
-            menu.findItem(R.id.nav_log_out).setVisible(false);
-            menu.findItem(R.id.nav_log_in).setVisible(true);
-        }
-
-        View header = navigationView.getHeaderView(0);
-
-        if (header != null) {
-            TextView textViewUserEmail = header.findViewById(R.id.useremail);
-            textViewUserName = header.findViewById(R.id.username);
-            imageViewProfile = header.findViewById(R.id.imageView);
-            TextView tvEditProfile = header.findViewById(R.id.tv_edit);
-
-
-            int[] colors = {Color.parseColor(getMainColor()), Color.parseColor(getMainColor())};
-            //create a new gradient color
-            GradientDrawable gd = new GradientDrawable(
-                    GradientDrawable.Orientation.LEFT_RIGHT, colors);
-            gd.setCornerRadius(0f);
-
-            header.setBackground(gd);
-
-
-            if (!settingsMain.getAppOpen()) {
-                if (!TextUtils.isEmpty(settingsMain.getGuestImage())) {
-                    Picasso.with(this).load(settingsMain.getGuestImage())
-                            .transform(new CircleTransform())
-                            .error(R.drawable.placeholder)
-                            .placeholder(R.drawable.placeholder)
-                            .into(imageViewProfile);
-                }
-                tvEditProfile.setVisibility(View.GONE);
-            } else {
-                if (!TextUtils.isEmpty(settingsMain.getUser())) {
-                    textViewUserEmail.setText(settingsMain.getUserEmail());
-                }
-                if (!TextUtils.isEmpty(settingsMain.getUser())) {
-                    textViewUserName.setText(settingsMain.getUserName());
-                }
-                if (!TextUtils.isEmpty(settingsMain.getUserImage())) {
-                    Picasso.with(this).load(settingsMain.getUserImage())
-                            .transform(new CircleTransform())
-                            .error(R.drawable.placeholder)
-                            .placeholder(R.drawable.placeholder)
-                            .into(imageViewProfile);
-                }
-            }
-
-            tvEditProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    replaceFragment(new FragmentProfile(), "FragmentProfile");
-                }
-            });
-        }
     }
 
 
@@ -330,20 +261,6 @@ HomeActivity extends AppCompatActivity
 
         button.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
-    }
-
-    public void changeImage() {
-        if (!TextUtils.isEmpty(settingsMain.getUser())){
-
-            if (!TextUtils.isEmpty(settingsMain.getUserImage())) {
-                Picasso.with(this).load(settingsMain.getUserImage())
-                        .transform(new CircleTransform())
-                        .error(R.drawable.placeholder)
-                        .placeholder(R.drawable.placeholder)
-                        .into(imageViewProfile);
-            }
-            textViewUserName.setText(settingsMain.getUserName());
-        }
     }
 
     @Override
@@ -545,7 +462,11 @@ HomeActivity extends AppCompatActivity
 
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     @Override
     public void onBackPressed() {
@@ -608,101 +529,15 @@ HomeActivity extends AppCompatActivity
         String tag = null;
         AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
         switch(id){
-//            case R.id.nav_home:
-//                FragmentManager fm = HomeActivity.this.getSupportFragmentManager();
-//                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-//                    fm.popBackStack();
-//                }
-//                break;
-            case R.id.nav_rent:
-                fragment = new FragmentSearch();
-                tag = "FragmentSearch";
-                bundle.putString("method", "rent");
+            case R.id.nav_home:
+                fragment = new FragmentAllCategories();
+                tag="FragmentAllCategories";
+                bundle.putString("method", method);
                 fragment.setArguments(bundle);
                 break;
-            case R.id.nav_sale:
-                fragment = new FragmentSearch();
-                tag = "FragmentBuySearch";
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("method", "buy");
-                fragment.setArguments(bundle1);
-                break;
-            case R.id.nav_hire:
-                fragment = new HireSearchMapFragment();
-                tag = "HireSearchMapFragment";
-                break;
-            case R.id.nav_profile:
-                fragment = new FragmentProfile();
-                tag = "FragmentProfile";
-                break;
-            case R.id.nav_message:
-                Intent intent1 = new Intent(getApplicationContext(), ChatActivity.class);
-                intent1.putExtra("receiverId", "");
-                startActivity(intent1);
-                break;
-            case R.id.nav_cards:
-                startActivity(new Intent(getApplicationContext(), CardsActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_myOrders:
-                startActivity(new Intent(getApplicationContext(), MyBookingActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_myHire:
-                startActivity(new Intent(getApplicationContext(), MyHireActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_withdraw:
-                startActivity(new Intent(getApplicationContext(), WithdrawActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_coins:
-                startActivity(new Intent(getApplicationContext(), CoinActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_myCars:
-                startActivity(new Intent(getApplicationContext(), MyCarsActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_settings:
-                startActivity(new Intent(getApplicationContext(), Settings.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_support:
-                startActivity(new Intent(getApplicationContext(), ActivityHelp.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-//            case R.id.nav_notification:
-//                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
-//                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-//                break;
-            case R.id.nav_log_in:
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                break;
-            case R.id.nav_log_out:
-
-                alert.setTitle(getBaseContext().getResources().getString(R.string.app_name));
-                alert.setCancelable(false);
-                alert.setIcon(R.mipmap.ic_launcher);
-                alert.setMessage("Do you want to logout?");
-                alert.setPositiveButton(settingsMain.getAlertOkText(), (dialog, which) -> {
-                    settingsMain.setFireBaseId("");
-                    HomeActivity.this.finish();
-                    Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-                    settingsMain.setUser("");
-                    settingsMain.setAppOpen(false);
-                    dialog.dismiss();
-                });
-                alert.setNegativeButton(settingsMain.getAlertCancelText(), (dialogInterface, i) -> dialogInterface.dismiss());
-                alert.show();
-                break;
             case R.id.nav_find:
-                fragment = new HomeFragment();
-                tag="HomeFragment";
+                fragment = new FragmentSearch();
+                tag="FragmentSearch";
                 break;
             case R.id.nav_chat:
                 fragment = new Inbox();
@@ -734,9 +569,6 @@ HomeActivity extends AppCompatActivity
                 }
                 break;
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
 
         if (fragment != null) {
             replaceFragment(fragment, tag);
@@ -837,4 +669,7 @@ HomeActivity extends AppCompatActivity
 
         }
     }
+
+
+
 }

@@ -31,6 +31,7 @@ import java.util.concurrent.TimeoutException;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,11 +39,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityHelp extends AppCompatActivity implements View.OnClickListener{
-    ImageView imgEmail;
-    ImageView imgPhone;
-    ImageView imgWeb;
-    ImageView backArrow;
-    TextView titleTxt;
+
+    CardView chatCard, callCard, mailCard;
 
     String phone = "";
     String email = "";
@@ -64,7 +62,10 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        findviewById();
+        chatCard = findViewById(R.id.chat_card);
+        callCard = findViewById(R.id.call_card);
+        mailCard = findViewById(R.id.mail_card);
+
         setOnClickListener();
         getHelp();
     }
@@ -123,23 +124,15 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void findviewById() {
-        imgEmail = (ImageView) findViewById(R.id.img_mail);
-        imgPhone = (ImageView) findViewById(R.id.img_phone);
-        imgWeb = (ImageView) findViewById(R.id.img_web);
-        titleTxt = (TextView) findViewById(R.id.title_txt);
-
-    }
-
     private void setOnClickListener() {
-        imgEmail.setOnClickListener(this);
-        imgPhone.setOnClickListener(this);
-        imgWeb.setOnClickListener(this);
+        chatCard.setOnClickListener(this);
+        callCard.setOnClickListener(this);
+        mailCard.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == imgEmail) {
+        if (v == mailCard) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/html");
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
@@ -147,7 +140,7 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
             intent.putExtra(Intent.EXTRA_TEXT, "Hello team");
             startActivity(Intent.createChooser(intent, "Send Email"));
         }
-        if (v == imgPhone) {
+        if (v == callCard) {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             boolean hasNetwork = telephonyManager.getNetworkType() != android.telephony.TelephonyManager.NETWORK_TYPE_UNKNOWN;
             if (hasNetwork) {

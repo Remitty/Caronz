@@ -7,31 +7,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:padding="15dp"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cornerRadius="7dp"
+            card_view:cardCornerRadius="15dp"
             card_view:cardElevation="5dp"
-            card_view:cardUseCompatPadding="true">
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="20dp"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:text="Invoice"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="15dp"
                     android:orientation="vertical">
                     <LinearLayout
                         android:id="@+id/book_invoice"
@@ -41,54 +33,69 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
+                                android:textColor="@color/gray"
                                 android:textSize="14sp"
-                                android:text="From"/>
+                                android:text="From Date"/>
 
                             <TextView
                                 android:id="@+id/invoice_from"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/gray600"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
                                 android:text="11/11/1111"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
+                                android:textColor="@color/gray"
                                 android:textSize="14sp"
-                                android:text="To"/>
+                                android:text="To Date"/>
 
                             <TextView
                                 android:id="@+id/invoice_to"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:text="11/11/1111"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
-                                android:text="Days booked"/>
+                                android:textColor="@color/gray"
+                                android:text="Days Booked"/>
                             <LinearLayout
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
@@ -101,18 +108,26 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
+                                    android:textColor="@color/gray600"
                                     android:textSize="14sp"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="right"
+                                    android:visibility="gone"
                                     android:textStyle="bold"
+                                    android:textColor="@color/gray600"
                                     android:textSize="14sp"
                                     android:text=" days"/>
                             </LinearLayout>
 
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
 
                     </LinearLayout>
                     <LinearLayout
@@ -123,13 +138,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray"
                                 android:text="Arrive Time"/>
 
                             <TextView
@@ -137,19 +153,26 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:text="00:00"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray"
                                 android:text="From"/>
 
                             <TextView
@@ -160,19 +183,26 @@
                                 android:maxLines="2"
                                 android:ellipsize="end"
                                 android:textStyle="bold"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:text="pockup"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray"
                                 android:text="To"/>
 
                             <TextView
@@ -184,18 +214,25 @@
                                 android:ellipsize="end"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray600"
                                 android:text="dropoff"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray"
                                 android:text="Est. distance"/>
 
                             <TextView
@@ -203,19 +240,26 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:text="pockup"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:textSize="14sp"
+                                android:textColor="@color/gray"
                                 android:text="Est. time"/>
 
                             <TextView
@@ -223,21 +267,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:text="dropoff"/>
                         </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="3dp"
+                            android:background="@color/colorDivider"/>
 
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="@color/gray"
                             android:text="Unit price"/>
                         <LinearLayout
                             android:layout_weight="1"
@@ -251,21 +302,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:text="$ 0"
+                                android:textColor="@color/gray600"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
                     </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="3dp"
+                        android:background="@color/colorDivider"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="@color/gray"
                             android:text="Service fees"/>
 
                         <TextView
@@ -273,19 +331,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="$ 0"
+                            android:textColor="@color/gray600"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="3dp"
+                        android:background="@color/colorDivider"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="@color/gray600"
                             android:text="Taxes"/>
 
                         <TextView
@@ -293,37 +358,33 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            android:textColor="@color/gray600"
                             android:textSize="14sp"
                             android:text="$ 0"/>
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginVertical="5dp"
-                    android:background="@color/bg_gray"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
+                    android:background="@drawable/rounded_card_bottom"
+                    android:paddingHorizontal="15dp"
+                    android:orientation="horizontal"
                     android:gravity="center_vertical">
                     <TextView
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
+                        android:textColor="@color/white"
                         android:text="Total Price"/>
                     <TextView
                         android:id="@+id/invoice_total"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:gravity="center"
+                        android:textSize="16dp"
+                        android:textColor="@color/white"
                         android:text="$ 0"/>
                 </LinearLayout>
             </LinearLayout>
@@ -333,12 +394,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
             android:orientation="vertical"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             tools:ignore="ScrollViewSize">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment through"
+                android:textColor="@color/gray700"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"/>
             <RadioGroup
                 android:id="@+id/rdg_service"
                 android:layout_width="match_parent"
@@ -353,29 +420,31 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cornerRadius="3dp"
+                    card_view:cardCornerRadius="10dp"
                     card_view:cardElevation="5dp"
-                    card_view:cardUseCompatPadding="true">
+                    >
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
+                        android:layout_height="52dp"
+                        android:padding="10dp"
                         android:orientation="horizontal">
                         <RadioButton
                             android:id="@+id/rdb_card"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorPrimary"/>
                         <ImageView
                             android:id="@+id/image_brand"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
                             android:src="@drawable/ic_cards"
                             />
                         <TextView
                             android:id="@+id/tv_card_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="15dp"
                             android:layout_gravity="center_vertical"
                             android:text="****-****-****-****-****"
                             android:textStyle="bold"
@@ -400,13 +469,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginVertical="10dp"
                     android:orientation="horizontal">
                     <TextView
                         android:id="@+id/tv_add_card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/blue"
+                        android:textSize="16dp"
                         android:text="Add Card"/>
                     <LinearLayout
                         android:layout_weight="1"
@@ -419,77 +489,88 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/blue"
+                        android:textSize="16dp"
                         android:text="Change Card"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/balance_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp">
-                <androidx.cardview.widget.CardView
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/balance_layout"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cornerRadius="3dp"
-                    card_view:cardElevation="5dp"
-                    card_view:cardUseCompatPadding="true">
-                    <LinearLayout
+                    android:layout_marginRight="10dp"
+                    >
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
-                        android:orientation="horizontal">
-                        <RadioButton
-                            android:id="@+id/rdb_balance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        card_view:cardCornerRadius="10dp"
+                        card_view:cardElevation="5dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rdb_balance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
-                        <TextView
-                            android:id="@+id/tv_balance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="$100"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/cash_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp">
-                <androidx.cardview.widget.CardView
+                            <TextView
+                                android:id="@+id/tv_balance"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="$100"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/cash_layout"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cornerRadius="3dp"
-                    card_view:cardElevation="5dp"
-                    card_view:cardUseCompatPadding="true">
-                    <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    >
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
-                        android:orientation="horizontal">
-                        <RadioButton
-                            android:id="@+id/rdb_cash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        card_view:cardCornerRadius="10dp"
+                        card_view:cardElevation="5dp"
+                        >
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Cash"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                            android:layout_height="52dp"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rdb_cash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Cash"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="18dp"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -512,35 +593,43 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Card Number"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black" />
-
-                    <LinearLayout
+                        android:textSize="16dp"
+                        android:textColor="@color/gray600"
+                        android:layout_marginBottom="5dp"/>
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <EditText
-                            android:id="@+id/edit_card_no"
+                        card_view:cardElevation="5dp"
+                        card_view:cardCornerRadius="10dp">
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/buton_border"
-                            android:ems="10"
-                            android:drawableStart="@drawable/credit_card"
-                            android:gravity="center_vertical"
-                            android:hint="4242424242424242"
-                            android:maxLength="16"
-                            android:inputType="number"
-                            android:maxLines="1"
-                            android:padding="10dp"
-                            android:textSize="13sp" />
+                            android:orientation="vertical">
 
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px"
-                            android:background="@color/white_greyish" />
+                            <EditText
+                                android:id="@+id/edit_card_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="52dp"
+                                android:background="@drawable/buton_border"
+                                android:ems="10"
+                                android:drawableStart="@drawable/credit_card"
+                                android:drawablePadding="15dp"
+                                android:gravity="center_vertical"
+                                android:hint="4242424242424242"
+                                android:maxLength="16"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
 
-                    </LinearLayout>
+                            <View
+                                android:layout_width="fill_parent"
+                                android:layout_height="1px"
+                                android:background="@color/white_greyish" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
 
                 </LinearLayout>
 
@@ -559,60 +648,73 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Expiration Date"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black" />
+                        android:textSize="16dp"
+                        android:textColor="@color/gray600" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:baselineAligned="false"
-                        android:background="@drawable/buton_border"
                         android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
                             android:layout_weight=".5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView21"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Month"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                            <Spinner
-                                android:id="@+id/spinner_month"
+                            card_view:cardCornerRadius="10dp"
+                            android:layout_marginRight="10dp">
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:entries="@array/month_array" />
+                                android:padding="10dp"
+                                android:orientation="vertical">
 
-                        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/textView21"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Month"
+                                    android:visibility="gone"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                                <Spinner
+                                    android:id="@+id/spinner_month"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:entries="@array/month_array" />
+
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            card_view:cardCornerRadius="10dp"
                             android:layout_weight=".5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView22"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Year"
-                                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                            <Spinner
-                                android:id="@+id/spinner_year"
+                            android:layout_marginLeft="10dp">
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:entries="@array/year_array"/>
+                                android:padding="10dp"
+                                android:orientation="vertical">
 
-                        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/textView22"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Year"
+                                    android:visibility="gone"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_year"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:entries="@array/year_array"/>
+
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -630,36 +732,37 @@
                         android:id="@+id/textView24"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:text="CVC"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black" />
-
-                    <LinearLayout
+                        android:textSize="16dp"
+                        android:textColor="@color/gray600" />
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <EditText
-                            android:id="@+id/edit_cvc"
+                        android:layout_height="52dp"
+                        card_view:cardElevation="5dp"
+                        card_view:cardCornerRadius="10dp">
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/buton_border"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:hint="111"
-                            android:inputType="number"
-                            android:maxLength="3"
-                            android:maxLines="1"
-                            android:nextFocusForward="@+id/currency"
                             android:padding="10dp"
-                            android:textSize="13sp" />
+                            android:orientation="vertical">
 
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px"
-                            android:background="@color/white_greyish" />
+                            <EditText
+                                android:id="@+id/edit_cvc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:hint="111"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:textSize="24dp" />
 
-                    </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
 
                 </LinearLayout>
 
@@ -673,6 +776,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/gray600"
+                        android:buttonTint="@color/colorPrimary"
                         android:text="Add card for the future"/>
                 </LinearLayout>
             </LinearLayout>
@@ -691,9 +796,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/colorRedCrayon"
+                    android:background="@drawable/rounded_fill_primary_button"
                     android:gravity="center"
                     android:text="Check Out"
+                    android:textSize="24dp"
                     android:textColor="@color/white" />
 
             </LinearLayout>

@@ -12,10 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/adVi"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
         android:descendantFocusability="blocksDescendants"
         android:fillViewport="true"
         android:focusableInTouchMode="false"
@@ -36,6 +32,7 @@
             <include layout="@layout/content_page1_layout" />
             <include layout="@layout/content_page2_layout" />
             <include layout="@layout/content_page3_layout" />
+            <include layout="@layout/content_page4_layout" />
 
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>

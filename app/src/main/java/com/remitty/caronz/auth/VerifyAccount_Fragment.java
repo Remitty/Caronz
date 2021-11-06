@@ -168,7 +168,7 @@ public class VerifyAccount_Fragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.backToLoginBtn:
                 // Replace Login Fragment on Back Presses
-                new MainActivity().replaceLoginFragment();
+                new AuthActivity().replaceLoginFragment();
                 break;
             case R.id.verify_button:
                 // Call Submit button task
@@ -212,7 +212,7 @@ public class VerifyAccount_Fragment extends Fragment implements View.OnClickList
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new MainActivity().replaceLoginFragment();
+                                        new AuthActivity().replaceLoginFragment();
                                     }
                                 }, 1000);
 

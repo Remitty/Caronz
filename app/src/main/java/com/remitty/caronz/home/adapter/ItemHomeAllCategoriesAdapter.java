@@ -58,7 +58,7 @@ public class ItemHomeAllCategoriesAdapter extends RecyclerView.Adapter<ItemHomeA
         };
 
         customViewHolder.view.setOnClickListener(listener);
-        customViewHolder.imageView.setBackgroundResource(R.drawable.ic_right_arrow_angle);
+//        customViewHolder.imageView.setBackgroundResource(R.drawable.ic_right_arrow_angle);
 
 
     }

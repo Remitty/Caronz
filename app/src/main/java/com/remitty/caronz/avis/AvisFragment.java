@@ -96,14 +96,14 @@ public class AvisFragment extends Fragment {
             }
         });
 
-        btnBack = view.findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HomeFragment fragment_home = new HomeFragment();
-                replaceFragment(fragment_home, "HomeFragment");
-            }
-        });
+//        btnBack = view.findViewById(R.id.btn_back);
+//        btnBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                HomeFragment fragment_home = new HomeFragment();
+//                replaceFragment(fragment_home, "HomeFragment");
+//            }
+//        });
 
         return view;
     }

@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008f00</color>
-    <color name="colorAccent">#66BB6A</color>
-    <color name="colorPrimaryDark">#199603</color>
+    <color name="colorPrimary">#2C8838</color>
+    <color name="colorPrimaryDark">#16441C</color>
+    <color name="colorAccent">#3B5999</color>
 
-    <color name="background_color">#f58936</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="white_greyish">#a0a0a0</color>
-    <color name="rattingBarColor">#aaffffff</color>
     <color name="green">#008f00</color>
+    <color name="greenDark">#1D5B25</color>
+    <color name="blue">#0047AB</color>
+    <color name="yellow">#ffcc00</color>
+    <color name="gray">#666666</color>
+    <color name="gray100">#E0E0E0</color>
+    <color name="gray600">#4D4D4D</color>
+    <color name="gray700">#333333</color>
 
     <color name="tab1">#a0d468</color>
     <color name="tab2">#3498db</color>
     <color name="tab3">#e8ce4d</color>
     <color name="tab4">#F25E5E</color>
+
+    <color name="white_greyish">#a0a0a0</color>
+    <color name="background_color">#BBBBBB</color>
+    <color name="background_gray_color">#DFDFDF</color>
+    <color name="auth_background_color">#D5E7D7</color>
     <color name="colorRedCrayon">#ee204d</color>
-    <color name="colorDivider">#727272</color>
+    <color name="colorDivider">#F0F0F0</color>
     <color name="transparent">#00000000</color>
+    <color name="rattingBarColor">#aaffffff</color>
     <!-- card colors -->
     <color name="card_background">#ffffff</color>
     <color name="card_shadow_1">#d4d4d4</color>
     <color name="card_shadow_2">#dddddd</color>
     <color name="card_detailing">#eee</color>
     <color name="socialIcons_background">#eff3f6</color>
-    <color name="yellow">#ffcc00</color>
     <color name="rangeseekbar">#f58936</color>
     <color name="rangeseekbarhover">#f07618</color>
 
-    <color name="blue">#0047AB</color>
 
-    <color name="layoutBackgroundLight">#e0e0e0</color>
+    <color name="layoutBackgroundLight">#F6F6F6</color>
     <color name="circular_progress_default_progress">#24ea01</color>
     <color name="circular_progress_default_background">#787878</color>
     <color name="circular_progress_default_title">#199603</color>

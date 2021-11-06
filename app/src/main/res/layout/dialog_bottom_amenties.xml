@@ -24,6 +24,6 @@
         android:layout_marginHorizontal="20dp"
         android:layout_gravity="bottom"
         android:text="Done"
-        android:background="@drawable/loginbutton_selector"
+        android:background="@drawable/border_transparent_selector"
         android:textColor="@color/colorPrimary"/>
 </LinearLayout>

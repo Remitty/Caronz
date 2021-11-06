@@ -11,7 +11,7 @@ import com.remitty.caronz.R;
 import com.remitty.caronz.helper.LocaleHelper;
 import com.remitty.caronz.utills.SettingsMain;
 
-public class MainActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
     SettingsMain settingsMain;
 
@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         settingsMain = new SettingsMain(this);
-        setContentView(R.layout.activity_main);
+//        settingsMain.setMainColor("#D5E7D7");
+
+        setContentView(R.layout.activity_auth);
         fragmentManager = getSupportFragmentManager();
 
         // If savedinstnacestate is null then replace login fragment

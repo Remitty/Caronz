@@ -166,7 +166,11 @@ public class CarModel {
     }
 
     public Float getRate() {
-        return Float.parseFloat(data.optString("rate"));
+        try {
+            return Float.parseFloat(data.optString("rate"));
+        } catch (NumberFormatException e) {
+            return Float.parseFloat("0.0");
+        }
     }
 
     public ArrayList<CarFeedback> getFeedbacks() {
