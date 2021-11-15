@@ -147,13 +147,11 @@ public class UserModel {
     }
 
     public DocumentModel getDocument() {
-        try {
-            DocumentModel document = new DocumentModel(data.getJSONObject("document"));
+        JSONObject temp = data.optJSONObject("document");
+        if(temp != null) {
+            DocumentModel document = new DocumentModel(temp);
             return document;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+        } else return null;
     }
 
 

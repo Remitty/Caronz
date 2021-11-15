@@ -68,7 +68,7 @@
                         android:layout_gravity="bottom"
                         android:clickable="true"
                         android:padding="4dp"
-                        android:drawableStart="@drawable/profile2"
+                        android:drawableStart="@drawable/ic_edit"
                         android:gravity="bottom"
                         android:background="@color/colorPrimary"
                         android:textColor="@color/white"

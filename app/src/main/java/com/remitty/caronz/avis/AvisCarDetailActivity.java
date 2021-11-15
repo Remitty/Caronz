@@ -2,6 +2,8 @@ package com.remitty.caronz.avis;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -53,7 +55,7 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
     RuntimePermissionHelper runtimePermissionHelper;
 
     TextView textViewAdName, tvCatName, tvPrice, tvCurrency, tvSeat, tvCarLocation, tvCarLocationName, tvCarTransmission;
-    LinearLayout bluetoothLayout, airConLayout, smokeLayout;
+    CardView bluetoothLayout, airConLayout, smokeLayout;
     Button btnBook;
 
     BannerSlider bannerSlider;
@@ -62,8 +64,8 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
 
     AvisCar car;
     private AvisLocation pickupLocation, dropoffLocation;
-    private LinearLayout callLayout;
-    private TextView tvSpeed;
+    private CardView callLayout;
+    private TextView tvDoors;
 
     private String bookId;
 
@@ -72,11 +74,17 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avis_car_detail);
 
+        settingsMain = new SettingsMain(this);
+        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        settingsMain = new SettingsMain(this);
-        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+
         runtimePermissionHelper = new RuntimePermissionHelper(AvisCarDetailActivity.this, this);
 
         initComponents();
@@ -124,17 +132,18 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
     private void initComponents() {
         bannerSlider = findViewById(R.id.banner_slider1);
 
-        callLayout = findViewById(R.id.ll_call);
+        callLayout = findViewById(R.id.btn_call);
 
         textViewAdName = findViewById(R.id.tv_car_name);
         tvCatName = findViewById(R.id.tv_car_cat);
         tvPrice = findViewById(R.id.tv_price);
         tvCurrency = findViewById(R.id.tv_currency);
 
-        tvSpeed = findViewById(R.id.tv_car_speed);
+        tvCarLocationName = findViewById(R.id.tv_car_location_name);
+
+        tvDoors = findViewById(R.id.tv_doors);
         tvSeat = findViewById(R.id.tv_car_seat);
         tvCarLocation = findViewById(R.id.tv_car_location);
-        tvCarLocationName = findViewById(R.id.tv_car_location_name);
         tvCarTransmission = findViewById(R.id.tv_car_transmission);
 
         bluetoothLayout = findViewById(R.id.tv_car_bluetooth);
@@ -161,7 +170,7 @@ public class AvisCarDetailActivity extends AppCompatActivity implements RuntimeP
         tvCatName.setText(car.getMake());
         textViewAdName.setText(car.getModel());
 
-        tvSpeed.setText(car.getDoors() + " Doors");
+        tvDoors.setText(car.getDoors() + " Doors");
         tvPrice.setText(car.getPrice());
         tvCurrency.setText(car.getCurrency());
         tvCarLocation.setText(pickupLocation.getName());

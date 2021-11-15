@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +39,10 @@ import com.remitty.caronz.messages.ChatActivity;
 import com.remitty.caronz.models.CarFeedback;
 import com.remitty.caronz.models.CarModel;
 import com.remitty.caronz.models.ReceivedMessageModel;
-import com.remitty.caronz.gms.CustomGooglePlacesSearchActivity;
 import com.remitty.caronz.payment.HireBookingActivity;
 import com.remitty.caronz.payment.RentalBookingActivity;
 import com.remitty.caronz.payment.StripePayment;
-import com.remitty.caronz.profile.ProfileActivity;
+import com.remitty.caronz.profile.OwnerProfileActivity;
 import com.google.gson.JsonObject;
 
 
@@ -92,7 +90,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
     TextView textViewAdName, tvCatName, textViewDescrition, tvPrice, tvCurrency, tvPriceUnit, tvBody, tvSeat, tvViewComments, tvCarLocation, tvCarRate, tvCarTransmission, tvYear, tvOwner;
 //    LinearLayout contactLayout, msgLayout, offerLayout;
 //    TextView btnMsg, btnCall;
-    ImageButton btnMsg, btnCall;
+    CardView btnMsg, btnCall;
     Button btnOffer;
     AppCompatEditText editPickup;
     HtmlTextView htmlTextView;
@@ -246,7 +244,7 @@ public class FragmentCarDetail extends Fragment implements Serializable, Runtime
         ownerProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                Intent intent = new Intent(getActivity(), OwnerProfileActivity.class);
                 intent.putExtra("userId", item.getSellerId());
                 startActivity(intent);
             }

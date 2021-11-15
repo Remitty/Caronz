@@ -44,11 +44,11 @@ public class ReceivedMessageModel {
     }
 
     public String getTopic() {
-        return post.getName();
+        return post != null ? post.getName() : "No exist the car.";
     }
 
     public String getTumbnail() {
-        return post.getFirstImage();
+        return post != null ? post.getFirstImage() : null;
     }
 
     public String getOtherProfile() {
@@ -94,13 +94,12 @@ public class ReceivedMessageModel {
     public String getMessages() {return data.optString("messages");}
 
     private CarModel setPost() {
-        try {
-            post = new CarModel(data.getJSONObject("post"));
+        JSONObject temp = data.optJSONObject("post");
+        if(temp != null) {
+            post = new CarModel(temp);
             return post;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+        } else return null;
     }
 
     private class Message {

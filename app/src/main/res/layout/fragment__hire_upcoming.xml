@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".hire.Upcoming">
+    tools:context=".hire.HireUpcoming">
 
     <LinearLayout
         android:id="@+id/empty_view"
@@ -12,22 +12,22 @@
         android:gravity="center"
         android:visibility="gone"
         android:orientation="vertical">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/empty_trush"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="No hire yet"
+            android:text="No Hire Yet"
             android:textStyle="bold"
-            android:textSize="30dp"
-            android:textColor="@color/black"/>
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_calendar"/>
+            android:textSize="25dp"
+            android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

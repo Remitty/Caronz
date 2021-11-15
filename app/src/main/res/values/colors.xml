@@ -7,7 +7,9 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#008f00</color>
+    <color name="green600">#21662A</color>
     <color name="greenDark">#1D5B25</color>
+    <color name="green700">#16441C</color>
     <color name="blue">#0047AB</color>
     <color name="yellow">#ffcc00</color>
     <color name="gray">#666666</color>
@@ -21,7 +23,8 @@
     <color name="tab4">#F25E5E</color>
 
     <color name="white_greyish">#a0a0a0</color>
-    <color name="background_color">#BBBBBB</color>
+    <color name="background_color">#F2F2F2</color>
+    <color name="background_color_image_card">#F6F6F6</color>
     <color name="background_gray_color">#DFDFDF</color>
     <color name="auth_background_color">#D5E7D7</color>
     <color name="colorRedCrayon">#ee204d</color>

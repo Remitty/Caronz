@@ -4,12 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".payment.HireBookingActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:id="@+id/tvToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h3_font_size"
+                android:text="@string/app_name"/>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="30dp"
+        android:padding="@dimen/space_20"
+        android:paddingTop="30dp"
+        android:background="@color/background_color"
         android:orientation="vertical">
 
         <!--source & dest layout-->
@@ -20,35 +46,32 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="12dp"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="15sp"
-                android:layout_marginTop="30sp"
+                android:layout_marginTop="40sp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/round" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:background="@color/black" />
+                    android:layout_width="16dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_pickup" />
 
                 <ImageView
                     android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/box" />
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_line" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="30dp"
+                    android:src="@drawable/ic_dropoff" />
 
 
             </LinearLayout>
@@ -68,21 +91,28 @@
                     android:orientation="horizontal">
 
                     <!-- City and Country Selector -->
-                    <EditText
-                        android:id="@+id/txtaddressSource"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/bg_gray"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingTop="10dp"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:hint="Pickup location"
-                         />
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                        <EditText
+                            android:id="@+id/txtaddressSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="Pickup location"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingStart="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp" />
+                    </androidx.cardview.widget.CardView>
+
 
                     <ImageView
                         android:id="@+id/imgSourceClose"
@@ -100,26 +130,32 @@
                     android:id="@+id/dest_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="0dp"
                     android:layout_below="@+id/rytAddressSource"
                     android:orientation="horizontal">
-
-
-                    <EditText
-                        android:id="@+id/txtDestination"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#D3D3D3"
-                        android:hint="Dropoff location"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingTop="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                        <EditText
+                            android:id="@+id/txtDestination"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:background="@null"
+                            android:hint="Dropoff location"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:gravity="center_vertical"
+                            android:paddingBottom="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="10dp"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+
 
                     <ImageView
                         android:id="@+id/imgDestClose"
@@ -138,11 +174,15 @@
                     android:id="@+id/s_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="150dp"
+                    android:visibility="gone"
                     android:layout_below="@+id/rytAddressSource"/>
                 <ListView
                     android:id="@+id/d_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="150dp"
+                    android:visibility="gone"
                     android:layout_below="@+id/dest_layout"/>
             </RelativeLayout>
 
@@ -159,32 +199,65 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_marginTop="30dp">
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Pickup Time"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_arrive_date"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pickup Time"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edit_arrive_date"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/min_input_height"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:hint="mm/dd/yyyy"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/imageview_border"
-                    android:focusable="false"
-                    android:hint="mm/dd/yyyy"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_arrive_time"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/imageview_border"
-                    android:focusable="false"
-                    android:hint="00:00"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp" />
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edit_arrive_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/min_input_height"
+                        android:drawableEnd="@drawable/ic_clock"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:hint="00:00"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -192,44 +265,72 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_marginTop="30dp">
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dropoff Time"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_dropoff_date"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dropoff Time"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edit_dropoff_date"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:background="@null"
+                            android:focusable="false"
+                            android:hint="mm/dd/yyyy"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/imageview_border"
-                    android:focusable="false"
-                    android:hint="mm/dd/yyyy"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp" />
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_dropoff_time"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/imageview_border"
-                    android:focusable="false"
-                    android:hint="00:00"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp" />
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/radius_10">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edit_dropoff_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:drawableEnd="@drawable/ic_clock"
+                            android:background="@null"
+                            android:focusable="false"
+                            android:hint="00:00"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+
             </LinearLayout>
             <Button
                 android:id="@+id/btn_search"
-                android:layout_width="300dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
-                android:paddingHorizontal="40dp"
-                android:background="@color/colorPrimary"
+                style="@style/Button.Primary"
                 android:text="Search Car"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
+                 />
         </LinearLayout>
 
 

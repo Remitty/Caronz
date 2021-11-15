@@ -1,13 +1,20 @@
 package com.remitty.caronz.avis;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,11 +58,21 @@ public class AvisReserveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avis_reserve);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         settingsMain = new SettingsMain(this);
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
 
         if (getIntent() != null) {
             if (getIntent().hasExtra("car")) {
@@ -195,7 +212,6 @@ public class AvisReserveActivity extends AppCompatActivity {
         } else {
             settingsMain.hideDilog();
             Toast.makeText(this, settingsMain.getAlertDialogTitle("error"), Toast.LENGTH_SHORT).show();
-
         }
     }
 

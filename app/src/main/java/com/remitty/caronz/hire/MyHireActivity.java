@@ -4,8 +4,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.remitty.caronz.hire.adapter.HirePagerAdapter;
@@ -37,12 +41,14 @@ import retrofit2.Response;
 import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
 public class MyHireActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
     SettingsMain settingsMain;
     RestService restService;
 
     private List<HireModel> HireUpcomingRealtyList = new ArrayList<>();
     private List<HireModel> HireHistoryRealtyList = new ArrayList<>();
+
+    LinearLayout upcomingActiveLayout, historyActiveLayout;
+    TextView btnUpcoming, btnHistory;
 
     ViewPager mViewPager;
 
@@ -61,24 +67,67 @@ public class MyHireActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            getSupportActionBar().setTitle("My Hire");
         }
 
+        upcomingActiveLayout = findViewById(R.id.upcoming_active);
+        historyActiveLayout = findViewById(R.id.history_active);
+        historyActiveLayout.setVisibility(View.GONE);
+
+        btnUpcoming = findViewById(R.id.btn_upcoming);
+        btnHistory = findViewById(R.id.btn_history);
+
         mViewPager = (ViewPager) findViewById(R.id.container);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
-
 //        if (getIntent().getBooleanExtra("receive", false))
             mViewPager.setCurrentItem(0);
+        initListeners();
+
 
 //        RentalPagerAdapter mSectionsPagerAdapter = new RentalPagerAdapter(getSupportFragmentManager(), HireUpcomingRealtyList, HireHistoryRealtyList);
 //        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         loadAllHire();
+    }
+
+    private void initListeners() {
+        btnUpcoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                historyActiveLayout.setVisibility(View.GONE);
+                upcomingActiveLayout.setVisibility(View.VISIBLE);
+                mViewPager.setCurrentItem(0);
+            }
+        });
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upcomingActiveLayout.setVisibility(View.GONE);
+                historyActiveLayout.setVisibility(View.VISIBLE);
+                mViewPager.setCurrentItem(1);
+            }
+        });
+        mViewPager.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                int index = mViewPager.getCurrentItem();
+                switch (index) {
+                    case 0:
+                        historyActiveLayout.setVisibility(View.GONE);
+                        upcomingActiveLayout.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        upcomingActiveLayout.setVisibility(View.GONE);
+                        historyActiveLayout.setVisibility(View.VISIBLE);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void loadAllHire() {

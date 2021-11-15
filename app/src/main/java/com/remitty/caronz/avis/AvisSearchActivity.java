@@ -1,14 +1,22 @@
 package com.remitty.caronz.avis;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +54,7 @@ public class AvisSearchActivity extends AppCompatActivity {
     SettingsMain settingsMain;
     RestService restService;
 
-    TextView tvEmpty;
+    LinearLayout tvEmpty;
     RecyclerView recyclerView;
     AvisCarAdapter mAdapter;
     ArrayList<AvisCar> carList = new ArrayList<AvisCar>();
@@ -58,13 +66,23 @@ public class AvisSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avis_search);
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         settingsMain = new SettingsMain(this);
         restService = UrlController.createService(RestService.class);
 
-        setTitle(getResources().getString(R.string.app_name) + " " + getIntent().getStringExtra("brand"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = toolbar.findViewById(R.id.tvToolbarTitle);
+        title.setText(getIntent().getStringExtra("brand"));
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(getIntent() != null) {
             if(getIntent().hasExtra("pickup")) {
@@ -85,7 +103,7 @@ public class AvisSearchActivity extends AppCompatActivity {
             }
         }
 
-        tvEmpty = findViewById(R.id.tv_empty);
+        tvEmpty = findViewById(R.id.empty_view);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));

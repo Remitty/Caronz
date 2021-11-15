@@ -15,96 +15,166 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h3_font_size"
+                android:text="Add Booking"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="50dp"
+        android:padding="@dimen/space_20"
+        android:paddingTop="@dimen/space_20"
+        android:background="@color/background_color"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:text="Booking "/>
-        <TextView
-            android:id="@+id/book_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:textSize="15dp"
-            android:text=""/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:text="Start"/>
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/book_from"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/imageview_border"
-                android:focusable="false"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:layout_marginRight="10dp"
-                android:hint="Date"/>
+                android:textSize="@dimen/h2_font_size"
+                android:textStyle="bold"
+                android:textColor="@color/green700"
+                android:text="Let's Create a Booking"/>
+            <View
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2x"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="@dimen/radius_20">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_20"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/b2_line_height"
+                            android:textSize="@dimen/b2_font_size"
+                            android:lineHeight="@dimen/b2_line_height"
+                            android:textColor="@color/gray"
+                            android:text="Start Date"/>
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/book_from"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:background="@drawable/rounded_fill_transparent_border_gray"
+                            android:focusable="false"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:paddingHorizontal="@dimen/space_12"
+                            android:hint="Date"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/b2_line_height"
+                            android:textSize="@dimen/b2_font_size"
+                            android:lineHeight="@dimen/b2_line_height"
+                            android:textColor="@color/gray"
+                            android:text="Time"/>
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/book_from_time"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:background="@drawable/rounded_fill_transparent_border_gray"
+                            android:focusable="false"
+                            android:drawableEnd="@drawable/ic_clock"
+                            android:paddingHorizontal="@dimen/space_12"
+                            android:hint="Time"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_5x"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/b2_line_height"
+                            android:textSize="@dimen/b2_font_size"
+                            android:lineHeight="@dimen/b2_line_height"
+                            android:textColor="@color/gray"
+                            android:text="End Date"/>
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/book_to"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:background="@drawable/rounded_fill_transparent_border_gray"
+                            android:focusable="false"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:paddingHorizontal="@dimen/space_12"
+                            android:hint="Date"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/b2_line_height"
+                            android:textSize="@dimen/b2_font_size"
+                            android:lineHeight="@dimen/b2_line_height"
+                            android:textColor="@color/gray"
+                            android:text="Time"/>
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/book_to_time"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/min_input_height"
+                            android:background="@drawable/rounded_fill_transparent_border_gray"
+                            android:focusable="false"
+                            android:drawableEnd="@drawable/ic_clock"
+                            android:paddingHorizontal="@dimen/space_12"
+                            android:hint="Time"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/book_from_time"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/imageview_border"
-                android:focusable="false"
-                android:hint="Time"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:text="End"/>
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/book_to"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/imageview_border"
-                android:focusable="false"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:layout_marginRight="10dp"
-                android:hint="Date"/>
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/book_to_time"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/imageview_border"
-                android:focusable="false"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:layout_marginLeft="10dp"
-                android:hint="Time"/>
-        </LinearLayout>
         <EditText
             android:id="@+id/book_guest_name"
             android:layout_width="match_parent"
@@ -267,15 +337,8 @@
 
         <Button
             android:id="@+id/book_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:paddingHorizontal="40dp"
-            android:background="@color/accent"
             android:text="Continue Checkout"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            style="@style/Button.Primary" />
 
         <FrameLayout
             android:id="@+id/loadingLayout"

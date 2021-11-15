@@ -1,6 +1,7 @@
 package com.remitty.caronz.avis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -38,9 +39,11 @@ import com.remitty.caronz.avis.models.AvisLocation;
 import com.remitty.caronz.gms.CustomGooglePlacesSearchActivity;
 import com.remitty.caronz.helper.GMSHelper;
 import com.remitty.caronz.home.AddNewAdPost;
+import com.remitty.caronz.home.HomeActivity;
 import com.remitty.caronz.models.PlacePredictions;
 import com.remitty.caronz.utills.GPSTracker;
 import com.remitty.caronz.utills.Network.RestService;
+import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
 
 import org.json.JSONArray;
@@ -65,6 +68,7 @@ import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 public class AvisPickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE_DEST = 1000;
     RestService restService;
+    SettingsMain settingsMain;
 
     EditText editArriveDate, editArriveTime, editDropoffDate, editDropoffTime;
     private EditText txtDestination, txtaddressSource;
@@ -82,14 +86,22 @@ public class AvisPickupActivity extends AppCompatActivity implements TimePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avis_pickup);
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        settingsMain = new SettingsMain(AvisPickupActivity.this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.parseColor(getMainColor()));
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = toolbar.findViewById(R.id.tvToolbarTitle);
+        title.setText(getIntent().getStringExtra("brand"));
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         restService = UrlController.createService(RestService.class);
 

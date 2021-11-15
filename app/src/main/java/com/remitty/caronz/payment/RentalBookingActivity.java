@@ -58,6 +58,7 @@ public class RentalBookingActivity extends AppCompatActivity implements TimePick
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
 

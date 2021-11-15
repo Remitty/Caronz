@@ -14,11 +14,14 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +39,7 @@ import com.remitty.caronz.auth.AuthActivity;
 import com.remitty.caronz.cars.MyCarsActivity;
 import com.remitty.caronz.coins.CoinActivity;
 import com.remitty.caronz.hire.MyHireActivity;
+import com.remitty.caronz.home.AddNewAdPost;
 import com.remitty.caronz.home.FragmentAllCategories;
 import com.remitty.caronz.home.HomeActivity;
 import com.remitty.caronz.messages.ChatActivity;
@@ -65,7 +69,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -148,6 +159,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                bundle.putString("catId", "0");
 //                fragment_cat.setArguments(bundle);
 //                replaceFragment(fragment_cat, "HireSearchMapFragment");
+            }
+        });
+
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddNewAdPost.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
             }
         });
     }

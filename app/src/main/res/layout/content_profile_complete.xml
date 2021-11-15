@@ -448,12 +448,10 @@
 
                         <Button
                             android:id="@+id/btnNext"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
                             android:layout_marginTop="20dp"
-                            android:background="@drawable/rounded_fill_primary_button"
+                            style="@style/Button.Primary"
                             android:text="@string/next"
-                            android:textColor="@color/white" />
+                             />
 
                     </LinearLayout>
 

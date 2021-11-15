@@ -1,10 +1,11 @@
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/scrollViewUp"
-        android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="match_parent">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollViewUp"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -13,45 +14,52 @@
             android:padding="15dp"
             android:orientation="vertical"
             >
-            <FrameLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ss.com.bannerslider.views.BannerSlider
-                    android:id="@+id/banner_slider1"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="@dimen/radius_20">
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    app:animateIndicators="true"
-                    app:defaultBanner="1"
-                    app:defaultIndicators="circle"
-                    app:loopSlides="true" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/owner_profile"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                    android:layout_height="wrap_content">
 
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="1dp"
-                        android:src="@drawable/ic_register_user"/>
-                    <TextView
-                        android:id="@+id/tv_car_owner"
+                    <ss.com.bannerslider.views.BannerSlider
+                        android:id="@+id/banner_slider1"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        app:animateIndicators="true"
+                        app:defaultBanner="1"
+                        app:defaultIndicators="circle"
+                        app:loopSlides="true" />
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="owner"
-                        android:textSize="16dp"
-                        android:padding="3dp"
-                        android:textColor="@color/white"
-                        android:background="#00000033"/>
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/owner_profile"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
 
-            </FrameLayout>
+                            app:civ_border_color="@color/white"
+                            app:civ_border_width="1dp"
+                            android:src="@drawable/ic_register_user"/>
+                        <TextView
+                            android:id="@+id/tv_car_owner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="owner"
+                            android:textSize="16dp"
+                            android:padding="3dp"
+                            android:textColor="@color/white"
+                            android:background="#00000033"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
 
 
 
@@ -76,20 +84,41 @@
                                 android:id="@+id/tv_car_location"
                                 android:layout_weight="1"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/b5_line_height"
                                 android:textColor="@color/gray700"
                                 android:textAllCaps="true"
-                                android:textSize="18dp"
+                                android:textSize="@dimen/b5_font_size"
+                                android:lineHeight="@dimen/b5_line_height"
                                 android:textStyle="bold"
                                 android:text="Car location"/>
-                            <ImageButton
-                                android:id="@+id/btn_call"
-                                android:layout_width="38dp"
-                                android:layout_height="38dp"
-                                android:padding="10dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_call"
-                                android:background="@drawable/rounded_white_rectangle"/>
+                            <LinearLayout
+                                android:layout_weight="2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right">
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btn_call"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="@dimen/radius_10"
+                                    card_view:cardUseCompatPadding="true"
+                                    app:cardElevation="5dp">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/sm_call_height"
+                                            android:layout_height="@dimen/sm_call_height"
+                                            android:src="@drawable/ic_call"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/rounded_white_rectangle"
+                                            app:tint="#5D5FEF" />
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <RatingBar
@@ -345,54 +374,64 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_gray_rectangle"
-                    android:layout_marginHorizontal="5dp"
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp">
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/radius_20">
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_height">
+                        <TextView
+                            android:id="@+id/tv_car_body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0 Mi"
+                            android:textColor="@color/gray700" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/tv_car_body"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="0 Mi"
-                        android:textColor="@color/gray700" />
-                </LinearLayout>
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_gray_rectangle"
-                    android:layout_marginHorizontal="5dp"
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp">
-                    <TextView
-                        android:id="@+id/tv_car_seat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0 seat"
-                        android:textColor="@color/gray700"
-                        android:layout_gravity="center"/>
-                </LinearLayout>
-                <LinearLayout
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/radius_20">
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_height">
+                        <TextView
+                            android:id="@+id/tv_car_seat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0 Mi"
+                            android:textColor="@color/gray700" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_gray_rectangle"
-                    android:layout_marginHorizontal="5dp"
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp">
-
-                    <TextView
-                        android:id="@+id/tv_car_transmission"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Auto"
-                        android:textColor="@color/gray700" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/radius_20">
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_height">
+                        <TextView
+                            android:id="@+id/tv_car_transmission"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0 Mi"
+                            android:textColor="@color/gray700" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
 

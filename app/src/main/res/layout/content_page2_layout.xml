@@ -12,35 +12,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="@dimen/space_2x"
             android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/b2_line_height"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/gray"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/b2_font_size"
                     android:text="Brand" />
                 <androidx.cardview.widget.CardView
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
                     app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
                     app:cardElevation="3dp"
                     android:layout_height="wrap_content">
                     <Spinner
                         android:id="@+id/cat_spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="@dimen/min_input_height"
                         android:ems="10"
                         />
                 </androidx.cardview.widget.CardView>
@@ -53,23 +51,23 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/b2_line_height"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/gray"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/b2_font_size"
                     android:text="Transmission" />
                 <androidx.cardview.widget.CardView
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
                     app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
                     app:cardElevation="3dp"
                     android:layout_height="wrap_content">
                     <Spinner
                         android:id="@+id/transmission_spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="@dimen/min_input_height"
                         android:ems="10"
                         />
                 </androidx.cardview.widget.CardView>
@@ -86,23 +84,23 @@
                     android:layout_marginRight="10dp"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/b2_line_height"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/gray"
-                        android:textSize="16dp"
+                        android:textSize="@dimen/b2_font_size"
                         android:text="No. Seats"/>
                     <androidx.cardview.widget.CardView
                         android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="5dp"
                         app:cardCornerRadius="10dp"
+                        app:cardUseCompatPadding="true"
                         app:cardElevation="3dp"
                         android:layout_height="wrap_content">
                         <Spinner
                             android:id="@+id/seat_spinner"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="@dimen/min_input_height"
                             android:ems="10"
                             />
                     </androidx.cardview.widget.CardView>
@@ -115,23 +113,23 @@
                     android:orientation="vertical"
                     >
                     <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/b2_line_height"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/gray"
-                        android:textSize="16dp"
+                        android:textSize="@dimen/b2_font_size"
                         android:text="Type"/>
                     <androidx.cardview.widget.CardView
                         android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="5dp"
                         app:cardCornerRadius="10dp"
+                        app:cardUseCompatPadding="true"
                         app:cardElevation="3dp"
                         android:layout_height="wrap_content">
                         <Spinner
                             android:id="@+id/body_spinner"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="@dimen/min_input_height"
                             android:ems="10"
                             android:entries="@array/car_type_array"
                             />
@@ -147,26 +145,32 @@
                 android:orientation="vertical"
                 android:layout_marginTop="15dp">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/b2_line_height"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/gray"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/b2_font_size"
                     android:text="Model"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="3dp"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:layout_weight="1"
                     android:id="@+id/postTitleET"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="@dimen/min_input_height"
                     android:hint="Write model number"
                     android:ems="10"
                     android:maxLines="1"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="3dp"
-                    android:background="@drawable/rounded_corners_edittext_dark"
+                    android:background="@null"
                     android:inputType="text" />
-
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -175,28 +179,34 @@
                 android:orientation="vertical"
                 android:layout_marginTop="15dp">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/b2_line_height"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/gray"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/b2_font_size"
                     android:text="Year"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="3dp"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:layout_weight="1"
                     android:id="@+id/postYearET"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="@dimen/min_input_height"
                     android:hint="Write year"
                     android:ems="10"
                     android:maxLines="1"
                     android:maxLength="4"
                     android:inputType="number"
-                    android:layout_marginTop="5dp"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="3dp"
-                    android:background="@drawable/rounded_corners_edittext_dark"
+                    android:background="@null"
                     />
-
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -207,13 +217,8 @@
 
                 <Button
                     android:id="@+id/next2"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:contentDescription="@null"
                     android:text="Next"
-                    android:textColor="@color/white"
-                    android:background="@drawable/rounded_fill_primary_button"
-                    android:padding="5dp"
+                    style="@style/Button.Primary"
                     />
 
                 <TextView

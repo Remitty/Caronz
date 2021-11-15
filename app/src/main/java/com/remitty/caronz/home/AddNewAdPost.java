@@ -235,17 +235,19 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_add_new_ad_post);
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.parseColor(settingsMain.getMainColor()));
         }
-        
-        setTitle("Create Post");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         context = AddNewAdPost.this;
         myId = getIntent().getStringExtra("post_id");
 

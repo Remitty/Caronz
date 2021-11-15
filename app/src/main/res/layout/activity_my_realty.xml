@@ -16,17 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h3_font_size"
+                android:text="My Cars"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -34,16 +37,16 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:backgroundTint="@color/colorAccent"
-                app:tabTextColor="@color/white"
+                android:background="@color/transparent"
+                android:backgroundTint="@color/transparent"
+                app:tabTextColor="@color/gray"
                 app:tabIndicatorHeight="3dp"
-                app:tabIndicatorColor="@color/colorPrimary" />
+                app:tabIndicatorColor="@color/colorPrimary" >
+            </com.google.android.material.tabs.TabLayout>
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

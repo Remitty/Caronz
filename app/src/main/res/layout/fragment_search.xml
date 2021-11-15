@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background_color"
+    android:padding="15dp"
     android:focusableInTouchMode="true">
     <LinearLayout
         android:id="@+id/search_layout"
@@ -15,6 +17,7 @@
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/btn_back"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back_black_24dp"/>
@@ -22,14 +25,14 @@
             android:id="@+id/et_location"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/edittext_background"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_edittext_search"
             android:inputType="text"
             android:maxLines="1"
-            android:drawableEnd="@drawable/places_ic_search"
+            android:drawableStart="@drawable/places_ic_search"
+            android:drawablePadding="10dp"
             android:imeOptions="actionSearch"
-            android:hint="city, state, country"
-            android:layout_marginLeft="5dp"
+            android:hint="City, State, Country"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:textSize="12sp" />
@@ -37,7 +40,8 @@
             android:id="@+id/btn_cat"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:src="@drawable/ic_categories"/>
+            android:visibility="gone"
+            android:src="@drawable/ic_list"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -45,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/search_layout"
+        android:layout_marginTop="10dp"
         android:descendantFocusability="blocksDescendants"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

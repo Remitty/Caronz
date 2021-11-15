@@ -56,11 +56,7 @@
             android:visibility="invisible" />
         <Button
             android:id="@+id/btn_pick_up"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorRedCrayon"
-            android:textColor="@color/white"
+            style="@style/Button.Primary"
             android:text="Pick up"
             />
 

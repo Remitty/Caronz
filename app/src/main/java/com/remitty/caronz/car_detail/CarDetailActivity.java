@@ -46,6 +46,7 @@ public class CarDetailActivity extends AppCompatActivity implements RuntimePermi
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         runtimePermissionHelper = new RuntimePermissionHelper(this, this);
 

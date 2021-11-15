@@ -9,13 +9,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.remitty.caronz.Notification.Config;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
@@ -70,6 +70,8 @@ import com.remitty.caronz.orders.MyBookingActivity;
 import com.remitty.caronz.others.ActivityHelp;
 import com.remitty.caronz.others.NotificationFragment;
 import com.remitty.caronz.payment.CardsActivity;
+import com.remitty.caronz.profile.OwnerProfileActivity;
+import com.remitty.caronz.profile.ProfileActivity;
 import com.remitty.caronz.withdraw.WithdrawActivity;
 
 import com.remitty.caronz.cars.MyCarsActivity;
@@ -91,7 +93,6 @@ import com.remitty.caronz.Settings.Settings;
 import com.remitty.caronz.SplashScreen;
 import com.remitty.caronz.helper.LocaleHelper;
 import com.remitty.caronz.profile.FragmentProfile;
-import com.remitty.caronz.auth.AuthActivity;
 import com.remitty.caronz.utills.CircleTransform;
 import com.remitty.caronz.utills.Network.RestService;
 import com.remitty.caronz.utills.RuntimePermissionHelper;
@@ -102,18 +103,25 @@ import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
 public class
 HomeActivity extends AppCompatActivity
-        implements RuntimePermissionHelper.permissionInterface, BottomNavigationView.OnNavigationItemSelectedListener,
+        implements NavigationView.OnNavigationItemSelectedListener, RuntimePermissionHelper.permissionInterface, BottomNavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
         AdapterView.OnItemClickListener, MenuItem.OnMenuItemClickListener {
 
     public static Activity activity;
     SettingsMain settingsMain;
     RestService restService;
-    boolean back_pressed = false;
     private MyReceiver receiver;
     MenuItem action_notification;
 
+    FloatingActionButton btnAdd;
+
+    TextView textViewUserName;
+    ImageView imageViewProfile;
+
     UpdateFragment updatfrag;
+
+    TextView tvToolbarTitle;
+    private BottomNavigationView bottomNav;
 
     AutoCompleteTextView currentLocationText;
     RuntimePermissionHelper runtimePermissionHelper;
@@ -122,7 +130,7 @@ HomeActivity extends AppCompatActivity
     ArrayList<String> places = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
     public static Boolean checkLoading = false;
-    private String method;
+    public String method = "rent";
 
     public void updateApi(UpdateFragment listener) {
         updatfrag = listener;
@@ -134,11 +142,13 @@ HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvToolbarTitle = toolbar.findViewById(R.id.tvToolbarTitle);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
         System.gc();
-        settingsMain = new SettingsMain(this);
+        settingsMain = new SettingsMain(HomeActivity.this);
         runtimePermissionHelper = new RuntimePermissionHelper(this, this);
         activity = this;
         
@@ -148,22 +158,28 @@ HomeActivity extends AppCompatActivity
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //noinspection deprecation
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
         if(getIntent() != null) {
+            if(getIntent().hasExtra("method"))
             method = getIntent().getStringExtra("method");
         }
 
         initNavigation();
 
         if (savedInstanceState == null) {
-            FragmentAllCategories fragment_cat = new FragmentAllCategories();
-                Bundle bundle = new Bundle();
-                bundle.putString("method", method);
-                fragment_cat.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.frameContainer,
-                    fragment_cat).commit();
+                    new HomeFragment()).commit();
         }
 
         restService = UrlController.createService(RestService.class);// for test
+
+        changeImage();
         
         receiveNotification();
 
@@ -187,9 +203,77 @@ HomeActivity extends AppCompatActivity
 
     private void initNavigation() {
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(this);
+        btnAdd = bottomNav.findViewById(R.id.fab_add);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        btnAdd.setOnClickListener(view1-> {
+            postAction();
+        });
 
+        Menu menu = navigationView.getMenu();
+
+        if (!settingsMain.getAppOpen()) {
+//                                    menu.findItem(R.id.message).setVisible(false);
+            menu.findItem(R.id.nav_profile).setVisible(false);
+            menu.findItem(R.id.nav_withdraw).setVisible(false);
+            menu.findItem(R.id.nav_myOrders).setVisible(false);
+            menu.findItem(R.id.nav_myHire).setVisible(false);
+            menu.findItem(R.id.nav_myCars).setVisible(false);
+            menu.findItem(R.id.nav_cards).setVisible(false);
+
+            menu.findItem(R.id.nav_log_out).setVisible(false);
+            menu.findItem(R.id.nav_log_in).setVisible(true);
+        }
+
+        View header = navigationView.getHeaderView(0);
+
+        if (header != null) {
+            TextView textViewUserEmail = header.findViewById(R.id.useremail);
+            textViewUserName = header.findViewById(R.id.username);
+            imageViewProfile = header.findViewById(R.id.imageView);
+            TextView tvEditProfile = header.findViewById(R.id.tv_edit);
+
+            if (!settingsMain.getAppOpen()) {
+                if (!TextUtils.isEmpty(settingsMain.getGuestImage())) {
+                    Picasso.with(this).load(settingsMain.getGuestImage())
+                            .transform(new CircleTransform())
+                            .error(R.drawable.placeholder)
+                            .placeholder(R.drawable.placeholder)
+                            .into(imageViewProfile);
+                }
+                tvEditProfile.setVisibility(View.GONE);
+            } else {
+                if (!TextUtils.isEmpty(settingsMain.getUser())) {
+                    textViewUserEmail.setText(settingsMain.getUserEmail());
+                }
+                if (!TextUtils.isEmpty(settingsMain.getUser())) {
+                    textViewUserName.setText(settingsMain.getUserName());
+                }
+                if (!TextUtils.isEmpty(settingsMain.getUserImage())) {
+                    Picasso.with(this).load(settingsMain.getUserImage())
+                            .transform(new CircleTransform())
+                            .error(R.drawable.placeholder)
+                            .placeholder(R.drawable.placeholder)
+                            .into(imageViewProfile);
+                }
+            }
+
+            tvEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+//                    replaceFragment(new FragmentProfile(), "FragmentProfile");
+                }
+            });
+        }
+    }
+
+    public void moveFindNavigation() {
+        bottomNav.setSelectedItemId(R.id.nav_find);
     }
 
 
@@ -261,6 +345,21 @@ HomeActivity extends AppCompatActivity
 
         button.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+    public void changeImage() {
+//        settingsMain = new SettingsMain(HomeActivity.this);
+        if (!TextUtils.isEmpty(settingsMain.getUser())){
+
+            if (!TextUtils.isEmpty(settingsMain.getUserImage())) {
+                Picasso.with(this).load(settingsMain.getUserImage())
+                        .transform(new CircleTransform())
+                        .error(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
+                        .into(imageViewProfile);
+            }
+            textViewUserName.setText(settingsMain.getUserName());
+        }
     }
 
     @Override
@@ -462,6 +561,23 @@ HomeActivity extends AppCompatActivity
 
     }
 
+    private void postAction() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
+        if (settingsMain.getAppOpen()) {
+            runtimePermissionHelper.requestStorageCameraPermission(1);
+        } else {
+            //Alert dialog for exit form Home screen
+            alert.setTitle(settingsMain.getAlertDialogTitle("info"));
+            alert.setCancelable(false);
+            alert.setMessage("You can't post now. please sign in app.");
+            alert.setPositiveButton(settingsMain.getAlertOkText(), (dialog, which) -> {
+                dialog.dismiss();
+            });
+            alert.setNegativeButton(settingsMain.getAlertCancelText(), (dialogInterface, i) -> dialogInterface.dismiss());
+            alert.show();
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -471,44 +587,8 @@ HomeActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-
-        } else {
-            backPressed();
-//            super.onBackPressed();
+            super.onBackPressed();
             overridePendingTransition(R.anim.left_enter, R.anim.right_out);
-        }
-    }
-
-    private void backPressed() {
-        if (!back_pressed) {
-            Toast.makeText(HomeActivity.this, "Press Again To Exit", Toast.LENGTH_SHORT).show();
-            back_pressed = true;
-            android.os.Handler mHandler = new android.os.Handler();
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    back_pressed = false;
-                }
-            }, 2000L);
-        } else {
-            //Alert dialog for exit form login screen
-
-            AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
-            alert.setTitle(settingsMain.getAlertDialogTitle("info"));
-            alert.setCancelable(false);
-            alert.setMessage("Are you sure you want to exit?");
-            alert.setPositiveButton(settingsMain.getAlertOkText(), (dialog, which) -> {
-                HomeActivity.this.finishAffinity();
-                dialog.dismiss();
-                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
-            });
-            alert.setNegativeButton(settingsMain.getAlertCancelText(), (dialogInterface, i) -> dialogInterface.dismiss());
-            alert.show();
-        }
     }
 
     @Override
@@ -530,18 +610,23 @@ HomeActivity extends AppCompatActivity
         AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
         switch(id){
             case R.id.nav_home:
+                tvToolbarTitle.setText(getString(R.string.app_name));
+                fragment = new HomeFragment();
+                tag="HomeFragment";
+                break;
+            case R.id.nav_find:
+//                fragment = new FragmentSearch();
+//                tag="FragmentSearch";
+                tvToolbarTitle.setText(method);
                 fragment = new FragmentAllCategories();
                 tag="FragmentAllCategories";
                 bundle.putString("method", method);
                 fragment.setArguments(bundle);
                 break;
-            case R.id.nav_find:
-                fragment = new FragmentSearch();
-                tag="FragmentSearch";
-                break;
             case R.id.nav_chat:
                 fragment = new Inbox();
                 tag="Inbox";
+                tvToolbarTitle.setText("Chat");
                 BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
                 BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_chat);
                 badge.setVisible(false);
@@ -549,26 +634,106 @@ HomeActivity extends AppCompatActivity
             case R.id.nav_notification:
                 fragment = new NotificationFragment();
                 tag="NotificationFragment";
+                tvToolbarTitle.setText("Notification");
                 BottomNavigationView bottomNav1 = findViewById(R.id.bottom_navigation);
                 BadgeDrawable badge1 =  bottomNav1.getOrCreateBadge(R.id.nav_notification);
                 badge1.setVisible(false);
                 break;
             case R.id.nav_post:
-                if (settingsMain.getAppOpen()) {
-                    runtimePermissionHelper.requestStorageCameraPermission(1);
-                } else {
-                    //Alert dialog for exit form Home screen
-                    alert.setTitle(settingsMain.getAlertDialogTitle("info"));
-                    alert.setCancelable(false);
-                    alert.setMessage("You can't post now. please sign in app.");
-                    alert.setPositiveButton(settingsMain.getAlertOkText(), (dialog, which) -> {
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton(settingsMain.getAlertCancelText(), (dialogInterface, i) -> dialogInterface.dismiss());
-                    alert.show();
-                }
+                postAction();
+                break;
+
+            case R.id.nav_rent:
+//                fragment = new FragmentSearch();
+//                tag = "FragmentSearch";
+//                bundle.putString("method", "rent");
+                method = "rent";
+                moveFindNavigation();
+                break;
+            case R.id.nav_sale:
+//                fragment = new FragmentSearch();
+//                tag = "FragmentBuySearch";
+//                Bundle bundle1 = new Bundle();
+//                bundle1.putString("method", "buy");
+//                fragment.setArguments(bundle1);
+                method = "buy";
+                moveFindNavigation();
+                break;
+            case R.id.nav_hire:
+//                fragment = new HireSearchMapFragment();
+//                tag = "HireSearchMapFragment";
+                method = "hire";
+                moveFindNavigation();
+                break;
+            case R.id.nav_profile:
+                fragment = new FragmentProfile();
+                tag = "FragmentProfile";
+                break;
+            case R.id.nav_message:
+                Intent intent1 = new Intent(getApplicationContext(), ChatActivity.class);
+                intent1.putExtra("receiverId", "");
+                startActivity(intent1);
+                break;
+            case R.id.nav_cards:
+                startActivity(new Intent(getApplicationContext(), CardsActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_myOrders:
+                startActivity(new Intent(getApplicationContext(), MyBookingActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_myHire:
+                startActivity(new Intent(getApplicationContext(), MyHireActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_withdraw:
+                startActivity(new Intent(getApplicationContext(), WithdrawActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_coins:
+                startActivity(new Intent(getApplicationContext(), CoinActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_myCars:
+                startActivity(new Intent(getApplicationContext(), MyCarsActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_settings:
+                startActivity(new Intent(getApplicationContext(), Settings.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_support:
+                startActivity(new Intent(getApplicationContext(), ActivityHelp.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_log_in:
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                break;
+            case R.id.nav_log_out:
+
+                alert.setTitle(getBaseContext().getResources().getString(R.string.app_name));
+                alert.setCancelable(false);
+                alert.setIcon(R.mipmap.ic_launcher);
+                alert.setMessage("Do you want to logout?");
+                alert.setPositiveButton(settingsMain.getAlertOkText(), (dialog, which) -> {
+                    settingsMain.setFireBaseId("");
+                    HomeActivity.this.finish();
+                    Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_enter, R.anim.left_out);
+                    settingsMain.setUser("");
+                    settingsMain.setAppOpen(false);
+                    dialog.dismiss();
+                });
+                alert.setNegativeButton(settingsMain.getAlertCancelText(), (dialogInterface, i) -> dialogInterface.dismiss());
+                alert.show();
                 break;
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
 
         if (fragment != null) {
             replaceFragment(fragment, tag);

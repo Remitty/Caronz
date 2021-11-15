@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".hire.MyHireActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="@dimen/h3_font_size"
+                android:textColor="@color/white"
+                android:text="My Hire"/>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -16,16 +38,74 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:paddingTop="@dimen/space_3x"
             android:orientation="vertical">
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
-                android:background="@color/colorAccent"
-                app:tabTextColor="@color/white"
-                app:tabIndicatorHeight="3dp"
-                app:tabIndicatorColor="@color/colorPrimary" />
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/upcoming_active"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/tab_height"
+                        android:background="@drawable/rounded_fill_primary_button"
+                        android:paddingHorizontal="@dimen/space_4x"
+                        android:textColor="@color/white"
+                        android:text="Upcoming"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/btn_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/tab_height"
+                            android:paddingHorizontal="@dimen/space_4x"
+                            android:gravity="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/gray"
+                            android:text="Hire History"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/history_active"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/btn_upcoming"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/tab_height"
+                        android:paddingHorizontal="@dimen/space_4x"
+                        android:gravity="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:text="Upcoming"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_weight="1">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/tab_height"
+                            android:background="@drawable/rounded_fill_primary_button"
+                            android:paddingHorizontal="@dimen/space_4x"
+                            android:textColor="@color/white"
+                            android:text="Hire History"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/container"
                 android:layout_width="match_parent"

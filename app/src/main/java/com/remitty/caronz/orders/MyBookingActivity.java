@@ -4,10 +4,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabItem;
 import com.remitty.caronz.models.RentalModel;
 import com.google.android.material.tabs.TabLayout;
 import com.remitty.caronz.R;
@@ -37,12 +42,14 @@ import retrofit2.Response;
 import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
 public class MyBookingActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
     SettingsMain settingsMain;
     RestService restService;
 
     private List<RentalModel> bookingUpcomingRealtyList = new ArrayList<>();
     private List<RentalModel> bookingHistoryRealtyList = new ArrayList<>();
+
+    LinearLayout upcomingActiveLayout, historyActiveLayout;
+    TextView btnUpcoming, btnHistory;
 
     ViewPager mViewPager;
 
@@ -62,26 +69,65 @@ public class MyBookingActivity extends AppCompatActivity {
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor(getMainColor()));
-        toolbar.setTitle("My Rental");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        upcomingActiveLayout = findViewById(R.id.upcoming_active);
+        historyActiveLayout = findViewById(R.id.history_active);
+        historyActiveLayout.setVisibility(View.GONE);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setBackgroundColor(Color.parseColor(settingsMain.getMainColor()));
+        btnUpcoming = findViewById(R.id.btn_upcoming);
+        btnHistory = findViewById(R.id.btn_history);
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
 
 //        if (getIntent().getBooleanExtra("receive", false))
             mViewPager.setCurrentItem(0);
+            initListeners();
 
 //        RentalPagerAdapter mSectionsPagerAdapter = new RentalPagerAdapter(getSupportFragmentManager(), bookingUpcomingRealtyList, bookingHistoryRealtyList);
 //        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         loadAllBooking();
+    }
+
+    private void initListeners() {
+        btnUpcoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                historyActiveLayout.setVisibility(View.GONE);
+                upcomingActiveLayout.setVisibility(View.VISIBLE);
+                mViewPager.setCurrentItem(0);
+            }
+        });
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upcomingActiveLayout.setVisibility(View.GONE);
+                historyActiveLayout.setVisibility(View.VISIBLE);
+                mViewPager.setCurrentItem(1);
+            }
+        });
+        mViewPager.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                int index = mViewPager.getCurrentItem();
+                switch (index) {
+                    case 0:
+                        historyActiveLayout.setVisibility(View.GONE);
+                        upcomingActiveLayout.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        upcomingActiveLayout.setVisibility(View.GONE);
+                        historyActiveLayout.setVisibility(View.VISIBLE);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void loadAllBooking() {

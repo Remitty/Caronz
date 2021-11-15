@@ -104,7 +104,8 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         holder.tvPrice.setText(item.getPrice());
         holder.tvCurrency.setText(item.getCurrency());
-        holder.tvName.setText(item.getName());
+        holder.tvName.setText(item.getCatName());
+        holder.tvModelYear.setText(item.getName() + " " + item.getYear());
         holder.ratingBar.setVisibility(View.GONE);
     }
 
@@ -132,13 +133,14 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private class CarViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView tvName, tvPrice, tvPriceView, tvCurrency;
+        TextView tvName, tvPrice, tvPriceView, tvCurrency, tvModelYear;
         RatingBar ratingBar;
 
         public CarViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.car_image);
             tvName = itemView.findViewById(R.id.tv_car_title);
+            tvModelYear = itemView.findViewById(R.id.tv_car_model_year);
             tvPrice = itemView.findViewById(R.id.tv_car_price);
             tvCurrency = itemView.findViewById(R.id.tv_currency);
             tvPriceView = itemView.findViewById(R.id.tv_car_price_view);

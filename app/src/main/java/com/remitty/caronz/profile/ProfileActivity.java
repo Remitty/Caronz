@@ -1,117 +1,131 @@
 package com.remitty.caronz.profile;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.remitty.caronz.R;
-import com.remitty.caronz.adapters.CarAdapter;
-import com.remitty.caronz.models.CarModel;
+import com.remitty.caronz.models.DocumentModel;
 import com.remitty.caronz.models.UserModel;
 import com.remitty.caronz.utills.Network.RestService;
-import com.remitty.caronz.utills.RuntimePermissionHelper;
 import com.remitty.caronz.utills.SettingsMain;
 import com.remitty.caronz.utills.UrlController;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity implements RuntimePermissionHelper.permissionInterface {
+public class ProfileActivity extends AppCompatActivity {
 
     SettingsMain settingsMain;
     RestService restService;
-    RuntimePermissionHelper runtimePermissionHelper;
 
-    private ArrayList<CarModel> carsList = new ArrayList<>();
-    RecyclerView mRecyclerView;
-    CarAdapter carAdapter;
+    LinearLayout editProfBtn;
+    TextView btnUploadDocument;
 
-    TextView textViewUserName, textViewEmailvalue, textViewPhonevalue, textViewLocationvalue, tvAddress;
+    TextView textViewUserName, textViewEmailvalue, textViewPhonevalue, textViewLocationvalue, tvAddress, tvAddress2, tvBalance, tvZipcode;
     ImageView imageViewProfile;
-    ImageView btnCall;
+    ImageView licenseImage, registrationImage, insuranceImage, otherImage1, otherImage2;
+    Dialog dialog;
 
-    private Integer userId;
-
-    UserModel profile;
+    String firstName, lastName;
+    private UserModel profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        settingsMain = new SettingsMain(this);
+        restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        settingsMain = new SettingsMain(this);
-        restService = UrlController.createService(RestService.class);
-        runtimePermissionHelper = new RuntimePermissionHelper(this, this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
-        if (getIntent() != null && getIntent().hasExtra("userId"))
-            userId = getIntent().getIntExtra("userId", 0);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         textViewUserName = findViewById(R.id.text_viewName);
 
-        imageViewProfile = findViewById(R.id.image_view);
-//        ratingBar = findViewById(R.id.ratingBar);
+        editProfBtn = findViewById(R.id.edit_profile_layout);
+        btnUploadDocument = findViewById(R.id.tv_uploading);
 
-//        LayerDrawable stars = (LayerDrawable) this.ratingBar.getProgressDrawable();
-//        stars.getDrawable(2).setColorFilter(Color.parseColor("#ffcc00"), PorterDuff.Mode.SRC_ATOP);
+        imageViewProfile = findViewById(R.id.image_photo);
 
-        btnCall = findViewById(R.id.btn_call);
-
-        textViewEmailvalue = findViewById(R.id.textViewEmailValue);
-        textViewPhonevalue = findViewById(R.id.textViewPhoneValue);
+        textViewEmailvalue = findViewById(R.id.text_viewEmail);
+        textViewPhonevalue = findViewById(R.id.etPhoneNumber);
         textViewLocationvalue = findViewById(R.id.tv_location);
         tvAddress = findViewById(R.id.tv_address);
+        tvAddress2 = findViewById(R.id.tv_address2);
+        tvBalance = findViewById(R.id.tv_balance);
+        tvZipcode = findViewById(R.id.tv_zipcode);
+
+        licenseImage = findViewById(R.id.image_license);
+        registrationImage = findViewById(R.id.image_register);
+        insuranceImage = findViewById(R.id.image_insurance);
+        otherImage1 = findViewById(R.id.image_other1);
+        otherImage2 = findViewById(R.id.image_other2);
 
 
-        carAdapter = new CarAdapter(ProfileActivity.this, carsList, "");
-        mRecyclerView = findViewById(R.id.related_recycler_view);
-//        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(carAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        dialog = new Dialog(this, R.style.customDialog);
 
-        setAllViewsText();
-
-        btnCall.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("MissingPermission")
+        editProfBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!profile.getMobile().isEmpty()) {
-                    runtimePermissionHelper.requestCallPermission(100);
-
-                } else {
-                    Toast.makeText(getBaseContext(), "No seller phone number.", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(ProfileActivity.this, ProfileEditActivity.class);
+                intent.putExtra("first_name", firstName);
+                intent.putExtra("last_name", lastName);
+                intent.putExtra("email", textViewEmailvalue.getText().toString());
+                intent.putExtra("country_code", profile.getCountryCode());
+                intent.putExtra("mobile", profile.getMobile());
+                intent.putExtra("address1", tvAddress.getText().toString());
+                intent.putExtra("address2", tvAddress2.getText().toString());
+                intent.putExtra("zipcode", tvZipcode.getText().toString());
+                intent.putExtra("location", textViewLocationvalue.getText().toString());
+                intent.putExtra("photo", profile.getPicture());
+                startActivity(intent);
             }
         });
+
+        btnUploadDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, DocumentUploadActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setAllViewsText();
 
 
     }
@@ -121,10 +135,8 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
         if (SettingsMain.isConnectingToInternet(this)) {
 
             SettingsMain.showDilog(this);
-            JsonObject prams = new JsonObject();
-            prams.addProperty("userId", userId);
-            Log.e("seller id params: ", prams.toString());
-            Call<ResponseBody> myCall = restService.getSellerProfile(prams, UrlController.AddHeaders(this));
+
+            Call<ResponseBody> myCall = restService.getEditProfileDetails(UrlController.AddHeaders(this));
             myCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseObj) {
@@ -140,25 +152,33 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
 
                                 profile = new UserModel(jsonObject);
 
-                                Picasso.with(getBaseContext()).load(settingsMain.getUserImage())
+                                Picasso.with(getBaseContext()).load(profile.getPicture())
                                         .error(R.drawable.placeholder)
                                         .placeholder(R.drawable.placeholder)
                                         .into(imageViewProfile);
 
-                                textViewUserName.setText(profile.getFirstName() + " " + profile.getLastName());
+                                firstName = profile.getFirstName();
+                                lastName = profile.getLastName();
+
+                                textViewUserName.setText(firstName + " " + lastName);
                                 textViewEmailvalue.setText(profile.getEmail());
 
                                 textViewPhonevalue.setText(profile.getPhone());
                                 textViewLocationvalue.setText(profile.getLocation());
-                                tvAddress.setText(profile.getFirstAddress() + ", " + profile.getSecondAddress());
+                                tvAddress.setText(profile.getFirstAddress());
+                                tvAddress2.setText(profile.getSecondAddress());
+                                tvZipcode.setText(profile.getPostalCode());
+                                tvBalance.setText("$ " + profile.getBalance());
 
-                                JSONArray carsArray = response.getJSONArray("related_cars");
-                                carsList.clear();
-                                for (int i = 0; i < carsArray.length(); i++) {
-                                    CarModel car = new CarModel(carsArray.getJSONObject(i));
-                                    carsList.add(car);
+                                DocumentModel document = profile.getDocument();
+                                if(document != null) {
+                                    Picasso.with(getBaseContext()).load(document.getLicense()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(licenseImage);
+                                    Picasso.with(getBaseContext()).load(document.getRegistration()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(registrationImage);
+                                    Picasso.with(getBaseContext()).load(document.getInsurance()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(insuranceImage);
+                                    Picasso.with(getBaseContext()).load(document.getOther1()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage1);
+                                    Picasso.with(getBaseContext()).load(document.getOther2()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(otherImage2);
+
                                 }
-                                carAdapter.loadMore(carsList);
 
                             } else {
                                 Toast.makeText(getBaseContext(), response.get("message").toString(), Toast.LENGTH_SHORT).show();
@@ -177,6 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     SettingsMain.hideDilog();
+                    Toast.makeText(getBaseContext(), "Network error. Please try again.", Toast.LENGTH_SHORT).show();
                     Log.d("info Edit Profile error", String.valueOf(t));
                     Log.d("info Edit Profile error", String.valueOf(t.getMessage() + t.getCause() + t.fillInStackTrace()));
                 }
@@ -189,33 +210,15 @@ public class ProfileActivity extends AppCompatActivity implements RuntimePermiss
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left_enter, R.anim.right_out);
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
     @Override
-    public void onSuccessPermission(int code) {
-        if (code == 100) {
+    public void onBackPressed() {
 
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + profile.getPhone()));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            startActivity(intent1);
-        }
-     }
- }
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_enter, R.anim.right_out);
+    }
+}

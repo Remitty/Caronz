@@ -202,13 +202,10 @@
 
                         <Button
                             android:id="@+id/signUpBtn"
-                            android:layout_width="fill_parent"
-                            android:layout_height="45dp"
                             android:layout_marginTop="25dp"
-                            android:background="@drawable/rounded_fill_primary_button"
                             android:text="@string/signup"
-                            android:textColor="@color/white"
                             android:layout_marginHorizontal="20dp"
+                            style="@style/Button.Primary"
                             />
                         <Button
                             android:id="@+id/fbLogin"

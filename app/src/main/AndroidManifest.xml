@@ -26,7 +26,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:appComponentFactory="adapters"
+        android:appComponentFactory="androidX"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -37,20 +37,44 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
         <activity
-            android:name=".main.RentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".main.MainActivity"
+            android:name=".profile.DocumentUploadActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
-        <activity android:name=".avis.AvisReserveActivity" />
-        <activity android:name=".avis.AvisCarDetailActivity" />
-        <activity android:name=".avis.AvisSearchActivity" />
-        <activity android:name=".avis.AvisPickupActivity" />
-        <activity android:name=".coins.CoinHistoryActivity" />
+        <activity
+            android:name=".profile.ProfileEditActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".main.RentActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".main.MainActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".avis.AvisReserveActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"/>
+        <activity android:name=".avis.AvisCarDetailActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".avis.AvisSearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".avis.AvisPickupActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".coins.CoinHistoryActivity"
+            android:exported="false"/>
         <activity
             android:name=".coins.CoinActivity"
-            android:screenOrientation="fullSensor" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".others.NotificationActivity"
             android:screenOrientation="portrait" />
@@ -63,7 +87,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".hire.MyHireActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".gms.PickupLocationActivity"
             android:screenOrientation="portrait"
@@ -88,12 +113,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".others.ActivityHelp"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".auth.ProfileCompleteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.ProfileActivity"
+            android:name=".profile.OwnerProfileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".home.ChooseLocationActivity"
@@ -121,6 +147,7 @@
         <activity
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -140,12 +167,8 @@
         </activity>
         <activity
             android:name=".home.AddNewAdPost"
-            android:parentActivityName=".home.HomeActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.remitty.caronz.home.HomeActivity" />
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".payment.Thankyou"
             android:screenOrientation="portrait"
@@ -156,14 +179,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".car_detail.CarDetailActivity"
-            android:parentActivityName=".home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.remitty.caronz.home.HomeActivity" />
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".payment.StripePayment"
             android:screenOrientation="portrait" />
@@ -172,11 +190,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Settings.Settings"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.remitty.caronz.home.HomeActivity" />
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".car_detail.full_screen_image.FullScreenViewActivity"
             android:screenOrientation="portrait"
@@ -191,7 +205,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".payment.CardsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".cars.MyCarsActivity"
             android:screenOrientation="portrait"

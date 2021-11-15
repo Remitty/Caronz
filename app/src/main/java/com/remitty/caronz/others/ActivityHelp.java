@@ -1,10 +1,13 @@
 package com.remitty.caronz.others;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,7 @@ import java.util.concurrent.TimeoutException;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import okhttp3.ResponseBody;
@@ -57,8 +62,17 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
         settingsMain = new SettingsMain(this);
         restService = UrlController.createService(RestService.class);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Support");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 

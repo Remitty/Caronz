@@ -76,10 +76,12 @@ public class WithdrawActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        this.setTitle("Balance Withdraw");
 
 
         initComponents();

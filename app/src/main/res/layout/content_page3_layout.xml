@@ -11,13 +11,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:padding="@dimen/space_2x"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -47,17 +46,25 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray700"
                     android:text="Description"/>
-                <EditText
-                    android:id="@+id/postDescriptionET"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:maxLines="100"
-                    android:layout_marginTop="3dp"
-                    android:hint="Write product description"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:background="@drawable/rounded_corners_edittext_dark"
-                    />
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="@dimen/radius_10">
+                    <EditText
+                        android:id="@+id/postDescriptionET"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:maxLines="100"
+                        android:layout_marginTop="3dp"
+                        android:hint="Write product description"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:background="@null"
+                        />
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -74,6 +81,7 @@
                     android:layout_marginTop="5dp"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true"
                     android:layout_height="wrap_content">
                     <Spinner
                         android:id="@+id/units_spinner"
@@ -94,6 +102,7 @@
                 android:layout_marginTop="5dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
                 android:layout_height="wrap_content">
                 <Spinner
                     android:id="@+id/currency_spinner"
@@ -113,9 +122,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Enter rent price daily."/>
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="3dp"
                     android:orientation="horizontal">
 
                     <EditText
@@ -124,7 +136,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/rounded_corners_edittext_dark"
+                        android:background="@null"
                         android:ems="10"
                         android:hint="0.0"
                         android:paddingHorizontal="10dp"
@@ -132,7 +144,7 @@
                         />
 
 
-                </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
 
@@ -144,13 +156,8 @@
 
                 <Button
                     android:id="@+id/next3"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:contentDescription="@null"
                     android:text="Next"
-                    android:textColor="@color/white"
-                    android:background="@drawable/rounded_fill_primary_button"
-                    android:padding="5dp"
+                    style="@style/Button.Primary"
                     />
 
                 <TextView

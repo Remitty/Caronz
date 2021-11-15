@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.remitty.caronz.R;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.home.HomeActivity;
 import com.remitty.caronz.home.HomeFragment;
 
 
@@ -60,12 +61,14 @@ public class AvisFragment extends Fragment {
         ownerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentSearch fragment_cat = new FragmentSearch();
-                Bundle bundle = new Bundle();
-                bundle.putString("method", "rent");
-                bundle.putString("catId", "0");
-                fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentSearch");
+//                FragmentSearch fragment_cat = new FragmentSearch();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("method", "rent");
+//                bundle.putString("catId", "0");
+//                fragment_cat.setArguments(bundle);
+//                replaceFragment(fragment_cat, "FragmentSearch");
+                ((HomeActivity)getActivity()).method = "rent";
+                ((HomeActivity)getActivity()).moveFindNavigation();
             }
         });
 

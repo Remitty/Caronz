@@ -66,14 +66,11 @@ public class MyCarsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Color.parseColor(getMainColor()));
-        toolbar.setTitle("My Cars");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
 
         loadAllData();
     }

@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
+            android:visibility="gone"
             android:padding="15dp"
             android:background="@drawable/border_transparent_selector"
             android:orientation="horizontal">
@@ -57,55 +58,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"
-        android:paddingTop="40dp"
+        android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:background="@drawable/top_rounded_white_backgournd"
         android:layout_gravity="bottom"
         android:orientation="vertical">
         <LinearLayout
-                android:id="@+id/rent_layout"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="@drawable/rounded_gray_rectangle"
-                android:gravity="center_vertical"
+            android:id="@+id/rent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/rounded_gray_rectangle"
+            android:gravity="center_vertical"
             android:paddingHorizontal="15dp"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@mipmap/ic_launcher"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:text="Rent - A - Car"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
-                        android:textSize="14dp"
-                        android:text="Find hundreds of rent a car"/>
-
-                </LinearLayout>
+            android:orientation="horizontal">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
                 <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_launcher"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right_arrow_angle"/>
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:text="Rent - A - Car"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp"
+                    android:text="Find hundreds of rent a car"/>
+
             </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right_arrow_angle"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/buy_layout"
@@ -197,9 +198,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_right_arrow_angle"/>
         </LinearLayout>
+
     </LinearLayout>
-
-
-
 
 </FrameLayout>

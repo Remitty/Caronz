@@ -78,7 +78,7 @@ public class FragmentAllCategories extends Fragment {
         if (bundle != null) {
             method = bundle.getString("method");
 
-            Log.e("method: ", method);
+//            Log.e("method: ", method);
         }
 
         editModel = view.findViewById(R.id.et_model);
