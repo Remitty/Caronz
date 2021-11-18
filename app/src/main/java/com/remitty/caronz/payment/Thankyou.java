@@ -57,11 +57,11 @@ public class Thankyou extends AppCompatActivity implements View.OnClickListener 
 
         restService = UrlController.createService(RestService.class, settingsMain.getUserEmail(), settingsMain.getUserPassword(), activity);
 
-        contineBuyPackage.setTextColor(Color.parseColor(SettingsMain.getMainColor()));
-        tv_thankyou_title.setTextColor(Color.parseColor(SettingsMain.getMainColor()));
-        contineBuyPackage.setBackground(CustomBorderDrawable.customButton(3, 3, 3, 3, SettingsMain.getMainColor(), "#00000000", SettingsMain.getMainColor(), 2));
+//        contineBuyPackage.setTextColor(Color.parseColor(SettingsMain.getMainColor()));
+//        tv_thankyou_title.setTextColor(Color.parseColor(SettingsMain.getMainColor()));
+//        contineBuyPackage.setBackground(CustomBorderDrawable.customButton(3, 3, 3, 3, SettingsMain.getMainColor(), "#00000000", SettingsMain.getMainColor(), 2));
 
-        adforest_loadData();
+        loadData();
 
     }
 
@@ -83,13 +83,13 @@ public class Thankyou extends AppCompatActivity implements View.OnClickListener 
         finish();
     }
 
-    public void adforest_loadData() {
+    public void loadData() {
 
 
-        webView.setScrollContainer(false);
-        webView.loadDataWithBaseURL(null, webViewData, "text/html", "UTF-8", null);
-        tv_thankyou_title.setText(titleData);
-        contineBuyPackage.setText(buttonData);
+//        webView.setScrollContainer(false);
+//        webView.loadDataWithBaseURL(null, webViewData, "text/html", "UTF-8", null);
+//        tv_thankyou_title.setText(titleData);
+//        contineBuyPackage.setText(buttonData);
 
         Toast.makeText(Thankyou.this, settingsMain.getpaymentCompletedMessage(), Toast.LENGTH_SHORT).show();
     }

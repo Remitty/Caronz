@@ -153,7 +153,6 @@
                             android:layout_marginLeft="10dp"
                             android:hint="Enter address or pick from map"
                             android:visibility="visible"
-                            android:maxLines="1"
                             android:layout_weight="1" />
 
                     </LinearLayout>

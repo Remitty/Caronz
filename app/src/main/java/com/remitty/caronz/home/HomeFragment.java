@@ -69,10 +69,8 @@ public class HomeFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("method", "buy");
                 fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentAllCategories");
-                ((HomeActivity)getActivity()).enableViews(true);
-//                ((HomeActivity)getActivity()).method = "buy";
-//                ((HomeActivity)getActivity()).moveFindNavigation();
+                ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentAllCategories");
+                ((HomeActivity)getActivity()).changeToolbarTitle("Buy");
             }
         });
 
@@ -80,8 +78,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AvisFragment fragment_cat = new AvisFragment();
-                replaceFragment(fragment_cat, "AvisFragment");
-                ((HomeActivity)getActivity()).enableViews(true);
+                ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "AvisFragment");
+                ((HomeActivity)getActivity()).changeToolbarTitle("Rent");
             }
         });
 
@@ -97,10 +95,8 @@ public class HomeFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("method", "hire");
                 fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentAllCategories");
-                ((HomeActivity)getActivity()).enableViews(true);
-//                ((HomeActivity)getActivity()).method = "buy";
-//                ((HomeActivity)getActivity()).moveFindNavigation();
+                ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentAllCategories");
+                ((HomeActivity)getActivity()).changeToolbarTitle("Hire");
             }
         });
 
@@ -124,11 +120,4 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    void replaceFragment(Fragment someFragment, String tag) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.right_enter, R.anim.left_out, R.anim.left_enter, R.anim.right_out);
-        transaction.replace(R.id.frameContainer, someFragment, tag);
-        transaction.addToBackStack(tag);
-        transaction.commit();
-    }
 }

@@ -66,9 +66,7 @@ public class AvisFragment extends Fragment {
                 bundle.putString("method", "rent");
                 bundle.putString("catId", "0");
                 fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentSearch");
-//                ((HomeActivity)getActivity()).method = "rent";
-//                ((HomeActivity)getActivity()).moveFindNavigation();
+                ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentSearch");
             }
         });
 
@@ -109,13 +107,5 @@ public class AvisFragment extends Fragment {
 //        });
 
         return view;
-    }
-
-    void replaceFragment(Fragment someFragment, String tag) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.right_enter, R.anim.left_out, R.anim.left_enter, R.anim.right_out);
-        transaction.replace(R.id.frameContainer, someFragment, tag);
-        transaction.addToBackStack(tag);
-        transaction.commit();
     }
 }

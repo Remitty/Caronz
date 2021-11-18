@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.remitty.caronz.Notification.Config;
 import com.remitty.caronz.Search.FragmentSearch;
 import com.remitty.caronz.Search.HireSearchMapFragment;
+import com.remitty.caronz.avis.AvisFragment;
 import com.remitty.caronz.coins.CoinActivity;
 import com.remitty.caronz.hire.MyHireActivity;
 import com.remitty.caronz.messages.ChatActivity;
@@ -138,6 +139,7 @@ HomeActivity extends AppCompatActivity
     ActionBarDrawerToggle mDrawerToggle;
     DrawerLayout drawerLayout;
     private boolean mToolBarNavigationListenerIsRegistered = false;
+    private String currentTag;
 
     public void updateApi(UpdateFragment listener) {
         updatfrag = listener;
@@ -341,7 +343,9 @@ HomeActivity extends AppCompatActivity
     public void moveFindNavigation() {
         bottomNav.setSelectedItemId(R.id.nav_find);
     }
-
+    public void moveHomeNavigation() {
+        bottomNav.setSelectedItemId(R.id.nav_home);
+    }
 
 //    @Override
 //    protected void attachBaseContext(Context base) {
@@ -428,6 +432,10 @@ HomeActivity extends AppCompatActivity
         }
     }
 
+    public void changeToolbarTitle(String title) {
+        tvToolbarTitle.setText(title);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -455,12 +463,17 @@ HomeActivity extends AppCompatActivity
         Fragment fragment = fm.findFragmentByTag(tag);
         Fragment fragment2 = fm.findFragmentById(R.id.frameContainer);
 
+        currentTag = tag;
+
         if (fragment != fragment2) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.right_enter, R.anim.left_out, R.anim.left_enter, R.anim.right_out);
             transaction.replace(R.id.frameContainer, someFragment, tag);
             transaction.addToBackStack(tag);
             transaction.commit();
+        }
+        if(!currentTag.equals("HomeFragment")) {
+            enableViews(true);
         }
     }
 
@@ -662,18 +675,21 @@ HomeActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-            super.onBackPressed();
 //            overridePendingTransition(R.anim.left_enter, R.anim.right_out);
+            super.onBackPressed();
+        Log.e("current tag", currentTag);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeFragment");
-        if(fragment != null && fragment.isVisible())
+        if(fragment != null && fragment.isVisible()) {
             enableViews(false);
-        else enableViews(true);
+            changeToolbarTitle(getString(R.string.app_name));
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(bottomNav.getSelectedItemId() == R.id.nav_post)
         bottomNav.setSelectedItemId(R.id.nav_home);
     }
 
@@ -701,8 +717,6 @@ HomeActivity extends AppCompatActivity
                 tag="HomeFragment";
                 break;
             case R.id.nav_find:
-//                fragment = new FragmentSearch();
-//                tag="FragmentSearch";
                 tvToolbarTitle.setText(method);
                 fragment = new FragmentAllCategories();
                 tag="FragmentAllCategories";
@@ -730,15 +744,15 @@ HomeActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_rent:
-                fragment = new FragmentSearch();
-                tag = "FragmentSearch";
+                fragment = new AvisFragment();
+                tag = "AvisFragment";
                 bundle.putString("method", "rent");
 //                method = "rent";
 //                moveFindNavigation();
                 break;
             case R.id.nav_sale:
-                fragment = new FragmentSearch();
-                tag = "FragmentBuySearch";
+                fragment = new FragmentAllCategories();
+                tag = "FragmentAllCategories";
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("method", "buy");
                 fragment.setArguments(bundle1);
@@ -753,7 +767,7 @@ HomeActivity extends AppCompatActivity
                 bundle.putString("method", "hire");
                 fragment.setArguments(bundle);
                 method = "hire";
-                moveFindNavigation();
+//                moveFindNavigation();
                 break;
             case R.id.nav_profile:
                 fragment = new FragmentProfile();

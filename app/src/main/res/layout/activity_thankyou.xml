@@ -1,7 +1,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background_color"
     android:fillViewport="true">
 
     <RelativeLayout
@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
+                android:visibility="gone"
                 android:background="@drawable/ic_clear_30dp" />
 
         </LinearLayout>
@@ -38,7 +39,8 @@
             <ImageView
                 android:id="@+id/logoThankyou"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:src="@drawable/complete_logo"/>
         </LinearLayout>
 
         <LinearLayout
@@ -55,15 +57,25 @@
                 android:id="@+id/thankyourText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:text="Congratulations!!!"
+                android:textColor="@color/green700"
+                android:textStyle="bold"
+                android:textSize="@dimen/h1_font_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/space_2x"
+                android:text="Your order has been completed"
+                android:textColor="@color/gray700"
+                android:textSize="@dimen/h4_font_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:padding="10dp">
                 <View
                     android:layout_width="fill_parent"
@@ -83,12 +95,13 @@
 
             <Button
                 android:id="@+id/contineBuyPackage"
-                android:layout_width="match_parent"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:background="@drawable/loginbutton_fb"
-                android:text=""
-                android:textColor="@color/background_color"
+                android:background="@drawable/rounded_border_primary_button"
+                android:layout_marginTop="50dp"
+                android:textAllCaps="false"
+                android:text="Home"
+                android:textColor="@color/gray700"
                 android:textSize="20dp" />
 
         </LinearLayout>

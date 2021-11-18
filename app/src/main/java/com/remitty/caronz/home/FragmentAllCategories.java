@@ -186,18 +186,10 @@ public class FragmentAllCategories extends Fragment {
                 bundle.putString("model", editModel.getText().toString());
 
                 fragment_search.setArguments(bundle);
-                replaceFragment(fragment_search, "FragmentSearch");
+                ((HomeActivity)getActivity()).replaceFragment(fragment_search, "FragmentSearch");
             }
         });
 
-    }
-
-    void replaceFragment(Fragment someFragment, String tag) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.right_enter, R.anim.left_out, R.anim.left_enter, R.anim.right_out);
-        transaction.replace(R.id.frameContainer, someFragment, tag);
-        transaction.addToBackStack(tag);
-        transaction.commit();
     }
 
 }

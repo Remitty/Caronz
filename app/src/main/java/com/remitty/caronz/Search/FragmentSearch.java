@@ -114,8 +114,6 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
     }
 
     public static void setData(Boolean title_nav) {
@@ -199,7 +197,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
                 Bundle bundle = new Bundle();
                 bundle.putString("method", method);
                 fragment_cat.setArguments(bundle);
-                replaceFragment(fragment_cat, "FragmentAllCategories");
+                ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentAllCategories");
             }
         });
 
@@ -208,7 +206,7 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             @Override
             public void onClick(View v) {
                 AvisFragment fragment_avis = new AvisFragment();
-                replaceFragment(fragment_avis, "AvisFragment");
+                ((HomeActivity)getActivity()).replaceFragment(fragment_avis, "AvisFragment");
             }
         });
 
@@ -498,14 +496,6 @@ public class FragmentSearch extends Fragment implements GoogleApiClient.OnConnec
             SettingsMain.hideDilog();
             Toast.makeText(getActivity(), "Internet error", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    void replaceFragment(Fragment someFragment, String tag) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.right_enter, R.anim.left_out, R.anim.left_enter, R.anim.right_out);
-        transaction.replace(R.id.frameContainer, someFragment, tag);
-        transaction.addToBackStack(tag);
-        transaction.commit();
     }
 
     private void showMoreLoading() {
