@@ -1,6 +1,7 @@
 package com.remitty.caronz.home;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -218,7 +219,6 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<String> categories = new ArrayList<String>();
     String[] trans = {"Automatic", "Manual"};
     String[] units = {"Mi", "Km"};
-
 
 
     //    PackagesFragment packagesFragment;
@@ -881,10 +881,10 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleHelper.onAttach(base));
-    }
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(LocaleHelper.onAttach(base));
+//    }
 
     private void updateViews(String languageCode) {
         LocaleHelper.setLocale(this, languageCode);
@@ -1292,64 +1292,51 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap Map) {
-        mMap = Map;
+    private void mapReady() {
+        if(mMap != null) {
+            GPSTracker gpsTracker = new GPSTracker(AddNewAdPost.this);
+            if (!gpsTracker.canGetLocation())
+                gpsTracker.showSettingsAlert();
+            else if (gpsTracker.canGetLocation() && gpsTracker.isCheckPermission()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationButtonClickListener(this);
+                mMap.setOnMyLocationClickListener(this);
+            }
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setCompassEnabled(true);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            LatLng currentPos = null;
+            currentPos = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
 
-
-            return;
-        }
-        GPSTracker gpsTracker = new GPSTracker(AddNewAdPost.this);
-        if (!gpsTracker.canGetLocation())
-            gpsTracker.showSettingsAlert();
-        else if (gpsTracker.canGetLocation() && gpsTracker.isCheckPermission()) {
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
-        }
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-
-        LatLng currentPos = null;
-        currentPos = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-        // create marker
-        MarkerOptions marker = new MarkerOptions()
-                .position(currentPos)
+            // create marker
+            MarkerOptions marker = new MarkerOptions()
+                    .position(currentPos)
 //                .title(gpsTracker.get)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
-        mMap.addMarker(marker);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())).zoom(16).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
-                2000, null);
+            mMap.addMarker(marker);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())).zoom(16).build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
+                    2000, null);
 
 
-        try {
-            mAddressAutoTextView.setText(gpsTracker.getAddress());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            try {
+                mAddressAutoTextView.setText(gpsTracker.getAddress());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        editTextUserLat.setText(String.format("%s", gpsTracker.getLatitude()));
-        editTextuserLong.setText(String.format("%s", gpsTracker.getLongitude()));
+            editTextUserLat.setText(String.format("%s", gpsTracker.getLatitude()));
+            editTextuserLong.setText(String.format("%s", gpsTracker.getLongitude()));
 
-        mMap.setOnMapClickListener(latLng -> {
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(latLng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.setOnMapClickListener(latLng -> {
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-            editTextuserLong.setText(String.format("%s", latLng.longitude));
-            editTextUserLat.setText(String.format("%s", latLng.latitude));
+                editTextuserLong.setText(String.format("%s", latLng.longitude));
+                editTextUserLat.setText(String.format("%s", latLng.latitude));
 //            List<Address> addresses2 = new ArrayList<>();
 //            try {
 //                addresses2 = new Geocoder(this, Locale.getDefault()).getFromLocation(latLng.longitude, latLng.latitude, 1);
@@ -1370,7 +1357,55 @@ public class AddNewAdPost extends AppCompatActivity implements OnMapReadyCallbac
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-        });
+            });
+        }
+    }
+
+    /**
+     * Set up the LocationEngine and the parameters for querying the device's location
+     */
+//    @SuppressLint("MissingPermission")
+//    private void initLocationEngine() {
+//        locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+//
+//        request = new LocationEngineRequest.Builder(5000L)
+//                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+//                .setMaxWaitTime(10000).build();
+//
+//
+//        locationEngine.requestLocationUpdates(request, this, getMainLooper());
+//        locationEngine.getLastLocation(this);
+//    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mapReady();
+    }
+
+
+
+    @Override
+    public void onMapReady(GoogleMap Map) {
+        mMap = Map;
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            return;
+        }
+        mapReady();
+
+
+
     }
 
     @Override
