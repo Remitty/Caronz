@@ -5,9 +5,10 @@
     <item
         android:id="@+id/action_notification"
         android:icon="@drawable/ic_notification"
+        android:iconTint="@color/white"
         android:title=""
-        android:visible="false"
-        app:showAsAction="always|collapseActionView" />
+        app:actionLayout="@layout/custom_action_item_layout"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_search"

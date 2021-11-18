@@ -59,6 +59,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ import com.google.gson.JsonObject;
 
 import com.remitty.caronz.orders.MyBookingActivity;
 import com.remitty.caronz.others.ActivityHelp;
+import com.remitty.caronz.others.NotificationActivity;
 import com.remitty.caronz.others.NotificationFragment;
 import com.remitty.caronz.payment.CardsActivity;
 import com.remitty.caronz.profile.OwnerProfileActivity;
@@ -131,6 +133,11 @@ HomeActivity extends AppCompatActivity
     ArrayList<String> ids = new ArrayList<>();
     public static Boolean checkLoading = false;
     public String method = "rent";
+    private TextView notificationBadge;
+
+    ActionBarDrawerToggle mDrawerToggle;
+    DrawerLayout drawerLayout;
+    private boolean mToolBarNavigationListenerIsRegistered = false;
 
     public void updateApi(UpdateFragment listener) {
         updatfrag = listener;
@@ -158,12 +165,12 @@ HomeActivity extends AppCompatActivity
             window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout  = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout , toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         //noinspection deprecation
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        drawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         if(getIntent() != null) {
             if(getIntent().hasExtra("method"))
@@ -183,6 +190,64 @@ HomeActivity extends AppCompatActivity
         
         receiveNotification();
 
+        enableViews(false);
+
+    }
+
+    /**
+     * To be semantically or contextually correct, maybe change the name
+     * and signature of this function to something like:
+     *
+     * private void showBackButton(boolean show)
+     * Just a suggestion.
+     */
+    public void enableViews(boolean enable) {
+
+        // To keep states of ActionBar and ActionBarDrawerToggle synchronized,
+        // when you enable on one, you disable on the other.
+        // And as you may notice, the order for this operation is disable first, then enable - VERY VERY IMPORTANT.
+        if(enable) {
+            //You may not want to open the drawer on swipe from the left in this case
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            // Remove hamburger
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            // Show back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            // when DrawerToggle is disabled i.e. setDrawerIndicatorEnabled(false), navigation icon
+            // clicks are disabled i.e. the UP button will not work.
+            // We need to add a listener, as in below, so DrawerToggle will forward
+            // click events to this listener.
+            if(!mToolBarNavigationListenerIsRegistered) {
+                mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Doesn't have to be onBackPressed
+                        onBackPressed();
+                    }
+                });
+
+                mToolBarNavigationListenerIsRegistered = true;
+            }
+
+        } else {
+            //You must regain the power of swipe for the drawer.
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+            // Remove back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            // Show hamburger
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            // Remove the/any drawer toggle listener
+            mDrawerToggle.setToolbarNavigationClickListener(null);
+            mToolBarNavigationListenerIsRegistered = false;
+        }
+
+        // So, one may think "Hmm why not simplify to:
+        // .....
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
+        // mDrawer.setDrawerIndicatorEnabled(!enable);
+        // ......
+        // To re-iterate, the order in which you enable and disable views IS important #dontSimplify.
     }
 
     private void receiveNotification() {
@@ -204,6 +269,7 @@ HomeActivity extends AppCompatActivity
     private void initNavigation() {
 
         bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
         bottomNav.setOnNavigationItemSelectedListener(this);
         btnAdd = bottomNav.findViewById(R.id.fab_add);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -368,6 +434,15 @@ HomeActivity extends AppCompatActivity
         inflater.inflate(R.menu.home, menu);
 //        MenuItem searchViewItem = menu.findItem(R.id.action_search);
         action_notification = menu.findItem(R.id.action_notification);
+        notificationBadge = action_notification.getActionView().findViewById(R.id.cart_badge);
+        FrameLayout layout = action_notification.getActionView().findViewById(R.id.notification_layout);
+        layout.setOnClickListener(view -> {
+            Intent intent1 = new Intent(HomeActivity.this, NotificationActivity.class);
+            notificationBadge.setVisibility(View.GONE);
+            intent1.putExtra("receiverId", "");
+            startActivity(intent1);
+        });
+//        action_notification.setOnMenuItemClickListener(this);
         MenuItem action_location = menu.findItem(R.id.action_location);
         action_location.setOnMenuItemClickListener(this);
         return super.onCreateOptionsMenu(menu);
@@ -588,7 +663,18 @@ HomeActivity extends AppCompatActivity
     public void onBackPressed() {
 
             super.onBackPressed();
-            overridePendingTransition(R.anim.left_enter, R.anim.right_out);
+//            overridePendingTransition(R.anim.left_enter, R.anim.right_out);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeFragment");
+        if(fragment != null && fragment.isVisible())
+            enableViews(false);
+        else enableViews(true);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav.setSelectedItemId(R.id.nav_home);
     }
 
     @Override
@@ -644,24 +730,28 @@ HomeActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_rent:
-//                fragment = new FragmentSearch();
-//                tag = "FragmentSearch";
-//                bundle.putString("method", "rent");
-                method = "rent";
-                moveFindNavigation();
+                fragment = new FragmentSearch();
+                tag = "FragmentSearch";
+                bundle.putString("method", "rent");
+//                method = "rent";
+//                moveFindNavigation();
                 break;
             case R.id.nav_sale:
-//                fragment = new FragmentSearch();
-//                tag = "FragmentBuySearch";
-//                Bundle bundle1 = new Bundle();
-//                bundle1.putString("method", "buy");
-//                fragment.setArguments(bundle1);
-                method = "buy";
-                moveFindNavigation();
+                fragment = new FragmentSearch();
+                tag = "FragmentBuySearch";
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("method", "buy");
+                fragment.setArguments(bundle1);
+//                method = "buy";
+//                moveFindNavigation();
                 break;
             case R.id.nav_hire:
 //                fragment = new HireSearchMapFragment();
 //                tag = "HireSearchMapFragment";
+                fragment = new FragmentAllCategories();
+                tag="FragmentAllCategories";
+                bundle.putString("method", "hire");
+                fragment.setArguments(bundle);
                 method = "hire";
                 moveFindNavigation();
                 break;
@@ -781,13 +871,14 @@ HomeActivity extends AppCompatActivity
                 locationSearch();
                 break;
             case R.id.action_notification:
-                item.setVisible(false);
-                Intent intent1 = new Intent(HomeActivity.this, ChatActivity.class);
+//                item.setVisible(false);
+                Intent intent1 = new Intent(HomeActivity.this, NotificationActivity.class);
+                notificationBadge.setVisibility(View.GONE);
                 intent1.putExtra("receiverId", "");
                 startActivity(intent1);
                 break;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -816,6 +907,8 @@ HomeActivity extends AppCompatActivity
         void updatefrag(String latitude, String longitude, String distance);
     }
 
+
+
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -823,9 +916,11 @@ HomeActivity extends AppCompatActivity
             Log.e("received action", kind);
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             if(kind.equals(Config.PUSH_NOTIFICATION)) {
+
+                notificationBadge.setVisibility(View.VISIBLE);
 //                action_notification.setVisible(true);
-                BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_notification);
-                badge.setVisible(true);
+//                BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_notification);
+//                badge.setVisible(true);
             }
             else {
                     BadgeDrawable badge =  bottomNav.getOrCreateBadge(R.id.nav_chat);

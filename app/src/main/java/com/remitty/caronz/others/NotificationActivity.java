@@ -1,14 +1,22 @@
 package com.remitty.caronz.others;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +48,7 @@ public class NotificationActivity extends AppCompatActivity {
     SettingsMain settingsMain;
     RestService restService;
 
-    TextView tvEmpty;
+    LinearLayout tvEmpty;
 
     NotificationAdapter mAdapter;
     RecyclerView recyclerView;
@@ -54,12 +62,20 @@ public class NotificationActivity extends AppCompatActivity {
         settingsMain = new SettingsMain(this);
         restService = UrlController.createService(RestService.class);
 
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Notifications");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
 
-        tvEmpty = findViewById(R.id.tv_empty);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tvEmpty = findViewById(R.id.empty_view);
 
         recyclerView = findViewById(R.id.recycler_notifications);
         recyclerView.setLayoutManager(new LinearLayoutManager(NotificationActivity.this));

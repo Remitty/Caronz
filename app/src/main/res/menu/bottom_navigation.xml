@@ -4,21 +4,25 @@
     <item
         android:id="@+id/nav_home"
     android:icon="@drawable/ic_home_black_24dp"
-    android:title="." />
+    android:title="Home" />
+    <item
+        android:id="@+id/nav_post"
+        android:icon="@drawable/ic_add_fab"
+        android:title="Post" />
     <item
         android:id="@+id/nav_chat"
     android:icon="@drawable/ic_chat"
-    android:title="." />
-    <item
-        android:id="@+id/nav_post"
-        android:title="" />
+    android:title="Chat" />
+
     <item
         android:id="@+id/nav_find"
         android:icon="@drawable/ic_search"
+        android:visible="false"
         android:title="." />
     <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/ic_notification"
+        android:visible="false"
         android:title="." />
 
 </menu>

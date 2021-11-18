@@ -104,8 +104,8 @@ public class CarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         holder.tvPrice.setText(item.getPrice());
         holder.tvCurrency.setText(item.getCurrency());
-        holder.tvName.setText(item.getCatName());
-        holder.tvModelYear.setText(item.getName() + " " + item.getYear());
+        holder.tvName.setText(item.getCatName() + " " + item.getName());
+        holder.tvModelYear.setText(item.getYear());
         holder.ratingBar.setVisibility(View.GONE);
     }
 

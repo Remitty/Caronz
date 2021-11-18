@@ -65,13 +65,14 @@ public class HomeFragment extends Fragment {
         buyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentAllCategories fragment_cat = new FragmentAllCategories();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("method", "buy");
-//                fragment_cat.setArguments(bundle);
-//                replaceFragment(fragment_cat, "FragmentAllCategories");
-                ((HomeActivity)getActivity()).method = "buy";
-                ((HomeActivity)getActivity()).moveFindNavigation();
+                FragmentAllCategories fragment_cat = new FragmentAllCategories();
+                Bundle bundle = new Bundle();
+                bundle.putString("method", "buy");
+                fragment_cat.setArguments(bundle);
+                replaceFragment(fragment_cat, "FragmentAllCategories");
+                ((HomeActivity)getActivity()).enableViews(true);
+//                ((HomeActivity)getActivity()).method = "buy";
+//                ((HomeActivity)getActivity()).moveFindNavigation();
             }
         });
 
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 AvisFragment fragment_cat = new AvisFragment();
                 replaceFragment(fragment_cat, "AvisFragment");
+                ((HomeActivity)getActivity()).enableViews(true);
             }
         });
 
@@ -91,8 +93,14 @@ public class HomeFragment extends Fragment {
 //                bundle.putString("catId", "0");
 //                fragment_cat.setArguments(bundle);
 //                replaceFragment(fragment_cat, "HireSearchMapFragment");
-                ((HomeActivity)getActivity()).method = "buy";
-                ((HomeActivity)getActivity()).moveFindNavigation();
+                FragmentAllCategories fragment_cat = new FragmentAllCategories();
+                Bundle bundle = new Bundle();
+                bundle.putString("method", "hire");
+                fragment_cat.setArguments(bundle);
+                replaceFragment(fragment_cat, "FragmentAllCategories");
+                ((HomeActivity)getActivity()).enableViews(true);
+//                ((HomeActivity)getActivity()).method = "buy";
+//                ((HomeActivity)getActivity()).moveFindNavigation();
             }
         });
 

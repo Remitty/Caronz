@@ -61,14 +61,14 @@ public class AvisFragment extends Fragment {
         ownerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentSearch fragment_cat = new FragmentSearch();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("method", "rent");
-//                bundle.putString("catId", "0");
-//                fragment_cat.setArguments(bundle);
-//                replaceFragment(fragment_cat, "FragmentSearch");
-                ((HomeActivity)getActivity()).method = "rent";
-                ((HomeActivity)getActivity()).moveFindNavigation();
+                FragmentSearch fragment_cat = new FragmentSearch();
+                Bundle bundle = new Bundle();
+                bundle.putString("method", "rent");
+                bundle.putString("catId", "0");
+                fragment_cat.setArguments(bundle);
+                replaceFragment(fragment_cat, "FragmentSearch");
+//                ((HomeActivity)getActivity()).method = "rent";
+//                ((HomeActivity)getActivity()).moveFindNavigation();
             }
         });
 

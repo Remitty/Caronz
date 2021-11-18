@@ -25,8 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        app:itemTextColor="@color/colorPrimary"
         android:elevation="12dp"
         android:theme="@style/Theme.MaterialComponents.Light"
+        app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_navigation" >
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
@@ -34,7 +36,7 @@
             android:layout_height="38dp"
             android:layout_gravity="center"
             app:fabSize="mini"
-
+            android:visibility="gone"
             app:tint="@color/white"
             app:srcCompat="@drawable/ic_white_add"
             android:backgroundTint="@color/colorAccent"
