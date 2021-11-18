@@ -6,43 +6,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardElevation="3dp"
+    app:cardCornerRadius="@dimen/radius_20"
     card_view:cardUseCompatPadding="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginVertical="5dp"
+            android:padding="@dimen/space_2x"
             android:orientation="vertical">
             <LinearLayout
                 android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/realty_image"
-                    android:layout_gravity="center"
-                    android:layout_width="100dp"
-                    android:layout_height="70dp"
-                    android:src="@drawable/placeholder"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@null"
-                    android:scaleType="fitXY"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="@dimen/radius_10">
+                    <ImageView
+                        android:id="@+id/realty_image"
+                        android:layout_gravity="center"
+                        android:layout_width="130dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/placeholder"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@null"
+                        android:scaleType="fitXY"/>
+                </androidx.cardview.widget.CardView>
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_2x"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
                 <TextView
                     android:id="@+id/realty_title"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
                     android:text="Car name"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/gray700"
+                    android:textSize="@dimen/b5_font_size"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
+                        <Button
+                            android:layout_weight="1"
+                            android:id="@+id/btn_book_confirm"
+                            style="@style/Button.Primary.Small"
+                            android:layout_marginHorizontal="5dp"
+                            android:text="Complete"/>
+                        <Button
+                            android:layout_weight="1"
+                            style="@style/Button.Red.Small"
+                            android:id="@+id/btn_book_cancel"
+                            android:layout_marginHorizontal="5dp"
+                            android:text="Cancel"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"
@@ -54,30 +85,7 @@
                 android:layout_marginEnd="0dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Price"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="5dp"
-                        android:textSize="12dp"/>
-                    <TextView
-                        android:id="@+id/realty_price"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorRedCrayon"
-                        android:gravity="end"
-                        android:text="$0"
-                        android:layout_marginTop="5dp"
-                        android:textSize="13dp"/>
 
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,42 +94,39 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Start"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray"
                         android:layout_marginTop="5dp"
-                        android:textSize="12dp"/>
+                        android:textSize="@dimen/b2_font_size"/>
                     <TextView
                         android:id="@+id/rental_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="end"
-                        android:textStyle="bold"
                         android:text="2019 - 2019"
-                        android:textColor="@color/black"
-                        android:textSize="13dp"/>
+                        android:textColor="@color/gray700"
+                        android:textSize="@dimen/b2_font_size"/>
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="End"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="5dp"
-                        android:textSize="12dp"/>
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/b2_font_size"/>
                     <TextView
                         android:id="@+id/rental_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:gravity="end"
-                        android:textStyle="bold"
                         android:text="2019 - 2019"
-                        android:textColor="@color/black"
-                        android:textSize="13dp"/>
+                        android:textColor="@color/gray700"
+                        android:textSize="@dimen/b2_font_size"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -132,74 +137,71 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Pickup Location"
-                            android:textColor="@color/black"
-                            android:layout_marginTop="5dp"
-                            android:textSize="12dp"/>
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/b2_font_size"/>
                         <TextView
                             android:layout_weight="1"
                             android:id="@+id/pickup_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="end"
-                            android:textStyle="bold"
                             android:text="location"
-                            android:textColor="@color/black"
-                            android:textSize="13dp"/>
+                            android:textColor="@color/gray700"
+                            android:textSize="@dimen/b2_font_size"/>
 
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Dropoff Location"
-                            android:textColor="@color/black"
-                            android:layout_marginTop="5dp"
-                            android:textSize="12dp"/>
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/b2_font_size"/>
                         <TextView
                             android:layout_weight="1"
                             android:id="@+id/dropoff_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="end"
-                            android:textStyle="bold"
                             android:text="location"
-                            android:textColor="@color/black"
-                            android:textSize="13dp"/>
+                            android:textColor="@color/gray700"
+                            android:textSize="@dimen/b2_font_size"/>
 
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Confirmation Number"
-                            android:textColor="@color/black"
-                            android:layout_marginTop="5dp"
-                            android:textSize="12dp"/>
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/b2_font_size"/>
                         <TextView
                             android:id="@+id/confirm_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="end"
-                            android:textStyle="bold"
+                            
                             android:text="12445"
-                            android:textColor="@color/black"
-                            android:textSize="13dp"/>
+                            android:textColor="@color/gray700"
+                            android:textSize="@dimen/b2_font_size"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -212,16 +214,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Source"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"/>
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/b2_font_size"/>
                     <TextView
                         android:id="@+id/realty_source"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
+                        
+                        android:textColor="@color/gray700"
                         android:gravity="end"
-                        android:textSize="13dp"
+                        android:textSize="@dimen/b2_font_size"
                         android:text="Card"/>
 
                 </LinearLayout>
@@ -234,8 +236,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Status"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"/>
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/b2_font_size"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -251,10 +253,10 @@
                             android:id="@+id/realty_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
+                            
+                            android:textColor="@color/gray700"
                             android:gravity="end"
-                            android:textSize="13dp"
+                            android:textSize="@dimen/b2_font_size"
                             android:text="Processing"/>
                     </LinearLayout>
 
@@ -269,20 +271,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Created at"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"/>
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/b2_font_size"/>
                     <TextView
                         android:id="@+id/realty_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
+                        android:textColor="@color/gray700"
+                        
                         android:gravity="end"
                         android:text="2019"
                         android:maxLines="1"
                         android:scrollHorizontally="true"
                         android:ellipsize="end"
-                        android:textSize="13dp"/>
+                        android:textSize="@dimen/b2_font_size"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -305,31 +307,34 @@
                         android:textSize="10dp"
 
                         android:text="Edit"/>
-                    <Button
-                        android:layout_weight="1"
-                        android:id="@+id/btn_book_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginHorizontal="5dp"
-                        android:background="@color/green"
-                        android:textColor="@color/white"
-                        android:textSize="10dp"
-                        android:text="Complete"/>
-                    <Button
-                        android:layout_weight="1"
-                        android:id="@+id/btn_book_cancel"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginHorizontal="5dp"
-                        android:background="@color/colorRedCrayon"
-                        android:textColor="@color/white"
-                        android:textSize="10dp"
-                        android:text="Cancel"/>
+
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_card_bottom"
+            android:paddingHorizontal="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:text="Total Price"/>
+            <TextView
+                android:id="@+id/realty_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/b2_font_size"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="$ 0"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
