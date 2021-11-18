@@ -95,14 +95,11 @@
 
             <Button
                 android:id="@+id/contineBuyPackage"
+                style="@style/Button.Border.Primary"
                 android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_border_primary_button"
                 android:layout_marginTop="50dp"
-                android:textAllCaps="false"
                 android:text="Home"
-                android:textColor="@color/gray700"
-                android:textSize="20dp" />
+                 />
 
         </LinearLayout>
 

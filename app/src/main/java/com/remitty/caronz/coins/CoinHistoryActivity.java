@@ -1,13 +1,20 @@
 package com.remitty.caronz.coins;
 
+import static com.remitty.caronz.utills.SettingsMain.getMainColor;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,10 +58,18 @@ public class CoinHistoryActivity extends AppCompatActivity {
         settingsMain = new SettingsMain(this);
         restService = UrlController.createService(RestService.class, settingsMain.getAuthToken(), CoinHistoryActivity.this);
 
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Coin Activities");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(getMainColor()));
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tvEmpty = findViewById(R.id.tv_empty);
 

@@ -23,7 +23,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="@dimen/h3_font_size"
-                android:text="My Rental"/>
+                android:text="Support"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -41,7 +41,7 @@
             <ImageView
                 android:id="@+id/img_executive"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/support_bg" />
@@ -51,13 +51,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img_executive"
                 android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/chat_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">
@@ -120,7 +121,7 @@
                     android:id="@+id/call_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    app:cardUseCompatPadding="true"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">
@@ -183,7 +184,7 @@
                     android:id="@+id/mail_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    app:cardUseCompatPadding="true"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">

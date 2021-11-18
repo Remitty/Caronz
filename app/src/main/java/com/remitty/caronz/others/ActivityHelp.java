@@ -85,6 +85,7 @@ public class ActivityHelp extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getHelp() {
+        SettingsMain.showDilog(ActivityHelp.this);
         if (SettingsMain.isConnectingToInternet(this)) {
 
             Call<ResponseBody> myCall = restService.help(UrlController.AddHeaders(this));
