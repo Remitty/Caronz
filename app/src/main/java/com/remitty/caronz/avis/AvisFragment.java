@@ -67,6 +67,7 @@ public class AvisFragment extends Fragment {
                 bundle.putString("catId", "0");
                 fragment_cat.setArguments(bundle);
                 ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentSearch");
+                ((HomeActivity)getActivity()).enableViews(true);
             }
         });
 

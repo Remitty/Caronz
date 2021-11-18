@@ -20,6 +20,8 @@ import com.remitty.caronz.R;
 import com.remitty.caronz.helper.SendReciveONClickListner;
 import com.remitty.caronz.models.ReceivedMessageModel;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ItemSendRecMesageAdapter extends RecyclerView.Adapter<ItemSendRecMesageAdapter.CustomViewHolder> {
     private List<ReceivedMessageModel> feedItemList;
     private Context mContext;
@@ -41,13 +43,13 @@ public class ItemSendRecMesageAdapter extends RecyclerView.Adapter<ItemSendRecMe
     public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
         final ReceivedMessageModel feedItem = feedItemList.get(i);
 
-        customViewHolder.name.setText(feedItemList.get(i).getLastSenderName());
-        customViewHolder.is_block.setText(feedItemList.get(i).getTopic());
-        customViewHolder.topic.setText(feedItemList.get(i).getLastMessage());
-        customViewHolder.chatTime.setText(feedItemList.get(i).getChatTime());
+        customViewHolder.tvLast.setText(feedItemList.get(i).getLastSenderName());
+        customViewHolder.name.setText(feedItemList.get(i).getTopic());
+        customViewHolder.tvLastMsg.setText(feedItemList.get(i).getLastMessage());
+        customViewHolder.loginTime.setText(feedItemList.get(i).getChatTime());
         if (!feedItem.isMessageRead()) {
             customViewHolder.card_view.setCardBackgroundColor(Color.parseColor("#fffcf5"));
-            customViewHolder.notification_icon.setVisibility(View.VISIBLE);
+//            customViewHolder.notification_icon.setVisibility(View.VISIBLE);
         }
 
         if (!TextUtils.isEmpty(feedItem.getTumbnail())) {
@@ -83,8 +85,8 @@ public class ItemSendRecMesageAdapter extends RecyclerView.Adapter<ItemSendRecMe
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        TextView name, topic,is_block, chatTime;
+        CircleImageView imageView;
+        TextView name, loginTime,tvLastMsg, chatTime, tvLast;
         LinearLayout linearLayout;
         CardView card_view;
         ImageView notification_icon, delete_icon;
@@ -97,10 +99,10 @@ public class ItemSendRecMesageAdapter extends RecyclerView.Adapter<ItemSendRecMe
             this.name = view.findViewById(R.id.text_viewName);
             this.notification_icon = view.findViewById(R.id.notification_icon);
             this.delete_icon = view.findViewById(R.id.delete_icon);
-            this.topic = view.findViewById(R.id.loginTime);
+            this.loginTime = view.findViewById(R.id.loginTime);
             this.card_view = view.findViewById(R.id.card_view);
-            this.is_block = view.findViewById(R.id.Blocktext_view);
-            this.chatTime = view.findViewById(R.id.chat_time);
+            this.tvLastMsg = view.findViewById(R.id.tv_last_msg);
+            this.tvLast = view.findViewById(R.id.tv_last);
         }
     }
 }

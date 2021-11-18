@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
                 fragment_cat.setArguments(bundle);
                 ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentAllCategories");
                 ((HomeActivity)getActivity()).changeToolbarTitle("Buy");
+                ((HomeActivity)getActivity()).enableViews(true);
             }
         });
 
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
                 AvisFragment fragment_cat = new AvisFragment();
                 ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "AvisFragment");
                 ((HomeActivity)getActivity()).changeToolbarTitle("Rent");
+                ((HomeActivity)getActivity()).enableViews(true);
             }
         });
 
@@ -97,6 +99,7 @@ public class HomeFragment extends Fragment {
                 fragment_cat.setArguments(bundle);
                 ((HomeActivity)getActivity()).replaceFragment(fragment_cat, "FragmentAllCategories");
                 ((HomeActivity)getActivity()).changeToolbarTitle("Hire");
+                ((HomeActivity)getActivity()).enableViews(true);
             }
         });
 

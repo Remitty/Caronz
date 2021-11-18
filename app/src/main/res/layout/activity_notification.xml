@@ -53,7 +53,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:src="@drawable/empty_trush"/>
+                android:src="@drawable/notification_logo"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,10 +61,9 @@
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="No Notification"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:textColor="@color/colorPrimary"/>
+                android:text="No notification"
+                android:textSize="@dimen/b1_font_size"
+                android:textColor="@color/green600"/>
         </LinearLayout>
     </FrameLayout>
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f7f7f7"
+    android:background="@color/background_color"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
+        android:visibility="gone"
         app:contentPadding="10dp">
 
         <RelativeLayout
@@ -87,14 +88,11 @@
 
     </androidx.cardview.widget.CardView>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_below="@id/cardView"
         android:id="@+id/messageContainer"
         android:layout_above="@+id/temp"
-        android:background="@drawable/background"
         android:orientation="vertical"
         android:visibility="visible"
         android:layout_height="wrap_content">
@@ -111,7 +109,7 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background">
+            >
 
             <ListView
                 android:id="@+id/msgListView"

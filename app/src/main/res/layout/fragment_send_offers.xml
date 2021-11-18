@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.remitty.caronz.messages.SendOffers">
+    android:background="@color/background_color"
+    tools:context="com.remitty.caronz.messages.Inbox">
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         tools:listitem="@layout/item_sent_message" />
 
     <ProgressBar
@@ -26,6 +26,13 @@
         android:gravity="center"
         android:visibility="visible"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/chat_logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,14 +40,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="No chat"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:textColor="@color/black"/>
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_mail_outline"/>
+            android:textSize="@dimen/b1_font_size"
+            android:textColor="@color/green600"/>
     </LinearLayout>
 </RelativeLayout>

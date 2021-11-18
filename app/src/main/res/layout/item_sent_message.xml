@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    app:cardCornerRadius="@dimen/radius_15"
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="5dp">
@@ -12,18 +13,20 @@
         android:id="@+id/linear_layout_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/space_1x"
         android:clickable="true"
         android:focusable="true"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_view"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_gravity="center"
+            android:layout_marginRight="@dimen/space_2x"
             android:contentDescription="@null"
-            android:scaleType="fitXY" />
+            android:src="@drawable/profileimg"
+             />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,18 +47,21 @@
                     android:layout_marginEnd="14dp"
                     android:layout_marginStart="0dp"
                     android:gravity="center_vertical"
+                    android:text="Car Name"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/b5_font_size" />
                 <TextView
-                    android:id="@+id/Blocktext_view"
+                    android:id="@+id/tv_last_msg"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
                     android:layout_marginStart="0dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:gravity="center_vertical|right"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/gray700"
+                    android:text="Last Msg"
+                    android:textSize="@dimen/b3_font_size" />
                 <ImageView
                     android:id="@+id/notification_icon"
                     android:layout_width="20dp"
@@ -76,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -89,14 +96,19 @@
                     android:gravity="center_vertical"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/white_greyish" />
+                    android:text="2020-12-12"
+                    android:textSize="@dimen/b4_font_size"
+                    android:textColor="@color/gray400" />
                 <TextView
-                    android:id="@+id/chat_time"
+                    android:id="@+id/tv_last"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|right"
                     android:layout_gravity="center_vertical"
+                    android:text="You"
+                    android:textColor="@color/gray400"
+                    android:textSize="@dimen/b4_font_size"
                     android:maxLines="1"
                     />
                 <ImageView
@@ -109,6 +121,7 @@
                     android:layout_marginLeft="7dp"
                     android:layout_marginRight="7dp"
                     android:layout_marginStart="7dp"
+                    android:visibility="gone"
                     android:textSize="11sp" />
             </LinearLayout>
 

@@ -16,6 +16,7 @@
     <color name="gray100">#E0E0E0</color>
     <color name="gray600">#4D4D4D</color>
     <color name="gray700">#333333</color>
+    <color name="gray400">#858585</color>
 
     <color name="tab1">#a0d468</color>
     <color name="tab2">#3498db</color>

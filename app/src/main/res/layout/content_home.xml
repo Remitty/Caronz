@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@color/colorPrimary"
+        app:itemIconSize="@dimen/space_3x"
         android:elevation="12dp"
         android:theme="@style/Theme.MaterialComponents.Light"
         app:labelVisibilityMode="selected"

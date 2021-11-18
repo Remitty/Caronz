@@ -472,9 +472,6 @@ HomeActivity extends AppCompatActivity
             transaction.addToBackStack(tag);
             transaction.commit();
         }
-        if(!currentTag.equals("HomeFragment")) {
-            enableViews(true);
-        }
     }
 
     private void AddFirebaseid() {
